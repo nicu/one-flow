@@ -54,11 +54,18 @@ export interface ComponentProperties {
   flexDirection?: "row" | "column";
   justifyContent?: string;
   alignItems?: string;
+  // Grid-specific alignment helpers
+  justifyItems?: string;
+  alignContent?: string;
   gap?: string;
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   gridColumns?: number;
   gridRows?: number;
   minColumnWidth?: string; // For responsive grid (auto-fit)
+  // When true, prefer `gridColumns` (fixed columns) even if
+  // `minColumnWidth` is set. Useful when author wants deterministic
+  // column counts instead of responsive auto-fit behavior.
+  useFixedColumns?: boolean;
   // Additional layout helpers
   minWidth?: string;
   maxWidth?: string;

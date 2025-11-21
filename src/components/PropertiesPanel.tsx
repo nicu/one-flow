@@ -389,6 +389,58 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               />
             </div>
             <div className="property-field">
+              <label>Justify Items</label>
+              <select
+                value={properties.justifyItems || "start"}
+                onChange={(e) => onUpdate({ justifyItems: e.target.value })}
+              >
+                <option value="start">Start</option>
+                <option value="center">Center</option>
+                <option value="end">End</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Align Items</label>
+              <select
+                value={properties.alignItems || "stretch"}
+                onChange={(e) => onUpdate({ alignItems: e.target.value })}
+              >
+                <option value="start">Start</option>
+                <option value="center">Center</option>
+                <option value="end">End</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Justify Content</label>
+              <select
+                value={properties.justifyContent || "start"}
+                onChange={(e) => onUpdate({ justifyContent: e.target.value })}
+              >
+                <option value="start">Start</option>
+                <option value="center">Center</option>
+                <option value="end">End</option>
+                <option value="space-between">Space Between</option>
+                <option value="space-around">Space Around</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Align Content</label>
+              <select
+                value={properties.alignContent || "start"}
+                onChange={(e) => onUpdate({ alignContent: e.target.value })}
+              >
+                <option value="start">Start</option>
+                <option value="center">Center</option>
+                <option value="end">End</option>
+                <option value="space-between">Space Between</option>
+                <option value="space-around">Space Around</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+            <div className="property-field">
               <label>Justify Content</label>
               <select
                 value={properties.justifyContent || "flex-start"}
@@ -472,8 +524,11 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   onUpdate({ gridColumns: parseInt(e.target.value) })
                 }
                 min="1"
-                disabled={!!properties.minColumnWidth}
               />
+              <small style={{ fontSize: "10px", color: "#666" }}>
+                Tip: If you also set a Min Column Width, responsive mode may
+                override the fixed column count.
+              </small>
             </div>
             <div className="property-field">
               <label>Min Column Width (Responsive)</label>
@@ -485,6 +540,22 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               />
               <small style={{ fontSize: "10px", color: "#666" }}>
                 Overrides fixed columns
+              </small>
+            </div>
+            <div className="property-field">
+              <label style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input
+                  type="checkbox"
+                  checked={!!properties.useFixedColumns}
+                  onChange={(e) =>
+                    onUpdate({ useFixedColumns: e.target.checked })
+                  }
+                />
+                Use Fixed Columns (ignore Min Column Width)
+              </label>
+              <small style={{ fontSize: "10px", color: "#666" }}>
+                When enabled, the grid will use the fixed `Columns` count
+                instead of responsive `Min Column Width`.
               </small>
             </div>
             <div className="property-field">

@@ -83,6 +83,14 @@ export const buildStyle = (
     if (!props.fontSize) style.fontSize = theme.typography.fontSize.base;
   }
 
+  // Image defaults: make images block-level and responsive so they
+  // naturally fill their grid cell without overflowing.
+  if (type === "image") {
+    if (!style.display) style.display = "block";
+    if (!props.width && !style.width) style.width = "100%" as any;
+    if (!props.maxWidth) style.maxWidth = "100%";
+  }
+
   if (props.alignment) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     style.textAlign = props.alignment as any;
@@ -97,11 +105,27 @@ export const buildStyle = (
     if (props.justifyContent) style.justifyContent = props.justifyContent;
     if (props.alignItems) style.alignItems = props.alignItems;
     if (props.flexWrap) style.flexWrap = props.flexWrap;
+    // Prevent intrinsic sizing from expanding grid columns: allow
+    // these layout containers to shrink and default to filling their
+    // available grid cell width.
+    if (!props.minWidth && style.minWidth === undefined) {
+      style.minWidth = 0 as any;
+    }
+    if (!props.width && style.width === undefined) {
+      style.width = "100%" as any;
+    }
   }
 
   if (type === "grid") {
     style.display = "grid";
-    if (props.minColumnWidth) {
+    // Ensure the grid container itself fills its parent width by default.
+    if (!props.width && style.width === undefined) style.width = "100%" as any;
+
+    // If the user explicitly requests fixed columns, prefer `gridColumns`
+    // even when `minColumnWidth` is present. Otherwise, follow the
+    // responsive/default behavior (minColumnWidth -> gridColumns).
+    const useFixed = !!(props.useFixedColumns && props.gridColumns);
+    if (!useFixed && props.minColumnWidth) {
       // Responsive grid logic: repeat(auto-fit, minmax(minColumnWidth, 1fr))
       style.gridTemplateColumns = `repeat(auto-fit, minmax(${props.minColumnWidth}, 1fr))`;
     } else if (props.gridColumns) {
@@ -111,6 +135,12 @@ export const buildStyle = (
       style.gridTemplateRows = `repeat(${props.gridRows}, 1fr)`;
     }
     if (props.gap) style.gap = props.gap;
+    // Grid alignment helpers
+    if (props.justifyItems) style.justifyItems = props.justifyItems as any;
+    // alignItems maps to CSS `align-items` for grid as well
+    if (props.alignItems) style.alignItems = props.alignItems as any;
+    if (props.justifyContent) style.justifyContent = props.justifyContent as any;
+    if (props.alignContent) style.alignContent = props.alignContent as any;
   }
 
   return style;
