@@ -50,6 +50,10 @@ export interface ComponentProperties {
   gap?: string;
   gridColumns?: number;
   gridRows?: number;
+
+  // Style properties
+  borderRadius?: string;
+  boxShadow?: string;
 }
 
 export interface BuilderComponent {

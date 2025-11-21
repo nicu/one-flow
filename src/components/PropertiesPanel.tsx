@@ -28,8 +28,33 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
   const { properties, type } = component;
 
+  const renderStyleProperties = () => (
+    <div className="property-group">
+      <h4>Style</h4>
+      <div className="property-field">
+        <label>Border Radius</label>
+        <input
+          type="text"
+          value={properties.borderRadius || ""}
+          onChange={(e) => onUpdate({ borderRadius: e.target.value })}
+          placeholder="4px"
+        />
+      </div>
+      <div className="property-field">
+        <label>Box Shadow</label>
+        <input
+          type="text"
+          value={properties.boxShadow || ""}
+          onChange={(e) => onUpdate({ boxShadow: e.target.value })}
+          placeholder="none"
+        />
+      </div>
+    </div>
+  );
+
   const renderCommonProperties = () => (
     <>
+      {renderStyleProperties()}
       <div className="property-group">
         <h4>Layout</h4>
 

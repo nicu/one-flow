@@ -5,15 +5,19 @@ import { RenderComponent } from "./RenderComponent";
 interface CanvasProps {
   components: BuilderComponent[];
   selectedId: string | null;
+  hoveredId: string | null;
   onAddComponent: (type: ComponentType, parentId?: string) => void;
   onSelectComponent: (id: string | null) => void;
+  onHoverComponent: (id: string | null) => void;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
   components,
   selectedId,
+  hoveredId,
   onAddComponent,
   onSelectComponent,
+  onHoverComponent,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
@@ -45,6 +49,15 @@ export const Canvas: React.FC<CanvasProps> = ({
             onSelectComponent(null);
           }
         }}
+        onMouseOver={(e) => {
+          // If we hover over the canvas background (not a component), clear hover
+          if (e.target === e.currentTarget) {
+            onHoverComponent(null);
+          }
+        }}
+        onMouseLeave={() => {
+          onHoverComponent(null);
+        }}
       >
         {components.length === 0 ? (
           <div className="canvas-empty">
@@ -55,8 +68,10 @@ export const Canvas: React.FC<CanvasProps> = ({
             <RenderComponent
               key={component.id}
               component={component}
-              isSelected={component.id === selectedId}
+              selectedId={selectedId}
+              hoveredId={hoveredId}
               onSelect={onSelectComponent}
+              onHover={onHoverComponent}
               onAddComponent={onAddComponent}
             />
           ))

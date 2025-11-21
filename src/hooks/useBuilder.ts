@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 export const useBuilder = () => {
   const [components, setComponentsState] = useState<BuilderComponent[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   // history stacks
   const [past, setPast] = useState<BuilderComponent[][]>([]);
@@ -141,6 +142,8 @@ export const useBuilder = () => {
     redo,
     canUndo,
     canRedo,
+    hoveredId,
+    setHoveredId,
   };
 };
 

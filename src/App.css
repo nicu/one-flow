@@ -182,14 +182,36 @@ body {
 }
 
 .rendered-component:hover {
+  /* Disable default hover bubbling */
+  outline: none;
+}
+
+.rendered-component.hovered {
   outline: 2px solid #0066ff;
-  outline-offset: 2px;
+  outline-offset: -2px; /* Inner outline */
+  z-index: 10; /* Ensure hover is visible */
 }
 
 .rendered-component.selected {
   outline: 2px solid #0066ff;
-  outline-offset: 2px;
-  background: rgba(0, 102, 255, 0.02);
+  outline-offset: -2px;
+  z-index: 20; /* Selected on top of hover */
+}
+
+.component-label-tag {
+  position: absolute;
+  top: -24px;
+  left: -2px;
+  background: #0066ff;
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px 4px 0 0;
+  text-transform: uppercase;
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 30;
 }
 
 .rendered-component.drop-over {

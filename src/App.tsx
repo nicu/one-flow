@@ -9,6 +9,7 @@ import { PropertiesPanel } from "./components/PropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
 import { exportToReact, exportToJSON } from "./utils/export";
 import examplePage from "./examples/complexPage.json";
+import airbnbPage from "./examples/airbnbPage.json";
 import "./App.css";
 
 function App() {
@@ -25,6 +26,8 @@ function App() {
     redo,
     canUndo,
     canRedo,
+    hoveredId,
+    setHoveredId,
   } = useBuilder();
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -38,6 +41,11 @@ function App() {
   const handleLoadExample = () => {
     // load the example page into the builder
     setComponents(examplePage as unknown as BuilderComponent[]);
+    selectComponent(null);
+  };
+
+  const handleLoadAirbnb = () => {
+    setComponents(airbnbPage as unknown as BuilderComponent[]);
     selectComponent(null);
   };
 
@@ -120,6 +128,9 @@ function App() {
             <button className="export-button" onClick={handleLoadExample}>
               Load Example
             </button>
+            <button className="export-button" onClick={handleLoadAirbnb}>
+              Load Airbnb
+            </button>
             <button className="export-button" onClick={handleReset}>
               Reset
             </button>
@@ -135,8 +146,10 @@ function App() {
             <Canvas
               components={components}
               selectedId={selectedId}
+              hoveredId={hoveredId}
               onAddComponent={addComponent}
               onSelectComponent={selectComponent}
+              onHoverComponent={setHoveredId}
             />
           </main>
 
