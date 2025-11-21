@@ -453,6 +453,41 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                         (m) => m.id === modelId
                       );
                       if (model) {
+                        // If the selected model contains an array field
+                        // (e.g. `search` with `results: array`), prefer to
+                        // auto-generate columns from the array item's model
+                        // so columns match the actual rows (the item type).
+                        const arrayField = model.fields.find(
+                          (f) => f.type === "array" && f.arrayItemType
+                        );
+
+                        if (arrayField) {
+                          const itemModel = dataStore.models.find(
+                            (m) => m.id === arrayField.arrayItemType
+                          );
+                          if (itemModel) {
+                            const cols = itemModel.fields.map((f) => ({
+                              field: f.id,
+                              headerName: f.name,
+                              width: 150,
+                            }));
+                            onUpdate({
+                              columns: cols,
+                              dataBinding: {
+                                ...(properties.dataBinding || {}),
+                                // Keep the collection bound to the selected
+                                // (wrapper) model (e.g. `search`) so the
+                                // dropdown still shows `search` as selected,
+                                // but generate columns from the item model
+                                // so they match the actual row objects.
+                                collectionId: modelId,
+                              },
+                            });
+                            return;
+                          }
+                        }
+
+                        // Fallback: use the selected model's fields
                         const cols = model.fields.map((f) => ({
                           field: f.id,
                           headerName: f.name,
@@ -479,6 +514,29 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 </div>
               </div>
             )}
+
+            <div className="property-field">
+              <label>Unwrap collection from wrapper model</label>
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <input
+                  type="checkbox"
+                  checked={!!properties.dataBinding?.unwrapResults}
+                  onChange={(e) =>
+                    onUpdate({
+                      dataBinding: {
+                        ...(properties.dataBinding || {}),
+                        unwrapResults: e.target.checked,
+                      },
+                    })
+                  }
+                />
+                <small style={{ color: "#666" }}>
+                  When enabled, DataGrid will display the items inside array
+                  fields (e.g. `search.results`). When disabled, the wrapper
+                  objects are used as rows.
+                </small>
+              </div>
+            </div>
           </div>
         );
 

@@ -94,7 +94,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     const style = buildStyle(props as any, component.type);
 
     // Handle data binding for simple components
-    let boundProps = { ...props };
+    const boundProps = { ...props };
     if (binding?.fieldId && dataContext) {
       const value = getBoundValue(binding.fieldId);
       if (value !== null) {
@@ -147,6 +147,21 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         let rows: any[] = [];
         if (binding?.collectionId && dataContext) {
           rows = dataContext.dataStore.data[binding.collectionId] || [];
+        }
+
+        // Optionally unwrap wrapper objects (e.g. a `search` model which
+        // contains `results: [...]`) so the DataGrid receives the inner
+        // item rows. This behavior is controlled by
+        // `properties.dataBinding.unwrapResults` (defaults to true).
+        const shouldUnwrap = binding?.unwrapResults !== false;
+        if (
+          shouldUnwrap &&
+          Array.isArray(rows) &&
+          rows.length === 1 &&
+          rows[0] != null &&
+          Array.isArray(rows[0].results)
+        ) {
+          rows = rows[0].results;
         }
 
         return (
