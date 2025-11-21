@@ -59,7 +59,22 @@ export interface ComponentProperties {
   gridColumns?: number;
   gridRows?: number;
   minColumnWidth?: string; // For responsive grid (auto-fit)
+  // Additional layout helpers
+  minWidth?: string;
+  maxWidth?: string;
+  aspectRatio?: string;
+  flex?: string;
+  alignSelf?: AlignmentType | "auto";
+  order?: number;
 
+  // Positioning helpers (for overlays / hero backgrounds)
+  position?: "static" | "relative" | "absolute" | "fixed" | "sticky";
+  top?: string;
+  left?: string;
+  right?: string;
+  bottom?: string;
+  zIndex?: number;
+  backgroundImage?: string;
   // Style properties
   borderRadius?: string;
   boxShadow?: string;

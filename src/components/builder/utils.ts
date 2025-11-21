@@ -10,6 +10,8 @@ export const buildStyle = (
   // Common
   if (props.width) style.width = props.width;
   if (props.height) style.height = props.height;
+  if (props.minWidth) style.minWidth = props.minWidth;
+  if (props.maxWidth) style.maxWidth = props.maxWidth;
   if (props.minHeight) style.minHeight = props.minHeight;
   if (props.padding) style.padding = props.padding;
   if (props.margin) style.margin = props.margin;
@@ -23,6 +25,8 @@ export const buildStyle = (
   // New properties
   if (props.boxShadow) style.boxShadow = props.boxShadow;
   if (props.objectFit) style.objectFit = props.objectFit;
+  if ((props as any).aspectRatio)
+    style.aspectRatio = (props as any).aspectRatio;
 
   // Border Radius logic
   if (props.borderRadius) {

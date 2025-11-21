@@ -47,7 +47,6 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     drop: (item: DragItem, monitor) => {
       // Debug: log didDrop status for tracing duplicate adds
       try {
-        // eslint-disable-next-line no-console
         console.debug(
           "RenderComponent drop: id=",
           component.id,
@@ -64,7 +63,6 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
 
       if (monitor.didDrop()) return;
       if (isLayout && item.componentType) {
-        // eslint-disable-next-line no-console
         console.debug(
           "RenderComponent: adding to layout",
           component.id,
@@ -86,13 +84,13 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   const DropSlot: React.FC<{
     parentId: string;
     index: number;
+    parentType?: string;
     isEmpty?: boolean;
-  }> = ({ parentId, index, isEmpty = false }) => {
+  }> = ({ parentId, index, parentType, isEmpty = false }) => {
     const [{ isOver: slotOver }, slotRef] = useDrop(() => ({
       accept: "COMPONENT",
       drop: (item: DragItem, monitor) => {
         try {
-          // eslint-disable-next-line no-console
           console.debug(
             "DropSlot drop:",
             "parent=",
@@ -110,7 +108,6 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
 
         if (monitor.didDrop()) return;
         if (item.componentType) {
-          // eslint-disable-next-line no-console
           console.debug(
             "DropSlot: adding to parent",
             parentId,
@@ -141,18 +138,21 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       );
     }
 
-    return (
-      <div
-        ref={slotRef as any}
-        style={{
-          height: 10,
-          margin: 6,
-          borderRadius: 4,
-          transition: "background-color 120ms",
-          backgroundColor: slotOver ? "rgba(37,99,235,0.12)" : "transparent",
-        }}
-      />
-    );
+    // Inline slots should be visually minimal so they don't create large
+    // gaps between items (especially in column/flex layouts). Use a
+    // smaller height and zero margin by default; highlight slightly on
+    // hover so users can still discover drop targets.
+    const isFlexLike =
+      parentType === "flex" || parentType === "row" || parentType === "column";
+    const slotStyle: React.CSSProperties = {
+      height: isFlexLike ? 6 : 10,
+      margin: isFlexLike ? 0 : 6,
+      borderRadius: 4,
+      transition: "background-color 120ms, height 120ms",
+      backgroundColor: slotOver ? "rgba(37,99,235,0.12)" : "transparent",
+    };
+
+    return <div ref={slotRef as any} style={slotStyle} />;
   };
 
   const handleClick = (e: React.MouseEvent) => {
@@ -361,7 +361,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
               ))}
 
               {/* trailing append slot for grid (not placed between items) */}
-              <DropSlot parentId={component.id} index={children.length} />
+              <DropSlot
+                parentId={component.id}
+                index={children.length}
+                parentType={component.type}
+              />
             </div>
           );
         }
@@ -381,7 +385,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                   <React.Fragment
                     key={child.id ?? `${component.id}-child-${cidx}`}
                   >
-                    <DropSlot parentId={component.id} index={cidx} />
+                    <DropSlot
+                      parentId={component.id}
+                      index={cidx}
+                      parentType={component.type}
+                    />
                     <RenderComponent
                       component={child}
                       selectedId={selectedId}
@@ -394,7 +402,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                 ))}
 
                 {/* end slot to append after last child */}
-                <DropSlot parentId={component.id} index={children.length} />
+                <DropSlot
+                  parentId={component.id}
+                  index={children.length}
+                  parentType={component.type}
+                />
               </>
             )}
           </div>

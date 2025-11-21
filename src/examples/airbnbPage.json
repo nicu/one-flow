@@ -109,11 +109,51 @@
       "flexWrap": "wrap"
     },
     "children": [
-       { "id": "cat-1", "type": "text", "properties": { "text": "🏰 Castles", "fontSize": "12px", "color": "#717171" } },
-       { "id": "cat-2", "type": "text", "properties": { "text": "🏊 Amazing pools", "fontSize": "12px", "color": "#717171" } },
-       { "id": "cat-3", "type": "text", "properties": { "text": "👽 OMG!", "fontSize": "12px", "color": "#717171" } },
-       { "id": "cat-4", "type": "text", "properties": { "text": "🌲 Cabins", "fontSize": "12px", "color": "#717171" } },
-       { "id": "cat-5", "type": "text", "properties": { "text": "🏖 Beachfront", "fontSize": "12px", "color": "#717171" } }
+      {
+        "id": "cat-1",
+        "type": "text",
+        "properties": {
+          "text": "🏰 Castles",
+          "fontSize": "12px",
+          "color": "#717171"
+        }
+      },
+      {
+        "id": "cat-2",
+        "type": "text",
+        "properties": {
+          "text": "🏊 Amazing pools",
+          "fontSize": "12px",
+          "color": "#717171"
+        }
+      },
+      {
+        "id": "cat-3",
+        "type": "text",
+        "properties": {
+          "text": "👽 OMG!",
+          "fontSize": "12px",
+          "color": "#717171"
+        }
+      },
+      {
+        "id": "cat-4",
+        "type": "text",
+        "properties": {
+          "text": "🌲 Cabins",
+          "fontSize": "12px",
+          "color": "#717171"
+        }
+      },
+      {
+        "id": "cat-5",
+        "type": "text",
+        "properties": {
+          "text": "🏖 Beachfront",
+          "fontSize": "12px",
+          "color": "#717171"
+        }
+      }
     ]
   },
   {
@@ -121,121 +161,217 @@
     "type": "grid",
     "properties": {
       "width": "100%",
-      "padding": "24px 24px",
+      "padding": "16px 16px",
       "gridColumns": 4,
-      "minColumnWidth": "250px",
-      "gap": "24px"
+      "minColumnWidth": "200px",
+      "gap": "16px"
     },
     "children": [
       {
         "id": "listing-1",
         "type": "flex",
-        "properties": { "flexDirection": "column", "gap": "12px" },
+        "properties": { "flexDirection": "column", "gap": "8px" },
         "children": [
           {
             "id": "img-1",
             "type": "image",
             "properties": {
               "src": "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80",
-              "height": "250px",
-              "borderRadius": "12px",
+              "height": "160px",
+              "borderRadius": "8px",
               "width": "100%",
               "objectFit": "cover"
             }
           },
           {
-             "id": "info-1",
-             "type": "flex",
-             "properties": { "flexDirection": "column", "gap": "4px" },
-             "children": [
-                { "id": "title-1", "type": "text", "properties": { "text": "Abiansemal, Indonesia", "fontWeight": "bold" } },
-                { "id": "desc-1", "type": "text", "properties": { "text": "Designed by IBUKU", "color": "#717171" } },
-                { "id": "price-1", "type": "text", "properties": { "text": "$360 night", "fontWeight": "bold" } }
-             ]
+            "id": "info-1",
+            "type": "flex",
+            "properties": { "flexDirection": "column", "gap": "2px" },
+            "children": [
+              {
+                "id": "title-1",
+                "type": "text",
+                "properties": {
+                  "text": "Abiansemal, Indonesia",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "desc-1",
+                "type": "text",
+                "properties": {
+                  "text": "Designed by IBUKU",
+                  "color": "#717171",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "price-1",
+                "type": "text",
+                "properties": {
+                  "text": "$360 night",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              }
+            ]
           }
         ]
       },
       {
         "id": "listing-2",
         "type": "flex",
-        "properties": { "flexDirection": "column", "gap": "12px" },
+        "properties": { "flexDirection": "column", "gap": "8px" },
         "children": [
           {
             "id": "img-2",
             "type": "image",
             "properties": {
               "src": "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?auto=format&fit=crop&w=800&q=80",
-              "height": "250px",
-              "borderRadius": "12px",
+              "height": "160px",
+              "borderRadius": "8px",
               "width": "100%",
               "objectFit": "cover"
             }
           },
           {
-             "id": "info-2",
-             "type": "flex",
-             "properties": { "flexDirection": "column", "gap": "4px" },
-             "children": [
-                { "id": "title-2", "type": "text", "properties": { "text": "Mykonos, Greece", "fontWeight": "bold" } },
-                { "id": "desc-2", "type": "text", "properties": { "text": "Amazing views", "color": "#717171" } },
-                { "id": "price-2", "type": "text", "properties": { "text": "$450 night", "fontWeight": "bold" } }
-             ]
+            "id": "info-2",
+            "type": "flex",
+            "properties": { "flexDirection": "column", "gap": "2px" },
+            "children": [
+              {
+                "id": "title-2",
+                "type": "text",
+                "properties": {
+                  "text": "Mykonos, Greece",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "desc-2",
+                "type": "text",
+                "properties": {
+                  "text": "Amazing views",
+                  "color": "#717171",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "price-2",
+                "type": "text",
+                "properties": {
+                  "text": "$450 night",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              }
+            ]
           }
         ]
       },
       {
         "id": "listing-3",
         "type": "flex",
-        "properties": { "flexDirection": "column", "gap": "12px" },
+        "properties": { "flexDirection": "column", "gap": "8px" },
         "children": [
           {
             "id": "img-3",
             "type": "image",
             "properties": {
               "src": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=800&q=80",
-              "height": "250px",
-              "borderRadius": "12px",
+              "height": "160px",
+              "borderRadius": "8px",
               "width": "100%",
               "objectFit": "cover"
             }
           },
           {
-             "id": "info-3",
-             "type": "flex",
-             "properties": { "flexDirection": "column", "gap": "4px" },
-             "children": [
-                { "id": "title-3", "type": "text", "properties": { "text": "Lake Tahoe, USA", "fontWeight": "bold" } },
-                { "id": "desc-3", "type": "text", "properties": { "text": "Lakefront luxury", "color": "#717171" } },
-                { "id": "price-3", "type": "text", "properties": { "text": "$850 night", "fontWeight": "bold" } }
-             ]
+            "id": "info-3",
+            "type": "flex",
+            "properties": { "flexDirection": "column", "gap": "2px" },
+            "children": [
+              {
+                "id": "title-3",
+                "type": "text",
+                "properties": {
+                  "text": "Lake Tahoe, USA",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "desc-3",
+                "type": "text",
+                "properties": {
+                  "text": "Lakefront luxury",
+                  "color": "#717171",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "price-3",
+                "type": "text",
+                "properties": {
+                  "text": "$850 night",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              }
+            ]
           }
         ]
       },
       {
         "id": "listing-4",
         "type": "flex",
-        "properties": { "flexDirection": "column", "gap": "12px" },
+        "properties": { "flexDirection": "column", "gap": "8px" },
         "children": [
           {
             "id": "img-4",
             "type": "image",
             "properties": {
               "src": "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=800&q=80",
-              "height": "250px",
-              "borderRadius": "12px",
+              "height": "160px",
+              "borderRadius": "8px",
               "width": "100%",
               "objectFit": "cover"
             }
           },
           {
-             "id": "info-4",
-             "type": "flex",
-             "properties": { "flexDirection": "column", "gap": "4px" },
-             "children": [
-                { "id": "title-4", "type": "text", "properties": { "text": "Swiss Alps", "fontWeight": "bold" } },
-                { "id": "desc-4", "type": "text", "properties": { "text": "Ski-in/Ski-out", "color": "#717171" } },
-                { "id": "price-4", "type": "text", "properties": { "text": "$220 night", "fontWeight": "bold" } }
-             ]
+            "id": "info-4",
+            "type": "flex",
+            "properties": { "flexDirection": "column", "gap": "2px" },
+            "children": [
+              {
+                "id": "title-4",
+                "type": "text",
+                "properties": {
+                  "text": "Swiss Alps",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "desc-4",
+                "type": "text",
+                "properties": {
+                  "text": "Ski-in/Ski-out",
+                  "color": "#717171",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "price-4",
+                "type": "text",
+                "properties": {
+                  "text": "$220 night",
+                  "fontWeight": "bold",
+                  "fontSize": "14px"
+                }
+              }
+            ]
           }
         ]
       }
