@@ -68,6 +68,10 @@ export const buildStyle = (
     if (!props.fontSize) style.fontSize = theme.typography.fontSize.base;
     style.outline = "none";
     if (!props.borderRadius) style.borderRadius = theme.borderRadius.input;
+    // Inputs and dropdowns should fill their parent by default
+    if (!props.width && !style.width) {
+      style.width = "100%";
+    }
   }
 
   if (type === "text") {

@@ -1,0 +1,70 @@
+[
+  {
+    "id": "form-root",
+    "type": "form",
+    "properties": {
+      "dataBinding": { "modelId": "user" }
+    },
+    "children": [
+      {
+        "id": "label-title",
+        "type": "text",
+        "properties": {
+          "text": "User profile",
+          "fontSize": "18px",
+          "fontWeight": "700"
+        }
+      },
+      {
+        "id": "first-name",
+        "type": "input",
+        "properties": {
+          "placeholder": "First name",
+          "dataBinding": { "fieldId": "name.first" },
+          "label": "First name",
+          "validations": [{ "type": "required" }]
+        }
+      },
+      {
+        "id": "last-name",
+        "type": "input",
+        "properties": {
+          "placeholder": "Last name",
+          "dataBinding": { "fieldId": "name.last" },
+          "label": "Last name",
+          "validations": [
+            { "type": "required" },
+            {
+              "type": "duplicate",
+              "forbiddenValue": "ONE",
+              "message": "Can't be ONE"
+            }
+          ]
+        }
+      },
+      {
+        "id": "gender",
+        "type": "dropdown",
+        "properties": {
+          "options": ["female", "male", "other"],
+          "dataBinding": { "fieldId": "gender" },
+          "label": "Gender"
+        }
+      },
+      {
+        "id": "email",
+        "type": "input",
+        "properties": {
+          "placeholder": "Email",
+          "dataBinding": { "fieldId": "email" },
+          "label": "Email"
+        }
+      },
+      {
+        "id": "submit-btn",
+        "type": "button",
+        "properties": { "buttonText": "Save" }
+      }
+    ]
+  }
+]

@@ -262,6 +262,68 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 onChange={(e) => onUpdate({ placeholder: e.target.value })}
               />
             </div>
+            <div className="property-field">
+              <label>Validations</label>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <label
+                  style={{ display: "flex", gap: 8, alignItems: "center" }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={
+                      !!(properties as any).validations?.find(
+                        (v: any) => v.type === "required"
+                      )
+                    }
+                    onChange={(e) => {
+                      const prev = (properties as any).validations || [];
+                      const has = prev.find((v: any) => v.type === "required");
+                      let next = prev.slice();
+                      if (e.target.checked && !has)
+                        next.push({ type: "required" });
+                      if (!e.target.checked && has)
+                        next = next.filter((v: any) => v.type !== "required");
+                      onUpdate({ validations: next });
+                    }}
+                  />
+                  Required
+                </label>
+
+                {/* <div style={{ display: "flex", gap: 8 }}>
+                  <label
+                    style={{ display: "flex", gap: 8, alignItems: "center" }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={
+                        !!(properties as any).validations?.find(
+                          (v: any) => v.type === "duplicate"
+                        )
+                      }
+                      onChange={(e) => {
+                        const prev = (properties as any).validations || [];
+                        const has = prev.find(
+                          (v: any) => v.type === "duplicate"
+                        );
+                        let next = prev.slice();
+                        if (e.target.checked && !has)
+                          next.push({
+                            type: "duplicate",
+                            forbiddenValue: "ONE",
+                            message: "Can't be ONE",
+                          });
+                        if (!e.target.checked && has)
+                          next = next.filter(
+                            (v: any) => v.type !== "duplicate"
+                          );
+                        onUpdate({ validations: next });
+                      }}
+                    />
+                    Duplicate check (forbidden = "ONE")
+                  </label>
+                </div> */}
+              </div>
+            </div>
           </div>
         );
 
@@ -562,7 +624,10 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       type === "button" ||
       type === "image";
 
-    if (!canBindToCollection && !canBindToField) return null;
+    // For forms, allow binding to a model (the whole object)
+    const canBindToModel = type === "form";
+
+    if (!canBindToCollection && !canBindToField && !canBindToModel) return null;
 
     return (
       <div className="property-group">
@@ -647,6 +712,30 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               </div>
             )}
           </>
+        )}
+        {canBindToModel && (
+          <div className="property-field">
+            <label>Bind to Model</label>
+            <select
+              value={currentBinding?.modelId || ""}
+              onChange={(e) => {
+                const modelId = e.target.value || undefined;
+                onUpdate({
+                  dataBinding: {
+                    ...(currentBinding || {}),
+                    modelId,
+                  },
+                });
+              }}
+            >
+              <option value="">None</option>
+              {models.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </div>
         )}
       </div>
     );

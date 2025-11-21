@@ -66,6 +66,11 @@ export const ComponentLibrary: React.FC = () => {
       icon: <Edit size={20} />,
     },
     {
+      type: "form" as ComponentType,
+      label: "Form",
+      icon: <Edit size={20} />,
+    },
+    {
       type: "dropdown" as ComponentType,
       label: "Dropdown",
       icon: <ChevronDown size={20} />,

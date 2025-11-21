@@ -4,6 +4,7 @@ export type ComponentType =
   | "button"
   | "input"
   | "dropdown"
+  | "form"
   | "datagrid"
   | "breadcrumbs"
   | "tabs"
@@ -62,11 +63,15 @@ export interface ComponentProperties {
   borderRadius?: string;
   boxShadow?: string;
 
+  // Validation rules for inputs (optional)
+  validations?: Array<any>;
+
   // Data binding
   dataBinding?: {
     modelId?: string;
     fieldId?: string; // For simple properties (string, number, boolean)
     collectionId?: string; // For arrays/lists (binds to a collection)
+    unwrapResults?: boolean; // optional helper for datagrid bindings
   };
 
   // DataGrid specific

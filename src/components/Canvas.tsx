@@ -12,6 +12,7 @@ interface CanvasProps {
   onSelectComponent: (id: string | null) => void;
   onHoverComponent: (id: string | null) => void;
   dataStore?: DataStore;
+  setDataStore?: (s: DataStore) => void;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
@@ -22,6 +23,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   onSelectComponent,
   onHoverComponent,
   dataStore,
+  setDataStore,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
@@ -46,7 +48,7 @@ export const Canvas: React.FC<CanvasProps> = ({
           minHeight: "100%",
           height: "auto",
           display: "flex",
-          flexDirection: "column"
+          flexDirection: "column",
         }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
@@ -86,7 +88,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   // Wrap with DataContext if dataStore is provided
   if (dataStore) {
     return (
-      <DataContext.Provider value={{ dataStore }}>
+      <DataContext.Provider value={{ dataStore, setDataStore }}>
         {content}
       </DataContext.Provider>
     );

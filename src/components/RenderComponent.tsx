@@ -9,6 +9,7 @@ import BuilderDataGrid from "./builder/BuilderDataGrid";
 import BuilderBreadcrumbs from "./builder/BuilderBreadcrumbs";
 import BuilderTabs from "./builder/BuilderTabs";
 import BuilderChip from "./builder/BuilderChip";
+import BuilderForm from "./builder/BuilderForm";
 import { buildStyle } from "./builder/utils";
 import { useDataContext, DataContext } from "../contexts/DataContext";
 
@@ -71,9 +72,20 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     if (!dataContext || !fieldId) return null;
     const { currentItem, currentModelId, dataStore } = dataContext;
 
+    // Helper to resolve nested paths like 'name.first'
+    const resolvePath = (obj: any, path: string) => {
+      const parts = path.split(".");
+      let cur = obj;
+      for (const p of parts) {
+        if (cur == null) return null;
+        cur = cur[p];
+      }
+      return cur;
+    };
+
     // If we're inside a list, use the current item
     if (currentItem && currentModelId) {
-      return currentItem[fieldId];
+      return resolvePath(currentItem, fieldId);
     }
 
     // Otherwise, try to get from global data (first item)
@@ -81,7 +93,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     if (binding?.modelId) {
       const data = dataStore.data[binding.modelId];
       if (data && data.length > 0) {
-        return data[0][fieldId];
+        return resolvePath(data[0], fieldId);
       }
     }
 
@@ -131,6 +143,19 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
 
       case "dropdown":
         return <BuilderDropdown properties={boundProps} />;
+
+      case "form":
+        return (
+          <BuilderForm
+            properties={component.properties}
+            childrenComponents={component.children}
+            selectedId={selectedId}
+            hoveredId={hoveredId}
+            onSelect={onSelect}
+            onHover={onHover}
+            onAddComponent={onAddComponent}
+          />
+        );
 
       case "breadcrumbs":
         return <BuilderBreadcrumbs properties={boundProps} />;

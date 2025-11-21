@@ -61,6 +61,24 @@ export const initialModels: DataModel[] = [
       { id: "totalResults", name: "Total Results", type: "number" },
     ],
   },
+  {
+    id: "user",
+    name: "User",
+    fields: [
+      { id: "gender", name: "Gender", type: "string" },
+      { id: "name", name: "Name", type: "object" },
+      { id: "location", name: "Location", type: "object" },
+      { id: "email", name: "Email", type: "string" },
+      { id: "login", name: "Login", type: "object" },
+      { id: "dob", name: "DOB", type: "object" },
+      { id: "registered", name: "Registered", type: "object" },
+      { id: "phone", name: "Phone", type: "string" },
+      { id: "cell", name: "Cell", type: "string" },
+      { id: "id", name: "ID", type: "object" },
+      { id: "picture", name: "Picture", type: "object" },
+      { id: "nat", name: "Nat", type: "string" },
+    ],
+  },
 ];
 
 export const initialRelationships: DataRelationship[] = [
@@ -96,9 +114,47 @@ export function generateMockData(): Record<string, any[]> {
     },
   ];
 
+  const user = [
+    {
+      gender: "female",
+      name: {
+        title: "Miss",
+        first: "Jennie",
+        last: "Nichols",
+      },
+      location: {
+        street: { number: 8929, name: "Valwood Pkwy" },
+        city: "Billings",
+        state: "Michigan",
+        country: "United States",
+        postcode: "63104",
+        coordinates: { latitude: "-69.8246", longitude: "134.8719" },
+        timezone: { offset: "+9:30", description: "Adelaide, Darwin" },
+      },
+      email: "jennie.nichols@example.com",
+      login: {
+        uuid: "7a0eed16-9430-4d68-901f-c0d4c1c3bf00",
+        username: "yellowpeacock117",
+        password: "addison",
+      },
+      dob: { date: "1992-03-08T15:13:16.688Z", age: 30 },
+      registered: { date: "2007-07-09T05:51:59.390Z", age: 14 },
+      phone: "(272) 790-0888",
+      cell: "(489) 330-2385",
+      id: { name: "SSN", value: "405-88-3636" },
+      picture: {
+        large: "https://randomuser.me/api/portraits/men/75.jpg",
+        medium: "https://randomuser.me/api/portraits/med/men/75.jpg",
+        thumbnail: "https://randomuser.me/api/portraits/thumb/men/75.jpg",
+      },
+      nat: "US",
+    },
+  ];
+
   return {
     hotel: hotels,
     search: search,
+    user: user,
   };
 }
 

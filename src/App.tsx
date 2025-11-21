@@ -13,6 +13,7 @@ import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";
 import dataBindingPage from "./examples/dataBinding.json";
 import datagridHotels from "./examples/datagridHotels.json";
+import userForm from "./examples/userForm.json";
 import { initialDataStore, type DataStore } from "./store/dataStore";
 import "./App.css";
 
@@ -44,26 +45,16 @@ function App() {
     setIsExportModalOpen(true);
   };
 
-  const handleLoadExample = () => {
-    // load the example page into the builder
-    setComponents(landingPage as unknown as BuilderComponent[]);
-    selectComponent(null);
-  };
-
-  const handleLoadAirbnb = () => {
-    setComponents(airbnbPage as unknown as BuilderComponent[]);
-    selectComponent(null);
-  };
-
   const examples: Record<string, BuilderComponent[]> = {
     "Landing page": landingPage as unknown as BuilderComponent[],
     Airbnb: airbnbPage as unknown as BuilderComponent[],
     "Data binding": dataBindingPage as unknown as BuilderComponent[],
     "DataGrid (Hotels)": datagridHotels as unknown as BuilderComponent[],
+    "User Form": userForm as unknown as BuilderComponent[],
   };
 
   const [selectedExample, setSelectedExample] =
-    useState<string>("Data binding");
+    useState<string>("Landing page");
 
   const handleLoadSelected = () => {
     const selection = examples[selectedExample];
@@ -335,6 +326,7 @@ function App() {
                   onSelectComponent={selectComponent}
                   onHoverComponent={setHoveredId}
                   dataStore={dataStore}
+                  setDataStore={setDataStore}
                 />
               </div>
             ) : (
