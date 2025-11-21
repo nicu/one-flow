@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import type { BuilderComponent } from "./types";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useBuilder } from "./hooks/useBuilder";
@@ -20,6 +21,10 @@ function App() {
     selectComponent,
     getSelectedComponent,
     setComponents,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   } = useBuilder();
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
@@ -32,9 +37,27 @@ function App() {
 
   const handleLoadExample = () => {
     // load the example page into the builder
-    setComponents(examplePage as any);
+    setComponents(examplePage as unknown as BuilderComponent[]);
     selectComponent(null);
   };
+
+  // keyboard shortcuts: Cmd/Ctrl+Z undo, Cmd/Ctrl+Shift+Z redo
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      const isMod = e.ctrlKey || e.metaKey;
+      if (!isMod) return;
+      if (e.key.toLowerCase() === "z") {
+        e.preventDefault();
+        if (e.shiftKey) {
+          redo();
+        } else {
+          undo();
+        }
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [undo, redo]);
 
   const handleReset = () => {
     setComponents([]);
@@ -79,6 +102,12 @@ function App() {
           <div style={{ display: "flex", gap: 12 }}>
             <button className="export-button" onClick={handleExport}>
               Export
+            </button>
+            <button className="export-button" onClick={undo} disabled={!canUndo}>
+              Undo
+            </button>
+            <button className="export-button" onClick={redo} disabled={!canRedo}>
+              Redo
             </button>
             <button className="export-button" onClick={handleLoadExample}>
               Load Example

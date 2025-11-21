@@ -7,42 +7,86 @@ import type {
 import { v4 as uuidv4 } from "uuid";
 
 export const useBuilder = () => {
-  const [components, setComponents] = useState<BuilderComponent[]>([]);
+  const [components, setComponentsState] = useState<BuilderComponent[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const addComponent = useCallback((type: ComponentType, parentId?: string) => {
-    const newComponent: BuilderComponent = {
-      id: uuidv4(),
-      type,
-      properties: getDefaultProperties(type),
-      children: isLayoutComponent(type) ? [] : undefined,
-    };
+  // history stacks
+  const [past, setPast] = useState<BuilderComponent[][]>([]);
+  const [future, setFuture] = useState<BuilderComponent[][]>([]);
 
-    if (parentId) {
-      setComponents((prev) => addToParent(prev, parentId, newComponent));
-    } else {
-      setComponents((prev) => [...prev, newComponent]);
+  const recordSnapshot = useCallback((prev: BuilderComponent[]) => {
+    try {
+      const snap = JSON.parse(JSON.stringify(prev)) as BuilderComponent[];
+      setPast((p) => [...p, snap]);
+    } catch {
+      // ignore
     }
-
-    setSelectedId(newComponent.id);
-    return newComponent.id;
   }, []);
+
+  // wrapper to set components and optionally record history
+  const setComponents = useCallback(
+    (
+      next: BuilderComponent[] | ((prev: BuilderComponent[]) => BuilderComponent[]),
+      record = true
+    ) => {
+      if (typeof next === "function") {
+        setComponentsState((prev) => {
+          const computed = (next as (p: BuilderComponent[]) => BuilderComponent[])(prev);
+          if (record) {
+            recordSnapshot(prev);
+            setFuture([]);
+          }
+          return computed;
+        });
+      } else {
+        setComponentsState((prev) => {
+          if (record) {
+            recordSnapshot(prev);
+            setFuture([]);
+          }
+          return next;
+        });
+      }
+    },
+    [recordSnapshot]
+  );
+
+  const addComponent = useCallback(
+    (type: ComponentType, parentId?: string) => {
+      const newComponent: BuilderComponent = {
+        id: uuidv4(),
+        type,
+        properties: getDefaultProperties(type),
+        children: isLayoutComponent(type) ? [] : undefined,
+      };
+
+      if (parentId) {
+        setComponents((prev) => addToParent(prev, parentId, newComponent), true);
+      } else {
+        setComponents((prev) => [...prev, newComponent], true);
+      }
+
+      setSelectedId(newComponent.id);
+      return newComponent.id;
+    },
+    [setComponents]
+  );
 
   const updateComponent = useCallback(
     (id: string, properties: Partial<ComponentProperties>) => {
-      setComponents((prev) => updateComponentById(prev, id, properties));
+      setComponents((prev) => updateComponentById(prev, id, properties), true);
     },
-    []
+    [setComponents]
   );
 
   const removeComponent = useCallback(
     (id: string) => {
-      setComponents((prev) => removeComponentById(prev, id));
+      setComponents((prev) => removeComponentById(prev, id), true);
       if (selectedId === id) {
         setSelectedId(null);
       }
     },
-    [selectedId]
+    [selectedId, setComponents]
   );
 
   const selectComponent = useCallback((id: string | null) => {
@@ -54,6 +98,29 @@ export const useBuilder = () => {
     return findComponentById(components, selectedId);
   }, [components, selectedId]);
 
+  const undo = useCallback(() => {
+    setPast((p) => {
+      if (p.length === 0) return p;
+      const previous = p[p.length - 1];
+      setFuture((f) => [JSON.parse(JSON.stringify(components)), ...f]);
+      setComponentsState(previous);
+      return p.slice(0, -1);
+    });
+  }, [components]);
+
+  const redo = useCallback(() => {
+    setFuture((f) => {
+      if (f.length === 0) return f;
+      const next = f[0];
+      setPast((p) => [...p, JSON.parse(JSON.stringify(components))]);
+      setComponentsState(next);
+      return f.slice(1);
+    });
+  }, [components]);
+
+  const canUndo = past.length > 0;
+  const canRedo = future.length > 0;
+
   return {
     components,
     selectedId,
@@ -63,6 +130,10 @@ export const useBuilder = () => {
     selectComponent,
     getSelectedComponent,
     setComponents,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
   };
 };
 
