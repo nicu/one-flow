@@ -2,6 +2,7 @@ import * as React from "react";
 import type { ComponentProperties } from "../../types";
 import { DataGrid } from "@mui/x-data-grid";
 import type { GridColDef } from "@mui/x-data-grid";
+import Chip from "@mui/material/Chip";
 
 interface BuilderDataGridProps {
   properties: ComponentProperties;
@@ -12,11 +13,27 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
   properties,
   rows = [],
 }) => {
-  const columns: GridColDef[] = (properties.columns || []).map((c) => ({
-    field: c.field,
-    headerName: c.headerName || c.field,
-    width: c.width || 150,
-  }));
+  const columns: GridColDef[] = (properties.columns || []).map((c) => {
+    const col: GridColDef = {
+      field: c.field,
+      headerName: c.headerName || c.field,
+      width: c.width || 150,
+    };
+
+    if (c.render === "chip") {
+      col.renderCell = (params) => {
+        const val = params.value;
+        // boolean -> friendly label
+        const label =
+          typeof val === "boolean" ? (val ? "Yes" : "No") : String(val ?? "");
+        const color =
+          typeof val === "boolean" ? (val ? "success" : "default") : "default";
+        return <Chip label={label} color={color as any} size="small" />;
+      };
+    }
+
+    return col;
+  });
 
   // If no columns defined, infer from first row
   const inferredColumns: GridColDef[] = React.useMemo(() => {

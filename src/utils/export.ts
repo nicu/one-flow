@@ -74,9 +74,10 @@ const renderComponent = (
 };
 
 const buildStyleObject = (
-  properties: ComponentProperties
+  properties?: ComponentProperties
 ): Record<string, string> => {
   const style: Record<string, string> = {};
+  if (!properties) return style;
 
   if (properties.width) style.width = properties.width;
   if (properties.height) style.height = properties.height;

@@ -33,7 +33,7 @@ export interface DataStore {
   data: Record<string, any[]>; // modelId -> array of instances
 }
 
-// Hardcoded models for Search page (Hotels/Cruises)
+// Hardcoded models for Search page (Hotels)
 export const initialModels: DataModel[] = [
   {
     id: "hotel",
@@ -46,21 +46,6 @@ export const initialModels: DataModel[] = [
       { id: "rating", name: "Rating", type: "number" },
       { id: "image", name: "Image", type: "string" },
       { id: "location", name: "Location", type: "string" },
-      { id: "available", name: "Available", type: "boolean" },
-    ],
-  },
-  {
-    id: "cruise",
-    name: "Cruise",
-    fields: [
-      { id: "id", name: "ID", type: "string" },
-      { id: "name", name: "Name", type: "string" },
-      { id: "description", name: "Description", type: "string" },
-      { id: "price", name: "Price", type: "number" },
-      { id: "rating", name: "Rating", type: "number" },
-      { id: "image", name: "Image", type: "string" },
-      { id: "destination", name: "Destination", type: "string" },
-      { id: "duration", name: "Duration (days)", type: "number" },
       { id: "available", name: "Available", type: "boolean" },
     ],
   },
@@ -95,20 +80,8 @@ export function generateMockData(): Record<string, any[]> {
     description: faker.lorem.sentence(),
     price: faker.number.int({ min: 50, max: 500 }),
     rating: faker.number.float({ min: 3, max: 5, fractionDigits: 1 }),
-    image: faker.image.urlLoremFlickr({ category: "hotel" }),
+    image: faker.image.url({ width: 640, height: 360 }),
     location: faker.location.city(),
-    available: faker.datatype.boolean(),
-  }));
-
-  const cruises = Array.from({ length: 8 }, (_, i) => ({
-    id: `cruise-${i + 1}`,
-    name: faker.company.name() + " Cruise",
-    description: faker.lorem.sentence(),
-    price: faker.number.int({ min: 500, max: 3000 }),
-    rating: faker.number.float({ min: 3, max: 5, fractionDigits: 1 }),
-    image: faker.image.urlLoremFlickr({ category: "ocean" }),
-    destination: faker.location.country(),
-    duration: faker.number.int({ min: 3, max: 14 }),
     available: faker.datatype.boolean(),
   }));
 
@@ -125,7 +98,6 @@ export function generateMockData(): Record<string, any[]> {
 
   return {
     hotel: hotels,
-    cruise: cruises,
     search: search,
   };
 }

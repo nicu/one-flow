@@ -75,6 +75,21 @@ export const ComponentLibrary: React.FC = () => {
       label: "Data Grid",
       icon: <GridIcon size={20} />,
     },
+    {
+      type: "breadcrumbs" as ComponentType,
+      label: "Breadcrumbs",
+      icon: <ChevronDown size={20} />,
+    },
+    {
+      type: "tabs" as ComponentType,
+      label: "Tabs",
+      icon: <Columns size={20} />,
+    },
+    {
+      type: "chip" as ComponentType,
+      label: "Chip",
+      icon: <Columns size={20} />,
+    },
   ];
 
   const layoutComponents = [

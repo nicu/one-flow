@@ -5,6 +5,9 @@ export type ComponentType =
   | "input"
   | "dropdown"
   | "datagrid"
+  | "breadcrumbs"
+  | "tabs"
+  | "chip"
   | "flex"
   | "grid"
   | "row"
@@ -71,8 +74,18 @@ export interface ComponentProperties {
     field: string;
     headerName?: string;
     width?: number;
+    render?: string; // optional cell renderer identifier, e.g. 'chip', 'image'
   }>;
   pageSize?: number;
+
+  // Breadcrumbs
+  breadcrumbs?: string[];
+
+  // Tabs
+  tabField?: string; // field to build tabs from
+
+  // Chip
+  chipField?: string; // field to build chips from
 }
 
 export interface BuilderComponent {

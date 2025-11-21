@@ -6,6 +6,9 @@ import { BuilderButton } from "./builder/BuilderButton";
 import { BuilderInput } from "./builder/BuilderInput";
 import { BuilderDropdown } from "./builder/BuilderDropdown";
 import BuilderDataGrid from "./builder/BuilderDataGrid";
+import BuilderBreadcrumbs from "./builder/BuilderBreadcrumbs";
+import BuilderTabs from "./builder/BuilderTabs";
+import BuilderChip from "./builder/BuilderChip";
 import { buildStyle } from "./builder/utils";
 import { useDataContext, DataContext } from "../contexts/DataContext";
 
@@ -86,9 +89,9 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   };
 
   const renderContent = () => {
-    const props = component.properties;
+    const props = component.properties || ({} as any);
     const binding = props.dataBinding;
-    const style = buildStyle(props, component.type);
+    const style = buildStyle(props as any, component.type);
 
     // Handle data binding for simple components
     let boundProps = { ...props };
@@ -129,6 +132,15 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       case "dropdown":
         return <BuilderDropdown properties={boundProps} />;
 
+      case "breadcrumbs":
+        return <BuilderBreadcrumbs properties={boundProps} />;
+
+      case "tabs":
+        return <BuilderTabs properties={boundProps} />;
+
+      case "chip":
+        return <BuilderChip properties={boundProps} />;
+
       case "datagrid": {
         // Determine rows from collection binding or explicit data
         const binding = component.properties.dataBinding;
@@ -167,9 +179,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                         currentModelId: binding.collectionId,
                       }}
                     >
-                      {children.map((child) => (
+                      {children.map((child, cidx) => (
                         <RenderComponent
-                          key={`${child.id}-${index}`}
+                          key={`${
+                            child.id ?? `${component.id}-child-${cidx}`
+                          }-${index}`}
                           component={child}
                           selectedId={selectedId}
                           hoveredId={hoveredId}
@@ -192,9 +206,9 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
             {children.length === 0 ? (
               <div className="drop-zone-empty">Drop components here</div>
             ) : (
-              children.map((child) => (
+              children.map((child, cidx) => (
                 <RenderComponent
-                  key={child.id}
+                  key={child.id ?? `${component.id}-child-${cidx}`}
                   component={child}
                   selectedId={selectedId}
                   hoveredId={hoveredId}
