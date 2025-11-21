@@ -339,6 +339,33 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         }
 
         // Normal rendering (no data binding)
+        // For grid layouts, inserting visible DropSlot elements between
+        // children causes those slots to occupy real grid cells, which
+        // leads to alternating empty cells. For grids, render the
+        // children directly and avoid placing inline DropSlot elements
+        // into the normal flow. Keep a trailing append slot so users can
+        // drop at the end.
+        if (component.type === "grid") {
+          return (
+            <div style={style}>
+              {children.map((child, cidx) => (
+                <RenderComponent
+                  key={child.id ?? `${component.id}-child-${cidx}`}
+                  component={child}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                />
+              ))}
+
+              {/* trailing append slot for grid (not placed between items) */}
+              <DropSlot parentId={component.id} index={children.length} />
+            </div>
+          );
+        }
+
         return (
           <div style={style}>
             {children.length === 0 ? (
