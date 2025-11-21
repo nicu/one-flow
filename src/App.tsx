@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useBuilder } from "./hooks/useBuilder";
@@ -41,12 +41,42 @@ function App() {
     selectComponent(null);
   };
 
+  // Persisted state: hydrate from localStorage on mount, then persist on changes.
+  const hydrated = useRef(false);
+
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("oneflow:components");
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setComponents(parsed);
+        }
+      }
+    } catch {
+      // ignore
+    } finally {
+      hydrated.current = true;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    // don't persist until we've attempted the initial hydration
+    if (!hydrated.current) return;
+    try {
+      localStorage.setItem("oneflow:components", JSON.stringify(components));
+    } catch {
+      // ignore
+    }
+  }, [components]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         <header className="app-header">
           <h1>OneFlow Builder</h1>
-          <div style={{ display: 'flex', gap: 12 }}>
+          <div style={{ display: "flex", gap: 12 }}>
             <button className="export-button" onClick={handleExport}>
               Export
             </button>
