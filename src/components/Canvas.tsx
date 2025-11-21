@@ -33,9 +33,6 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   return (
     <div className="canvas-container">
-      <div className="canvas-toolbar">
-        <h3>Canvas</h3>
-      </div>
       <div
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ref={drop as any}
@@ -43,6 +40,9 @@ export const Canvas: React.FC<CanvasProps> = ({
         style={{
           backgroundColor: isOver ? "#f0f8ff" : "#ffffff",
           minHeight: "100%",
+          height: "auto",
+          display: "flex",
+          flexDirection: "column"
         }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {

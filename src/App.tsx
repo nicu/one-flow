@@ -102,11 +102,44 @@ function App() {
     }
   }, [components]);
 
+  const [viewport, setViewport] = useState<"desktop" | "tablet" | "mobile">("desktop");
+
+  const getViewportWidth = () => {
+    switch (viewport) {
+      case "mobile": return "375px";
+      case "tablet": return "768px";
+      case "desktop": return "100%";
+      default: return "100%";
+    }
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         <header className="app-header">
-          <h1>OneFlow Builder</h1>
+          <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
+            <h1>OneFlow Builder</h1>
+            <div className="viewport-controls">
+              <button 
+                className={`viewport-btn ${viewport === "desktop" ? "active" : ""}`}
+                onClick={() => setViewport("desktop")}
+              >
+                🖥 Desktop
+              </button>
+              <button 
+                className={`viewport-btn ${viewport === "tablet" ? "active" : ""}`}
+                onClick={() => setViewport("tablet")}
+              >
+                📱 Tablet
+              </button>
+              <button 
+                className={`viewport-btn ${viewport === "mobile" ? "active" : ""}`}
+                onClick={() => setViewport("mobile")}
+              >
+                📱 Mobile
+              </button>
+            </div>
+          </div>
           <div style={{ display: "flex", gap: 12 }}>
             <button className="export-button" onClick={handleExport}>
               Export
@@ -142,15 +175,26 @@ function App() {
             <ComponentLibrary />
           </aside>
 
-          <main className="main-area">
-            <Canvas
-              components={components}
-              selectedId={selectedId}
-              hoveredId={hoveredId}
-              onAddComponent={addComponent}
-              onSelectComponent={selectComponent}
-              onHoverComponent={setHoveredId}
-            />
+          <main className="main-area" style={{ backgroundColor: "#e5e5e5", padding: "40px", display: "flex", justifyContent: "center", overflow: "auto" }}>
+            <div style={{ 
+              width: getViewportWidth(), 
+              minHeight: "100%",
+              backgroundColor: "white", 
+              boxShadow: "0 0 20px rgba(0,0,0,0.1)",
+              transition: "width 0.3s ease",
+              overflow: "visible", // Allow content to expand the box
+              display: "flex",
+              flexDirection: "column"
+            }}>
+              <Canvas
+                components={components}
+                selectedId={selectedId}
+                hoveredId={hoveredId}
+                onAddComponent={addComponent}
+                onSelectComponent={selectComponent}
+                onHoverComponent={setHoveredId}
+              />
+            </div>
           </main>
 
           <aside className="sidebar right">

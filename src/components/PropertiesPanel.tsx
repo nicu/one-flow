@@ -190,6 +190,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 onChange={(e) => onUpdate({ alt: e.target.value })}
               />
             </div>
+            <div className="property-field">
+              <label>Object Fit</label>
+              <select
+                value={properties.objectFit || "fill"}
+                onChange={(e) => onUpdate({ objectFit: e.target.value as any })}
+              >
+                <option value="fill">Fill</option>
+                <option value="contain">Contain</option>
+                <option value="cover">Cover</option>
+              </select>
+            </div>
           </div>
         );
 
@@ -322,6 +333,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 <option value="stretch">Stretch</option>
               </select>
             </div>
+            <div className="property-field">
+              <label>Wrap</label>
+              <select
+                value={properties.flexWrap || "nowrap"}
+                onChange={(e) => onUpdate({ flexWrap: e.target.value as any })}
+              >
+                <option value="nowrap">No Wrap</option>
+                <option value="wrap">Wrap</option>
+                <option value="wrap-reverse">Wrap Reverse</option>
+              </select>
+            </div>
           </div>
         );
 
@@ -330,7 +352,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <div className="property-group">
             <h4>Grid Layout</h4>
             <div className="property-field">
-              <label>Columns</label>
+              <label>Columns (Fixed)</label>
               <input
                 type="number"
                 value={properties.gridColumns || 2}
@@ -338,7 +360,20 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   onUpdate({ gridColumns: parseInt(e.target.value) })
                 }
                 min="1"
+                disabled={!!properties.minColumnWidth}
               />
+            </div>
+            <div className="property-field">
+              <label>Min Column Width (Responsive)</label>
+              <input
+                type="text"
+                value={properties.minColumnWidth || ""}
+                onChange={(e) => onUpdate({ minColumnWidth: e.target.value })}
+                placeholder="e.g. 250px"
+              />
+              <small style={{ fontSize: "10px", color: "#666" }}>
+                Overrides fixed columns
+              </small>
             </div>
             <div className="property-field">
               <label>Rows</label>

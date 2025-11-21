@@ -22,6 +22,7 @@ export const buildStyle = (
 
   // New properties
   if (props.boxShadow) style.boxShadow = props.boxShadow;
+  if (props.objectFit) style.objectFit = props.objectFit;
   
   // Border Radius logic
   if (props.borderRadius) {
@@ -70,11 +71,15 @@ export const buildStyle = (
     if (props.gap) style.gap = props.gap;
     if (props.justifyContent) style.justifyContent = props.justifyContent;
     if (props.alignItems) style.alignItems = props.alignItems;
+    if (props.flexWrap) style.flexWrap = props.flexWrap;
   }
 
   if (type === "grid") {
     style.display = "grid";
-    if (props.gridColumns) {
+    if (props.minColumnWidth) {
+       // Responsive grid logic: repeat(auto-fit, minmax(minColumnWidth, 1fr))
+       style.gridTemplateColumns = `repeat(auto-fit, minmax(${props.minColumnWidth}, 1fr))`;
+    } else if (props.gridColumns) {
       style.gridTemplateColumns = `repeat(${props.gridColumns}, 1fr)`;
     }
     if (props.gridRows) {

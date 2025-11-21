@@ -30,6 +30,7 @@ export interface ComponentProperties {
   // Image properties
   src?: string;
   alt?: string;
+  objectFit?: "cover" | "contain" | "fill";
 
   // Button properties
   buttonText?: string;
@@ -48,8 +49,10 @@ export interface ComponentProperties {
   justifyContent?: string;
   alignItems?: string;
   gap?: string;
+  flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
   gridColumns?: number;
   gridRows?: number;
+  minColumnWidth?: string; // For responsive grid (auto-fit)
 
   // Style properties
   borderRadius?: string;
