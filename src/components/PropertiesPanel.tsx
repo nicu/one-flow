@@ -243,6 +243,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <div className="property-group">
             <h4>Input</h4>
             <div className="property-field">
+              <label>Label</label>
+              <input
+                type="text"
+                value={(properties as any).label || ""}
+                onChange={(e) =>
+                  onUpdate({ ...(properties as any), label: e.target.value })
+                }
+                placeholder="Label text (e.g. First name)"
+              />
+            </div>
+            <div className="property-field">
               <label>Type</label>
               <select
                 value={properties.inputType || "text"}

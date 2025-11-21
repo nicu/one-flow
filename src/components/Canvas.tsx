@@ -8,7 +8,12 @@ interface CanvasProps {
   components: BuilderComponent[];
   selectedId: string | null;
   hoveredId: string | null;
-  onAddComponent: (type: ComponentType, parentId?: string) => void;
+  onAddComponent: (
+    type: ComponentType,
+    parentId?: string,
+    index?: number
+  ) => void;
+
   onSelectComponent: (id: string | null) => void;
   onHoverComponent: (id: string | null) => void;
   dataStore?: DataStore;
@@ -27,8 +32,26 @@ export const Canvas: React.FC<CanvasProps> = ({
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
-    drop: (item: DragItem) => {
+    drop: (item: DragItem, monitor) => {
+      // Debug: log whether another nested target already handled the drop
+      // (temporary diagnostic logging — can be removed once root cause is found)
+      try {
+        // eslint-disable-next-line no-console
+        console.debug(
+          "Canvas drop: didDrop=",
+          typeof monitor.didDrop === "function"
+            ? monitor.didDrop()
+            : "no-monitor"
+        );
+      } catch (e) {
+        // ignore
+      }
+
+      // If a nested drop target already handled this drop, don't add to root.
+      if (monitor && monitor.didDrop && monitor.didDrop()) return;
       if (item.componentType) {
+        // eslint-disable-next-line no-console
+        console.debug("Canvas: adding component to root:", item.componentType);
         onAddComponent(item.componentType);
       }
     },

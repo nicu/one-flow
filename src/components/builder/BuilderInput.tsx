@@ -7,6 +7,7 @@ interface Props {
   value?: string;
   onChange?: (v: string) => void;
   editable?: boolean;
+  showLabel?: boolean;
 }
 
 export const BuilderInput: React.FC<Props> = ({
@@ -14,28 +15,45 @@ export const BuilderInput: React.FC<Props> = ({
   value,
   onChange,
   editable,
+  showLabel = true,
 }) => {
   const style = buildStyle(properties, "input");
   const inputType = properties.inputType || "text";
-
-  if (onChange || editable) {
-    return (
-      <input
-        type={inputType}
-        placeholder={properties.placeholder || ""}
-        style={style}
-        value={value ?? ""}
-        onChange={(e) => onChange && onChange(e.target.value)}
-      />
-    );
-  }
-
-  return (
+  const inputElement = (props: any) => (
     <input
       type={inputType}
       placeholder={properties.placeholder || ""}
       style={style}
-      readOnly
+      {...props}
     />
+  );
+
+  const labelText = properties.label;
+
+  if (onChange || editable) {
+    return (
+      <div>
+        {showLabel && labelText ? (
+          <label style={{ display: "block", marginBottom: 6, fontSize: 13 }}>
+            {labelText}
+          </label>
+        ) : null}
+        {inputElement({
+          value: value ?? "",
+          onChange: (e: any) => onChange && onChange(e.target.value),
+        })}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {showLabel && labelText ? (
+        <label style={{ display: "block", marginBottom: 6, fontSize: 13 }}>
+          {labelText}
+        </label>
+      ) : null}
+      {inputElement({ readOnly: true })}
+    </div>
   );
 };

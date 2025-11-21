@@ -57,7 +57,7 @@ export const useBuilder = () => {
   );
 
   const addComponent = useCallback(
-    (type: ComponentType, parentId?: string) => {
+    (type: ComponentType, parentId?: string, index?: number) => {
       const newComponent: BuilderComponent = {
         id: uuidv4(),
         type,
@@ -67,7 +67,7 @@ export const useBuilder = () => {
 
       if (parentId) {
         setComponents(
-          (prev) => addToParent(prev, parentId, newComponent),
+          (prev) => addToParent(prev, parentId, newComponent, index),
           true
         );
       } else {
@@ -171,17 +171,16 @@ const getDefaultProperties = (type: ComponentType): ComponentProperties => {
     input: {
       placeholder: "Enter text...",
       inputType: "text",
-      width: "200px",
+      label: "",
     },
     dropdown: {
       options: ["Option 1", "Option 2", "Option 3"],
-      width: "200px",
     },
     flex: {
       flexDirection: "row",
       gap: "10px",
       padding: "20px",
-      backgroundColor: "#f5f5f5",
+
       minHeight: "100px",
     },
     grid: {
@@ -204,12 +203,19 @@ const getDefaultProperties = (type: ComponentType): ComponentProperties => {
       padding: "10px",
       backgroundColor: "#f9f9f9",
     },
+    form: {
+      padding: "16px",
+      backgroundColor: "#ffffff",
+      borderRadius: "8px",
+      minHeight: "60px",
+      width: "100%",
+    },
   };
   return defaults[type];
 };
 
 const isLayoutComponent = (type: ComponentType): boolean => {
-  return ["flex", "grid", "row", "column"].includes(type);
+  return ["flex", "grid", "row", "column", "form"].includes(type);
 };
 
 const findComponentById = (
@@ -268,19 +274,35 @@ const removeComponentById = (
 const addToParent = (
   components: BuilderComponent[],
   parentId: string,
-  newComponent: BuilderComponent
+  newComponent: BuilderComponent,
+  index?: number
 ): BuilderComponent[] => {
   return components.map((component) => {
     if (component.id === parentId && component.children) {
+      const nextChildren = component.children.slice();
+      if (
+        typeof index === "number" &&
+        index >= 0 &&
+        index <= nextChildren.length
+      ) {
+        nextChildren.splice(index, 0, newComponent);
+      } else {
+        nextChildren.push(newComponent);
+      }
       return {
         ...component,
-        children: [...component.children, newComponent],
+        children: nextChildren,
       };
     }
     if (component.children) {
       return {
         ...component,
-        children: addToParent(component.children, parentId, newComponent),
+        children: addToParent(
+          component.children,
+          parentId,
+          newComponent,
+          index
+        ),
       };
     }
     return component;

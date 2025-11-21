@@ -16,7 +16,11 @@ interface Props {
   hoveredId?: string | null;
   onSelect?: (id: string) => void;
   onHover?: (id: string | null) => void;
-  onAddComponent?: (type: ComponentType, parentId?: string) => void;
+  onAddComponent?: (
+    type: ComponentType,
+    parentId?: string,
+    index?: number
+  ) => void;
 }
 
 // Helpers to get/set nested paths like 'name.first'
@@ -190,6 +194,7 @@ export const BuilderForm: React.FC<Props> = ({
                 value={val}
                 onChange={(v) => handleChange(fieldPath, v)}
                 editable
+                showLabel={false}
               />
               {errors[fieldPath] && (
                 <div style={{ color: "#c53030", fontSize: 12 }}>

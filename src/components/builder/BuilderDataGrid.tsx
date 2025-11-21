@@ -18,10 +18,10 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
     if (typeof val === "object") {
       const obj = val as Record<string, unknown>;
       // Common pattern: name object with first/last
-      if (
-        (typeof obj.first === "string" || typeof obj.last === "string")
-      ) {
-        return `${(obj.first as string) || ""}${obj.first && obj.last ? " " : ""}${(obj.last as string) || ""}`.trim();
+      if (typeof obj.first === "string" || typeof obj.last === "string") {
+        return `${(obj.first as string) || ""}${
+          obj.first && obj.last ? " " : ""
+        }${(obj.last as string) || ""}`.trim();
       }
       // If object has 'name' string
       if (typeof obj.name === "string") return obj.name as string;
@@ -46,7 +46,11 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
         const val = params.value;
         // boolean -> friendly label
         const label =
-          typeof val === "boolean" ? (val ? "Yes" : "No") : formatCellValue(val ?? "");
+          typeof val === "boolean"
+            ? val
+              ? "Yes"
+              : "No"
+            : formatCellValue(val ?? "");
         const chipColor: "default" | "success" =
           typeof val === "boolean" ? (val ? "success" : "default") : "default";
         return <Chip label={label} color={chipColor} size="small" />;
@@ -95,7 +99,11 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
           ".MuiDataGrid-virtualScroller": { borderRadius: 0 },
           boxShadow: "0 6px 18px rgba(15,23,42,0.06)",
           border: "1px solid rgba(0,0,0,0.06)",
-          fontFamily: "'" + ((properties as unknown as Record<string, unknown>).fontFamily as string || "Inter") + "'",
+          fontFamily:
+            "'" +
+            (((properties as unknown as Record<string, unknown>)
+              .fontFamily as string) || "Inter") +
+            "'",
           ".MuiDataGrid-cell": { padding: "8px 12px", fontSize: 14 },
           ".MuiDataGrid-columnHeaders": {
             backgroundColor: "#fafafa",

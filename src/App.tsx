@@ -78,9 +78,31 @@ function App() {
         }
       }
     };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
+    const opts: AddEventListenerOptions = { capture: true };
+    window.addEventListener("keydown", handler, opts);
+    return () => window.removeEventListener("keydown", handler, opts);
   }, [undo, redo]);
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      // Note: Delete should remove the selected component even when inputs are focused
+
+      // Undo/redo (Cmd/Ctrl+Z) handled above; keep that behavior
+      const isMod = e.ctrlKey || e.metaKey;
+      if (isMod) return;
+
+      // Only the Delete key removes the selected component. Do not remove on Backspace.
+      if (e.key === "Delete") {
+        if (selectedId) {
+          e.preventDefault();
+          removeComponent(selectedId);
+        }
+      }
+    };
+    const opts: AddEventListenerOptions = { capture: true };
+    window.addEventListener("keydown", handler, opts);
+    return () => window.removeEventListener("keydown", handler, opts);
+  }, [removeComponent, selectedId]);
 
   const handleReset = () => {
     setComponents([]);

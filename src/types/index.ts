@@ -45,6 +45,7 @@ export interface ComponentProperties {
   // Input properties
   placeholder?: string;
   inputType?: string;
+  label?: string;
 
   // Dropdown properties
   options?: string[];

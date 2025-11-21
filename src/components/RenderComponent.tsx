@@ -1,3 +1,4 @@
+import React from "react";
 import { useDrop } from "react-dnd";
 import type { BuilderComponent, ComponentType, DragItem } from "../types";
 import { BuilderText } from "./builder/BuilderText";
@@ -19,7 +20,11 @@ interface RenderComponentProps {
   hoveredId: string | null;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
-  onAddComponent: (type: ComponentType, parentId?: string) => void;
+  onAddComponent: (
+    type: ComponentType,
+    parentId?: string,
+    index?: number
+  ) => void;
 }
 
 export const RenderComponent: React.FC<RenderComponentProps> = ({
@@ -31,24 +36,42 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   onAddComponent,
 }) => {
   const dataContext = useDataContext();
-  const isLayout = ["flex", "grid", "row", "column"].includes(component.type);
+  const isLayout = ["flex", "grid", "row", "column", "form"].includes(
+    component.type
+  );
   const isSelected = component.id === selectedId;
   const isHovered = component.id === hoveredId;
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
     drop: (item: DragItem, monitor) => {
+      // Debug: log didDrop status for tracing duplicate adds
+      try {
+        // eslint-disable-next-line no-console
+        console.debug(
+          "RenderComponent drop: id=",
+          component.id,
+          "didDrop=",
+          typeof monitor.didDrop === "function"
+            ? monitor.didDrop()
+            : "no-monitor",
+          "isOver(shallow)=",
+          monitor.isOver ? monitor.isOver({ shallow: true }) : "no-monitor"
+        );
+      } catch (e) {
+        // ignore
+      }
+
       if (monitor.didDrop()) return;
       if (isLayout && item.componentType) {
-        console.log(
-          "RenderComponent drop target:",
+        // eslint-disable-next-line no-console
+        console.debug(
+          "RenderComponent: adding to layout",
           component.id,
-          "isLayout",
-          isLayout,
-          "isOver",
-          monitor.isOver({ shallow: true })
+          item.componentType
         );
-        onAddComponent(item.componentType, component.id);
+        const addedId = onAddComponent(item.componentType, component.id);
+        return { addedId };
       }
     },
     collect: (monitor) => ({
@@ -56,6 +79,81 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     }),
     canDrop: () => isLayout,
   }));
+
+  // Drop slot rendered between children to support inserting at a specific index.
+  // When `isEmpty` is true, render a larger area (replacing the separate
+  // `.drop-zone-empty` element) so the layout shows a single drop target.
+  const DropSlot: React.FC<{
+    parentId: string;
+    index: number;
+    isEmpty?: boolean;
+  }> = ({ parentId, index, isEmpty = false }) => {
+    const [{ isOver: slotOver }, slotRef] = useDrop(() => ({
+      accept: "COMPONENT",
+      drop: (item: DragItem, monitor) => {
+        try {
+          // eslint-disable-next-line no-console
+          console.debug(
+            "DropSlot drop:",
+            "parent=",
+            parentId,
+            "index=",
+            index,
+            "didDrop=",
+            typeof monitor.didDrop === "function"
+              ? monitor.didDrop()
+              : "no-monitor"
+          );
+        } catch (e) {
+          // ignore
+        }
+
+        if (monitor.didDrop()) return;
+        if (item.componentType) {
+          // eslint-disable-next-line no-console
+          console.debug(
+            "DropSlot: adding to parent",
+            parentId,
+            "index",
+            index,
+            item.componentType
+          );
+          const addedId = onAddComponent(item.componentType, parentId, index);
+          return { addedId };
+        }
+      },
+      collect: (m) => ({ isOver: m.isOver({ shallow: true }) }),
+      canDrop: () => isLayout,
+    }));
+
+    if (isEmpty) {
+      return (
+        <div
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ref={slotRef as any}
+          className="drop-zone-empty"
+          style={{
+            backgroundColor: slotOver ? "rgba(37,99,235,0.03)" : undefined,
+          }}
+        >
+          Drop components here
+        </div>
+      );
+    }
+
+    return (
+      <div
+        ref={slotRef as any}
+        style={{
+          height: 10,
+          margin: 6,
+          borderRadius: 4,
+          transition: "background-color 120ms",
+          backgroundColor: slotOver ? "rgba(37,99,235,0.12)" : "transparent",
+        }}
+      />
+    );
+  };
 
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -244,19 +342,33 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         return (
           <div style={style}>
             {children.length === 0 ? (
-              <div className="drop-zone-empty">Drop components here</div>
+              // When empty, render a single, large DropSlot that acts as the
+              // empty-state drop target. This avoids rendering both the
+              // `.drop-zone-empty` box and a separate small slot.
+              <>
+                <DropSlot parentId={component.id} index={0} isEmpty />
+              </>
             ) : (
-              children.map((child, cidx) => (
-                <RenderComponent
-                  key={child.id ?? `${component.id}-child-${cidx}`}
-                  component={child}
-                  selectedId={selectedId}
-                  hoveredId={hoveredId}
-                  onSelect={onSelect}
-                  onHover={onHover}
-                  onAddComponent={onAddComponent}
-                />
-              ))
+              <>
+                {children.map((child, cidx) => (
+                  <React.Fragment
+                    key={child.id ?? `${component.id}-child-${cidx}`}
+                  >
+                    <DropSlot parentId={component.id} index={cidx} />
+                    <RenderComponent
+                      component={child}
+                      selectedId={selectedId}
+                      hoveredId={hoveredId}
+                      onSelect={onSelect}
+                      onHover={onHover}
+                      onAddComponent={onAddComponent}
+                    />
+                  </React.Fragment>
+                ))}
+
+                {/* end slot to append after last child */}
+                <DropSlot parentId={component.id} index={children.length} />
+              </>
             )}
           </div>
         );
@@ -267,16 +379,36 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     }
   };
 
+  const hasChildren =
+    (component.children && component.children.length > 0) || false;
+
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref={isLayout ? (drop as any) : null}
+      ref={isLayout && hasChildren ? (drop as any) : null}
       className={`rendered-component ${isSelected ? "selected" : ""} ${
         isHovered ? "hovered" : ""
       } ${isOver ? "drop-over" : ""}`}
+      style={{ position: "relative" }}
       onClick={handleClick}
       onMouseOver={handleMouseOver}
     >
+      {isLayout && isOver && (
+        <div
+          style={{
+            position: "absolute",
+            top: 6,
+            left: 6,
+            right: 6,
+            bottom: 6,
+            border: "2px dashed #2563eb",
+            borderRadius: 8,
+            backgroundColor: "rgba(37,99,235,0.03)",
+            pointerEvents: "none",
+            zIndex: 5,
+          }}
+        />
+      )}
       {isSelected && (
         <div className="component-label-tag">{component.type}</div>
       )}
