@@ -62,10 +62,13 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
         rowHeight={48}
         headerHeight={56}
         sx={{
-          borderRadius: 8,
+          borderRadius: 2,
+          // Ensure inner DataGrid elements don't keep rounded corners
+          ".MuiDataGrid-main": { borderRadius: 0 },
+          ".MuiDataGrid-virtualScroller": { borderRadius: 0 },
           boxShadow: "0 6px 18px rgba(15,23,42,0.06)",
           border: "1px solid rgba(0,0,0,0.06)",
-          fontFamily: "'" + (properties?.fontFamily || "Inter") + "'",
+          fontFamily: "'" + ((properties as any)?.fontFamily || "Inter") + "'",
           ".MuiDataGrid-cell": { padding: "8px 12px", fontSize: 14 },
           ".MuiDataGrid-columnHeaders": {
             backgroundColor: "#fafafa",
