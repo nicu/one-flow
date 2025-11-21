@@ -1,0 +1,349 @@
+import type { BuilderComponent, ComponentProperties, AlignmentType } from '../types';
+
+interface PropertiesPanelProps {
+  component: BuilderComponent | null;
+  onUpdate: (properties: Partial<ComponentProperties>) => void;
+  onDelete?: () => void;
+}
+
+export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
+  component,
+  onUpdate,
+  onDelete,
+}) => {
+  if (!component) {
+    return (
+      <div className="properties-panel">
+        <h3>Properties</h3>
+        <div className="no-selection">Select a component to edit its properties</div>
+      </div>
+    );
+  }
+
+  const { properties, type } = component;
+
+  const renderCommonProperties = () => (
+    <>
+      <div className="property-group">
+        <h4>Layout</h4>
+        
+        <div className="property-field">
+          <label>Alignment</label>
+          <select
+            value={properties.alignment || 'left'}
+            onChange={(e) => onUpdate({ alignment: e.target.value as AlignmentType })}
+          >
+            <option value="left">Left</option>
+            <option value="center">Center</option>
+            <option value="right">Right</option>
+          </select>
+        </div>
+
+        <div className="property-field">
+          <label>Width</label>
+          <input
+            type="text"
+            value={properties.width || ''}
+            onChange={(e) => onUpdate({ width: e.target.value })}
+            placeholder="auto"
+          />
+        </div>
+
+        <div className="property-field">
+          <label>Height</label>
+          <input
+            type="text"
+            value={properties.height || ''}
+            onChange={(e) => onUpdate({ height: e.target.value })}
+            placeholder="auto"
+          />
+        </div>
+
+        <div className="property-field">
+          <label>Padding</label>
+          <input
+            type="text"
+            value={properties.padding || ''}
+            onChange={(e) => onUpdate({ padding: e.target.value })}
+            placeholder="0px"
+          />
+        </div>
+
+        <div className="property-field">
+          <label>Margin</label>
+          <input
+            type="text"
+            value={properties.margin || ''}
+            onChange={(e) => onUpdate({ margin: e.target.value })}
+            placeholder="0px"
+          />
+        </div>
+
+        <div className="property-field">
+          <label>Background Color</label>
+          <input
+            type="color"
+            value={properties.backgroundColor || '#ffffff'}
+            onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
+          />
+        </div>
+      </div>
+    </>
+  );
+
+  const renderTypeSpecificProperties = () => {
+    switch (type) {
+      case 'text':
+        return (
+          <div className="property-group">
+            <h4>Text</h4>
+            <div className="property-field">
+              <label>Content</label>
+              <textarea
+                value={properties.text || ''}
+                onChange={(e) => onUpdate({ text: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="property-field">
+              <label>Font Size</label>
+              <input
+                type="text"
+                value={properties.fontSize || ''}
+                onChange={(e) => onUpdate({ fontSize: e.target.value })}
+                placeholder="16px"
+              />
+            </div>
+            <div className="property-field">
+              <label>Color</label>
+              <input
+                type="color"
+                value={properties.color || '#000000'}
+                onChange={(e) => onUpdate({ color: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Font Weight</label>
+              <select
+                value={properties.fontWeight || 'normal'}
+                onChange={(e) => onUpdate({ fontWeight: e.target.value })}
+              >
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+                <option value="lighter">Lighter</option>
+              </select>
+            </div>
+          </div>
+        );
+
+      case 'image':
+        return (
+          <div className="property-group">
+            <h4>Image</h4>
+            <div className="property-field">
+              <label>Source URL</label>
+              <input
+                type="text"
+                value={properties.src || ''}
+                onChange={(e) => onUpdate({ src: e.target.value })}
+                placeholder="https://..."
+              />
+            </div>
+            <div className="property-field">
+              <label>Alt Text</label>
+              <input
+                type="text"
+                value={properties.alt || ''}
+                onChange={(e) => onUpdate({ alt: e.target.value })}
+              />
+            </div>
+          </div>
+        );
+
+      case 'button':
+        return (
+          <div className="property-group">
+            <h4>Button</h4>
+            <div className="property-field">
+              <label>Text</label>
+              <input
+                type="text"
+                value={properties.buttonText || ''}
+                onChange={(e) => onUpdate({ buttonText: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Background Color</label>
+              <input
+                type="color"
+                value={properties.buttonColor || '#007bff'}
+                onChange={(e) => onUpdate({ buttonColor: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Text Color</label>
+              <input
+                type="color"
+                value={properties.buttonTextColor || '#ffffff'}
+                onChange={(e) => onUpdate({ buttonTextColor: e.target.value })}
+              />
+            </div>
+          </div>
+        );
+
+      case 'input':
+        return (
+          <div className="property-group">
+            <h4>Input</h4>
+            <div className="property-field">
+              <label>Type</label>
+              <select
+                value={properties.inputType || 'text'}
+                onChange={(e) => onUpdate({ inputType: e.target.value })}
+              >
+                <option value="text">Text</option>
+                <option value="email">Email</option>
+                <option value="password">Password</option>
+                <option value="number">Number</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Placeholder</label>
+              <input
+                type="text"
+                value={properties.placeholder || ''}
+                onChange={(e) => onUpdate({ placeholder: e.target.value })}
+              />
+            </div>
+          </div>
+        );
+
+      case 'dropdown':
+        return (
+          <div className="property-group">
+            <h4>Dropdown</h4>
+            <div className="property-field">
+              <label>Options (one per line)</label>
+              <textarea
+                value={(properties.options || []).join('\n')}
+                onChange={(e) => onUpdate({ options: e.target.value.split('\n') })}
+                rows={5}
+              />
+            </div>
+          </div>
+        );
+
+      case 'flex':
+      case 'row':
+      case 'column':
+        return (
+          <div className="property-group">
+            <h4>Flex Layout</h4>
+            <div className="property-field">
+              <label>Direction</label>
+              <select
+                value={properties.flexDirection || 'row'}
+                onChange={(e) => onUpdate({ flexDirection: e.target.value as 'row' | 'column' })}
+              >
+                <option value="row">Row</option>
+                <option value="column">Column</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Gap</label>
+              <input
+                type="text"
+                value={properties.gap || ''}
+                onChange={(e) => onUpdate({ gap: e.target.value })}
+                placeholder="10px"
+              />
+            </div>
+            <div className="property-field">
+              <label>Justify Content</label>
+              <select
+                value={properties.justifyContent || 'flex-start'}
+                onChange={(e) => onUpdate({ justifyContent: e.target.value })}
+              >
+                <option value="flex-start">Start</option>
+                <option value="center">Center</option>
+                <option value="flex-end">End</option>
+                <option value="space-between">Space Between</option>
+                <option value="space-around">Space Around</option>
+              </select>
+            </div>
+            <div className="property-field">
+              <label>Align Items</label>
+              <select
+                value={properties.alignItems || 'stretch'}
+                onChange={(e) => onUpdate({ alignItems: e.target.value })}
+              >
+                <option value="flex-start">Start</option>
+                <option value="center">Center</option>
+                <option value="flex-end">End</option>
+                <option value="stretch">Stretch</option>
+              </select>
+            </div>
+          </div>
+        );
+
+      case 'grid':
+        return (
+          <div className="property-group">
+            <h4>Grid Layout</h4>
+            <div className="property-field">
+              <label>Columns</label>
+              <input
+                type="number"
+                value={properties.gridColumns || 2}
+                onChange={(e) => onUpdate({ gridColumns: parseInt(e.target.value) })}
+                min="1"
+              />
+            </div>
+            <div className="property-field">
+              <label>Rows</label>
+              <input
+                type="number"
+                value={properties.gridRows || 2}
+                onChange={(e) => onUpdate({ gridRows: parseInt(e.target.value) })}
+                min="1"
+              />
+            </div>
+            <div className="property-field">
+              <label>Gap</label>
+              <input
+                type="text"
+                value={properties.gap || ''}
+                onChange={(e) => onUpdate({ gap: e.target.value })}
+                placeholder="10px"
+              />
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="properties-panel">
+      <div className="properties-header">
+        <h3>Properties</h3>
+        <div className="component-type">{type}</div>
+      </div>
+
+      <div className="properties-content">
+        {renderTypeSpecificProperties()}
+        {renderCommonProperties()}
+        
+        {onDelete && (
+          <div className="property-group">
+            <button className="delete-button" onClick={onDelete}>
+              Delete Component
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
