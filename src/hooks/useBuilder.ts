@@ -26,12 +26,16 @@ export const useBuilder = () => {
   // wrapper to set components and optionally record history
   const setComponents = useCallback(
     (
-      next: BuilderComponent[] | ((prev: BuilderComponent[]) => BuilderComponent[]),
+      next:
+        | BuilderComponent[]
+        | ((prev: BuilderComponent[]) => BuilderComponent[]),
       record = true
     ) => {
       if (typeof next === "function") {
         setComponentsState((prev) => {
-          const computed = (next as (p: BuilderComponent[]) => BuilderComponent[])(prev);
+          const computed = (
+            next as (p: BuilderComponent[]) => BuilderComponent[]
+          )(prev);
           if (record) {
             recordSnapshot(prev);
             setFuture([]);
@@ -61,7 +65,10 @@ export const useBuilder = () => {
       };
 
       if (parentId) {
-        setComponents((prev) => addToParent(prev, parentId, newComponent), true);
+        setComponents(
+          (prev) => addToParent(prev, parentId, newComponent),
+          true
+        );
       } else {
         setComponents((prev) => [...prev, newComponent], true);
       }

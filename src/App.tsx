@@ -103,10 +103,18 @@ function App() {
             <button className="export-button" onClick={handleExport}>
               Export
             </button>
-            <button className="export-button" onClick={undo} disabled={!canUndo}>
+            <button
+              className="export-button"
+              onClick={undo}
+              disabled={!canUndo}
+            >
               Undo
             </button>
-            <button className="export-button" onClick={redo} disabled={!canRedo}>
+            <button
+              className="export-button"
+              onClick={redo}
+              disabled={!canRedo}
+            >
               Redo
             </button>
             <button className="export-button" onClick={handleLoadExample}>
