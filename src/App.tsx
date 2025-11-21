@@ -19,6 +19,7 @@ function App() {
     removeComponent,
     selectComponent,
     getSelectedComponent,
+    setComponents,
   } = useBuilder();
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
