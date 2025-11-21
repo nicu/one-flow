@@ -57,6 +57,13 @@ export interface ComponentProperties {
   // Style properties
   borderRadius?: string;
   boxShadow?: string;
+
+  // Data binding
+  dataBinding?: {
+    modelId?: string;
+    fieldId?: string; // For simple properties (string, number, boolean)
+    collectionId?: string; // For arrays/lists (binds to a collection)
+  };
 }
 
 export interface BuilderComponent {

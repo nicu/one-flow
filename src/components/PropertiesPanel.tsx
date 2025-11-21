@@ -3,17 +3,20 @@ import type {
   ComponentProperties,
   AlignmentType,
 } from "../types";
+import type { DataStore } from "../store/dataStore";
 
 interface PropertiesPanelProps {
   component: BuilderComponent | null;
   onUpdate: (properties: Partial<ComponentProperties>) => void;
   onDelete?: () => void;
+  dataStore?: DataStore;
 }
 
 export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   component,
   onUpdate,
   onDelete,
+  dataStore,
 }) => {
   if (!component) {
     return (
@@ -403,6 +406,108 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     }
   };
 
+  const renderDataBindingProperties = () => {
+    if (!dataStore) return null;
+
+    const { models, data } = dataStore;
+    const currentBinding = properties.dataBinding;
+
+    // For flex/grid containers, show collection binding
+    const canBindToCollection = type === "flex" || type === "grid" || type === "row" || type === "column";
+
+    // For text/input/button/image, show field binding
+    const canBindToField = type === "text" || type === "input" || type === "button" || type === "image";
+
+    if (!canBindToCollection && !canBindToField) return null;
+
+    return (
+      <div className="property-group">
+        <h4>Data Binding</h4>
+        
+        {canBindToCollection && (
+          <div className="property-field">
+            <label>Bind to Collection</label>
+            <select
+              value={currentBinding?.collectionId || ""}
+              onChange={(e) => {
+                const collectionId = e.target.value || undefined;
+                onUpdate({
+                  dataBinding: {
+                    ...currentBinding,
+                    collectionId,
+                    modelId: collectionId,
+                  },
+                });
+              }}
+            >
+              <option value="">None</option>
+              {models.map((model) => (
+                <option key={model.id} value={model.id}>
+                  {model.name} ({data[model.id]?.length || 0} items)
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {canBindToField && (
+          <>
+            <div className="property-field">
+              <label>Bind to Model</label>
+              <select
+                value={currentBinding?.modelId || ""}
+                onChange={(e) => {
+                  const modelId = e.target.value || undefined;
+                  onUpdate({
+                    dataBinding: {
+                      ...currentBinding,
+                      modelId,
+                      fieldId: undefined, // Reset field when model changes
+                    },
+                  });
+                }}
+              >
+                <option value="">None</option>
+                {models.map((model) => (
+                  <option key={model.id} value={model.id}>
+                    {model.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {currentBinding?.modelId && (
+              <div className="property-field">
+                <label>Bind to Field</label>
+                <select
+                  value={currentBinding?.fieldId || ""}
+                  onChange={(e) => {
+                    const fieldId = e.target.value || undefined;
+                    onUpdate({
+                      dataBinding: {
+                        ...currentBinding,
+                        fieldId,
+                      },
+                    });
+                  }}
+                >
+                  <option value="">None</option>
+                  {models
+                    .find((m) => m.id === currentBinding.modelId)
+                    ?.fields.map((field) => (
+                      <option key={field.id} value={field.id}>
+                        {field.name} ({field.type})
+                      </option>
+                    ))}
+                </select>
+              </div>
+            )}
+          </>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div className="properties-panel">
       <div className="properties-header">
@@ -413,6 +518,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       <div className="properties-content">
         {renderTypeSpecificProperties()}
         {renderCommonProperties()}
+        {renderDataBindingProperties()}
 
         {onDelete && (
           <div className="property-group">

@@ -10,6 +10,7 @@ import { BuilderButton } from "./builder/BuilderButton";
 import { BuilderInput } from "./builder/BuilderInput";
 import { BuilderDropdown } from "./builder/BuilderDropdown";
 import { buildStyle } from "./builder/utils";
+import { useDataContext, DataContext } from "../contexts/DataContext";
 
 interface RenderComponentProps {
   component: BuilderComponent;
@@ -28,6 +29,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   onHover,
   onAddComponent,
 }) => {
+  const dataContext = useDataContext();
   const isLayout = ["flex", "grid", "row", "column"].includes(component.type);
   const isSelected = component.id === selectedId;
   const isHovered = component.id === hoveredId;
@@ -57,32 +59,114 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     onHover(component.id);
   };
 
+  // Helper to get bound data value
+  const getBoundValue = (fieldId?: string) => {
+    if (!dataContext || !fieldId) return null;
+    const { currentItem, currentModelId, dataStore } = dataContext;
+    
+    // If we're inside a list, use the current item
+    if (currentItem && currentModelId) {
+      return currentItem[fieldId];
+    }
+    
+    // Otherwise, try to get from global data (first item)
+    const binding = component.properties.dataBinding;
+    if (binding?.modelId) {
+      const data = dataStore.data[binding.modelId];
+      if (data && data.length > 0) {
+        return data[0][fieldId];
+      }
+    }
+    
+    return null;
+  };
+
   const renderContent = () => {
     const props = component.properties;
-    // We use the same buildStyle for layout containers
+    const binding = props.dataBinding;
     const style = buildStyle(props, component.type);
+
+    // Handle data binding for simple components
+    let boundProps = { ...props };
+    if (binding?.fieldId && dataContext) {
+      const value = getBoundValue(binding.fieldId);
+      if (value !== null) {
+        // Map field value to component property
+        switch (component.type) {
+          case "text":
+            boundProps.text = String(value);
+            break;
+          case "image":
+            boundProps.src = String(value);
+            break;
+          case "button":
+            boundProps.buttonText = String(value);
+            break;
+          case "input":
+            boundProps.placeholder = String(value);
+            break;
+        }
+      }
+    }
 
     switch (component.type) {
       case "text":
-        return <BuilderText properties={props} />;
+        return <BuilderText properties={boundProps} />;
 
       case "image":
-        return <BuilderImage properties={props} />;
+        return <BuilderImage properties={boundProps} />;
 
       case "button":
-        return <BuilderButton properties={props} />;
+        return <BuilderButton properties={boundProps} />;
 
       case "input":
-        return <BuilderInput properties={props} />;
+        return <BuilderInput properties={boundProps} />;
 
       case "dropdown":
-        return <BuilderDropdown properties={props} />;
+        return <BuilderDropdown properties={boundProps} />;
 
       case "flex":
       case "row":
       case "column":
       case "grid": {
         const children = component.children || [];
+        
+        // Handle list rendering if bound to a collection
+        if (binding?.collectionId && dataContext) {
+          const data = dataContext.dataStore.data[binding.collectionId];
+          if (data && data.length > 0) {
+            // Render children for each item in the collection
+            return (
+              <div style={style}>
+                {data.map((item: any, index: number) => (
+                  <div key={`${component.id}-item-${index}`} style={{ display: 'contents' }}>
+                    <DataContext.Provider
+                      value={{
+                        dataStore: dataContext.dataStore,
+                        currentItem: item,
+                        currentModelId: binding.collectionId,
+                      }}
+                    >
+                      {children.map((child) => (
+                        <RenderComponent
+                          key={`${child.id}-${index}`}
+                          component={child}
+                          selectedId={selectedId}
+                          hoveredId={hoveredId}
+                          onSelect={onSelect}
+                          onHover={onHover}
+                          onAddComponent={onAddComponent}
+                        />
+                      ))}
+                    </DataContext.Provider>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+        }
+        
+        // Normal rendering (no data binding)
         return (
           <div style={style}>
             {children.length === 0 ? (

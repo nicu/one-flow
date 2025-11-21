@@ -1,0 +1,427 @@
+[
+  {
+    "id": "header-booking",
+    "type": "row",
+    "properties": {
+      "padding": "20px 32px",
+      "backgroundColor": "#ffffff",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "boxShadow": "0 2px 6px rgba(15,23,42,0.06)",
+      "gap": "16px",
+      "flexWrap": "wrap"
+    },
+    "children": [
+      {
+        "id": "logo-booking",
+        "type": "text",
+        "properties": {
+          "text": "OneFlow Travel",
+          "fontSize": "20px",
+          "fontWeight": "800",
+          "color": "#0b1220"
+        }
+      },
+      {
+        "id": "search-row",
+        "type": "row",
+        "properties": {
+          "gap": "12px",
+          "alignItems": "center",
+          "flex": "1",
+          "justifyContent": "center",
+          "maxWidth": "900px",
+          "flexWrap": "wrap"
+        },
+        "children": [
+          {
+            "id": "search-input",
+            "type": "input",
+            "properties": {
+              "placeholder": "Search hotels, cities or landmarks...",
+              "inputType": "text",
+              "width": "100%",
+              "maxWidth": "540px",
+              "padding": "14px 18px",
+              "borderRadius": "12px",
+              "boxShadow": "0 1px 3px rgba(2,6,23,0.06)",
+              "dataBinding": {
+                "modelId": "search",
+                "fieldId": "query"
+              }
+            }
+          },
+          {
+            "id": "search-button",
+            "type": "button",
+            "properties": {
+              "buttonText": "Search",
+              "buttonColor": "#0066ff",
+              "buttonTextColor": "#ffffff",
+              "padding": "12px 20px",
+              "borderRadius": "12px"
+            }
+          }
+        ]
+      },
+      {
+        "id": "profile-actions",
+        "type": "row",
+        "properties": { "gap": "12px", "alignItems": "center" },
+        "children": [
+          {
+            "id": "help-text",
+            "type": "text",
+            "properties": { "text": "Support", "color": "#334155" }
+          },
+          {
+            "id": "account-btn",
+            "type": "button",
+            "properties": {
+              "buttonText": "Sign in",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#0b1220",
+              "padding": "8px 12px",
+              "border": "1px solid #e6eef8",
+              "borderRadius": "10px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "hero-booking",
+    "type": "flex",
+    "properties": {
+      "padding": "40px 32px",
+      "gap": "24px",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "backgroundColor": "#f8fafc"
+    },
+    "children": [
+      {
+        "id": "hero-left-col",
+        "type": "column",
+        "properties": { "gap": "12px", "maxWidth": "1100px", "width": "100%" },
+        "children": [
+          {
+            "id": "hero-title",
+            "type": "text",
+            "properties": {
+              "text": "Find the perfect stay",
+              "fontSize": "34px",
+              "fontWeight": "800",
+              "color": "#0b1220"
+            }
+          },
+          {
+            "id": "hero-sub",
+            "type": "text",
+            "properties": {
+              "text": "Search hotels with real availability, curated images and honest reviews.",
+              "color": "#475569"
+            }
+          },
+          {
+            "id": "filters-row",
+            "type": "row",
+            "properties": {
+              "gap": "12px",
+              "alignItems": "center",
+              "flexWrap": "wrap"
+            },
+            "children": [
+              {
+                "id": "date-input",
+                "type": "input",
+                "properties": {
+                  "placeholder": "Dates",
+                  "inputType": "text",
+                  "width": "180px",
+                  "padding": "10px",
+                  "borderRadius": "10px"
+                }
+              },
+              {
+                "id": "guests-input",
+                "type": "input",
+                "properties": {
+                  "placeholder": "Guests",
+                  "inputType": "number",
+                  "width": "120px",
+                  "padding": "10px",
+                  "borderRadius": "10px"
+                }
+              },
+              {
+                "id": "filter-select",
+                "type": "dropdown",
+                "properties": {
+                  "placeholder": "Price range",
+                  "options": ["Any", "$50 - $150", "$150 - $300", "$300+"],
+                  "width": "160px",
+                  "padding": "10px",
+                  "borderRadius": "10px",
+                  "dataBinding": { "modelId": "search", "fieldId": "filters" }
+                }
+              },
+              {
+                "id": "results-summary",
+                "type": "text",
+                "properties": {
+                  "text": "",
+                  "color": "#475569",
+                  "dataBinding": {
+                    "modelId": "search",
+                    "fieldId": "totalResults"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "content-area",
+    "type": "row",
+    "properties": {
+      "padding": "24px 32px",
+      "gap": "24px",
+      "alignItems": "flex-start",
+      "justifyContent": "center",
+      "flexWrap": "wrap"
+    },
+    "children": [
+      {
+        "id": "results-column",
+        "type": "column",
+        "properties": { "flex": "1", "maxWidth": "1100px", "gap": "18px" },
+        "children": [
+          {
+            "id": "results-grid",
+            "type": "grid",
+            "properties": {
+              "minColumnWidth": "280px",
+              "gap": "18px",
+              "dataBinding": { "collectionId": "hotel" }
+            },
+            "children": [
+              {
+                "id": "hotel-card",
+                "type": "column",
+                "properties": {
+                  "padding": "12px",
+                  "backgroundColor": "#ffffff",
+                  "borderRadius": "12px",
+                  "boxShadow": "0 6px 18px rgba(11,17,32,0.06)",
+                  "gap": "10px"
+                },
+                "children": [
+                  {
+                    "id": "hotel-image",
+                    "type": "image",
+                    "properties": {
+                      "src": "",
+                      "alt": "Hotel image",
+                      "width": "100%",
+                      "height": "160px",
+                      "objectFit": "cover",
+                      "borderRadius": "8px",
+                      "dataBinding": { "modelId": "hotel", "fieldId": "image" }
+                    }
+                  },
+                  {
+                    "id": "hotel-row-top",
+                    "type": "row",
+                    "properties": {
+                      "alignItems": "center",
+                      "justifyContent": "space-between"
+                    },
+                    "children": [
+                      {
+                        "id": "hotel-name",
+                        "type": "text",
+                        "properties": {
+                          "text": "",
+                          "fontSize": "16px",
+                          "fontWeight": "700",
+                          "dataBinding": {
+                            "modelId": "hotel",
+                            "fieldId": "name"
+                          }
+                        }
+                      },
+                      {
+                        "id": "hotel-price",
+                        "type": "text",
+                        "properties": {
+                          "text": "",
+                          "fontSize": "16px",
+                          "fontWeight": "800",
+                          "color": "#0066ff",
+                          "dataBinding": {
+                            "modelId": "hotel",
+                            "fieldId": "price"
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "id": "hotel-location",
+                    "type": "text",
+                    "properties": {
+                      "text": "",
+                      "color": "#64748b",
+                      "dataBinding": {
+                        "modelId": "hotel",
+                        "fieldId": "location"
+                      }
+                    }
+                  },
+                  {
+                    "id": "hotel-desc",
+                    "type": "text",
+                    "properties": {
+                      "text": "",
+                      "color": "#475569",
+                      "dataBinding": {
+                        "modelId": "hotel",
+                        "fieldId": "description"
+                      }
+                    }
+                  },
+                  {
+                    "id": "hotel-bottom-row",
+                    "type": "row",
+                    "properties": {
+                      "alignItems": "center",
+                      "justifyContent": "space-between"
+                    },
+                    "children": [
+                      {
+                        "id": "hotel-rating",
+                        "type": "text",
+                        "properties": {
+                          "text": "",
+                          "color": "#f59e0b",
+                          "dataBinding": {
+                            "modelId": "hotel",
+                            "fieldId": "rating"
+                          }
+                        }
+                      },
+                      {
+                        "id": "hotel-cta",
+                        "type": "button",
+                        "properties": {
+                          "buttonText": "Book",
+                          "buttonColor": "#06b6d4",
+                          "buttonTextColor": "#ffffff",
+                          "padding": "10px 14px",
+                          "borderRadius": "10px"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        "id": "sidebar-column",
+        "type": "column",
+        "properties": { "width": "320px", "gap": "12px", "minWidth": "240px" },
+        "children": [
+          {
+            "id": "refine-box",
+            "type": "column",
+            "properties": {
+              "padding": "16px",
+              "backgroundColor": "#ffffff",
+              "borderRadius": "12px",
+              "boxShadow": "0 6px 18px rgba(11,17,32,0.04)"
+            },
+            "children": [
+              {
+                "id": "refine-title",
+                "type": "text",
+                "properties": { "text": "Refine results", "fontWeight": "700" }
+              },
+              {
+                "id": "filter-available",
+                "type": "dropdown",
+                "properties": {
+                  "placeholder": "Availability",
+                  "options": ["Any", "Available only"],
+                  "dataBinding": { "modelId": "search", "fieldId": "filters" }
+                }
+              },
+              {
+                "id": "filter-rating",
+                "type": "dropdown",
+                "properties": {
+                  "placeholder": "Min rating",
+                  "options": ["Any", "3+", "4+", "4.5+"]
+                }
+              }
+            ]
+          },
+          {
+            "id": "about-box",
+            "type": "column",
+            "properties": {
+              "padding": "16px",
+              "backgroundColor": "#ffffff",
+              "borderRadius": "12px"
+            },
+            "children": [
+              {
+                "id": "about-title",
+                "type": "text",
+                "properties": {
+                  "text": "About OneFlow Travel",
+                  "fontWeight": "700"
+                }
+              },
+              {
+                "id": "about-text",
+                "type": "text",
+                "properties": {
+                  "text": "Curated stays and instant booking — built as a visual demo."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "footer-booking",
+    "type": "row",
+    "properties": {
+      "padding": "20px 32px",
+      "backgroundColor": "#0b1220",
+      "color": "#ffffff",
+      "justifyContent": "center"
+    },
+    "children": [
+      {
+        "id": "foot-text",
+        "type": "text",
+        "properties": { "text": "© 2025 OneFlow Travel. Demo data used." }
+      }
+    ]
+  }
+]

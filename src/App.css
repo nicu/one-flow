@@ -240,14 +240,54 @@ body {
 }
 
 .viewport-btn:hover {
-  background: rgba(0,0,0,0.05);
+  background: rgba(0, 0, 0, 0.05);
   color: #333;
 }
 
 .viewport-btn.active {
   background: white;
   color: #0066ff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Header action grouping */
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.example-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  font-size: 14px;
+  background: white;
+}
+
+.btn-primary {
+  background: #0066ff;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: #334155;
+  border: 1px solid transparent;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-ghost:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .drop-zone-empty {

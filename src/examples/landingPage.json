@@ -1,0 +1,352 @@
+[
+  {
+    "id": "header-1",
+    "type": "row",
+    "properties": {
+      "padding": "16px 32px",
+      "backgroundColor": "#ffffff",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "flexWrap": "wrap",
+      "gap": "16px"
+    },
+    "children": [
+      {
+        "id": "logo-1",
+        "type": "text",
+        "properties": {
+          "text": "OneFlow",
+          "fontSize": "20px",
+          "fontWeight": "700",
+          "color": "#0f172a"
+        }
+      },
+      {
+        "id": "nav-1",
+        "type": "row",
+        "properties": {
+          "gap": "14px",
+          "alignItems": "center",
+          "flexWrap": "wrap"
+        },
+        "children": [
+          {
+            "id": "nav-home",
+            "type": "text",
+            "properties": { "text": "Home", "color": "#334155" }
+          },
+          {
+            "id": "nav-features",
+            "type": "text",
+            "properties": { "text": "Features", "color": "#334155" }
+          },
+          {
+            "id": "nav-pricing",
+            "type": "text",
+            "properties": { "text": "Pricing", "color": "#334155" }
+          },
+          {
+            "id": "nav-contact",
+            "type": "button",
+            "properties": {
+              "buttonText": "Contact",
+              "buttonColor": "#0066ff",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 14px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "hero-1",
+    "type": "flex",
+    "properties": {
+      "padding": "64px 32px",
+      "gap": "40px",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "backgroundColor": "#f8fafc",
+      "flexWrap": "wrap"
+    },
+    "children": [
+      {
+        "id": "hero-left",
+        "type": "column",
+        "properties": {
+          "gap": "20px",
+          "width": "100%",
+          "minWidth": "300px",
+          "flex": "1"
+        },
+        "children": [
+          {
+            "id": "hero-title",
+            "type": "text",
+            "properties": {
+              "text": "Design beautiful sites visually",
+              "fontSize": "40px",
+              "fontWeight": "800",
+              "color": "#0b1220"
+            }
+          },
+          {
+            "id": "hero-sub",
+            "type": "text",
+            "properties": {
+              "text": "A modern, minimal website builder inspired by Figma, Webflow and Squarespace.",
+              "fontSize": "16px",
+              "color": "#475569"
+            }
+          },
+          {
+            "id": "hero-cta-row",
+            "type": "row",
+            "properties": {
+              "gap": "12px",
+              "alignItems": "center",
+              "flexWrap": "wrap"
+            },
+            "children": [
+              {
+                "id": "cta-primary",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Get Started",
+                  "buttonColor": "#0066ff",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "12px 22px"
+                }
+              },
+              {
+                "id": "cta-secondary",
+                "type": "text",
+                "properties": { "text": "See examples", "color": "#334155" }
+              }
+            ]
+          }
+        ]
+      },
+
+      {
+        "id": "hero-right",
+        "type": "image",
+        "properties": {
+          "src": "https://images.unsplash.com/photo-1556157382-97eda2d62296?w=900&q=80&auto=format&fit=crop",
+          "alt": "Abstract design",
+          "width": "100%",
+          "height": "300px",
+          "borderRadius": "12px",
+          "objectFit": "cover",
+          "flex": "1",
+          "minWidth": "300px"
+        }
+      }
+    ]
+  },
+
+  {
+    "id": "features-1",
+    "type": "grid",
+    "properties": {
+      "minColumnWidth": "250px",
+      "gap": "24px",
+      "padding": "48px 32px"
+    },
+    "children": [
+      {
+        "id": "feature-1",
+        "type": "column",
+        "properties": {
+          "padding": "20px",
+          "backgroundColor": "#ffffff",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "f1-img",
+            "type": "image",
+            "properties": {
+              "src": "https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=800&q=80",
+              "width": "100%",
+              "height": "140px",
+              "objectFit": "cover"
+            }
+          },
+          {
+            "id": "f1-title",
+            "type": "text",
+            "properties": {
+              "text": "Drag & Drop",
+              "fontSize": "18px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "f1-desc",
+            "type": "text",
+            "properties": {
+              "text": "Drop primitives and layout components and arrange them visually.",
+              "color": "#64748b"
+            }
+          }
+        ]
+      },
+      {
+        "id": "feature-2",
+        "type": "column",
+        "properties": {
+          "padding": "20px",
+          "backgroundColor": "#ffffff",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "f2-img",
+            "type": "image",
+            "properties": {
+              "src": "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=900&q=80&auto=format&fit=crop",
+              "width": "100%",
+              "height": "140px",
+              "objectFit": "cover"
+            }
+          },
+          {
+            "id": "f2-title",
+            "type": "text",
+            "properties": {
+              "text": "Live Properties",
+              "fontSize": "18px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "f2-desc",
+            "type": "text",
+            "properties": {
+              "text": "Select elements to edit text, colors and layout in real time.",
+              "color": "#64748b"
+            }
+          }
+        ]
+      },
+      {
+        "id": "feature-3",
+        "type": "column",
+        "properties": {
+          "padding": "20px",
+          "backgroundColor": "#ffffff",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "f3-img",
+            "type": "image",
+            "properties": {
+              "src": "https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=900&q=80&auto=format&fit=crop",
+              "width": "100%",
+              "height": "140px",
+              "objectFit": "cover"
+            }
+          },
+          {
+            "id": "f3-title",
+            "type": "text",
+            "properties": {
+              "text": "Export Code",
+              "fontSize": "18px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "f3-desc",
+            "type": "text",
+            "properties": {
+              "text": "Export a ready-to-use React component or JSON representation.",
+              "color": "#64748b"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "contact-1",
+    "type": "flex",
+    "properties": {
+      "padding": "48px 32px",
+      "backgroundColor": "#ffffff",
+      "justifyContent": "center"
+    },
+    "children": [
+      {
+        "id": "contact-form",
+        "type": "column",
+        "properties": { "width": "100%", "maxWidth": "640px", "gap": "12px" },
+        "children": [
+          {
+            "id": "contact-title",
+            "type": "text",
+            "properties": {
+              "text": "Contact Us",
+              "fontSize": "22px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "contact-email",
+            "type": "input",
+            "properties": {
+              "placeholder": "Email",
+              "inputType": "email",
+              "width": "100%"
+            }
+          },
+          {
+            "id": "contact-message",
+            "type": "input",
+            "properties": {
+              "placeholder": "Message",
+              "inputType": "text",
+              "width": "100%"
+            }
+          },
+          {
+            "id": "contact-submit",
+            "type": "button",
+            "properties": {
+              "buttonText": "Send Message",
+              "buttonColor": "#06b6d4",
+              "buttonTextColor": "#ffffff",
+              "padding": "12px 18px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+
+  {
+    "id": "footer-1",
+    "type": "row",
+    "properties": {
+      "padding": "20px 32px",
+      "backgroundColor": "#0b1220",
+      "color": "#ffffff",
+      "justifyContent": "center"
+    },
+    "children": [
+      {
+        "id": "foot-text",
+        "type": "text",
+        "properties": {
+          "text": "© 2025 OneFlow. Built with love.",
+          "color": "#99aabb"
+        }
+      }
+    ]
+  }
+]

@@ -1,6 +1,8 @@
 import { useDrop } from "react-dnd";
 import type { BuilderComponent, DragItem, ComponentType } from "../types";
+import type { DataStore } from "../store/dataStore";
 import { RenderComponent } from "./RenderComponent";
+import { DataContext } from "../contexts/DataContext";
 
 interface CanvasProps {
   components: BuilderComponent[];
@@ -9,6 +11,7 @@ interface CanvasProps {
   onAddComponent: (type: ComponentType, parentId?: string) => void;
   onSelectComponent: (id: string | null) => void;
   onHoverComponent: (id: string | null) => void;
+  dataStore?: DataStore;
 }
 
 export const Canvas: React.FC<CanvasProps> = ({
@@ -18,6 +21,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   onAddComponent,
   onSelectComponent,
   onHoverComponent,
+  dataStore,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "COMPONENT",
@@ -31,7 +35,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     }),
   }));
 
-  return (
+  const content = (
     <div className="canvas-container">
       <div
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -50,7 +54,6 @@ export const Canvas: React.FC<CanvasProps> = ({
           }
         }}
         onMouseOver={(e) => {
-          // If we hover over the canvas background (not a component), clear hover
           if (e.target === e.currentTarget) {
             onHoverComponent(null);
           }
@@ -79,4 +82,15 @@ export const Canvas: React.FC<CanvasProps> = ({
       </div>
     </div>
   );
+
+  // Wrap with DataContext if dataStore is provided
+  if (dataStore) {
+    return (
+      <DataContext.Provider value={{ dataStore }}>
+        {content}
+      </DataContext.Provider>
+    );
+  }
+
+  return content;
 };
