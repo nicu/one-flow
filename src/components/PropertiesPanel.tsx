@@ -1,4 +1,8 @@
-import type { BuilderComponent, ComponentProperties, AlignmentType } from '../types';
+import type {
+  BuilderComponent,
+  ComponentProperties,
+  AlignmentType,
+} from "../types";
 
 interface PropertiesPanelProps {
   component: BuilderComponent | null;
@@ -15,7 +19,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     return (
       <div className="properties-panel">
         <h3>Properties</h3>
-        <div className="no-selection">Select a component to edit its properties</div>
+        <div className="no-selection">
+          Select a component to edit its properties
+        </div>
       </div>
     );
   }
@@ -26,12 +32,14 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     <>
       <div className="property-group">
         <h4>Layout</h4>
-        
+
         <div className="property-field">
           <label>Alignment</label>
           <select
-            value={properties.alignment || 'left'}
-            onChange={(e) => onUpdate({ alignment: e.target.value as AlignmentType })}
+            value={properties.alignment || "left"}
+            onChange={(e) =>
+              onUpdate({ alignment: e.target.value as AlignmentType })
+            }
           >
             <option value="left">Left</option>
             <option value="center">Center</option>
@@ -43,7 +51,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Width</label>
           <input
             type="text"
-            value={properties.width || ''}
+            value={properties.width || ""}
             onChange={(e) => onUpdate({ width: e.target.value })}
             placeholder="auto"
           />
@@ -53,7 +61,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Height</label>
           <input
             type="text"
-            value={properties.height || ''}
+            value={properties.height || ""}
             onChange={(e) => onUpdate({ height: e.target.value })}
             placeholder="auto"
           />
@@ -63,7 +71,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Padding</label>
           <input
             type="text"
-            value={properties.padding || ''}
+            value={properties.padding || ""}
             onChange={(e) => onUpdate({ padding: e.target.value })}
             placeholder="0px"
           />
@@ -73,7 +81,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Margin</label>
           <input
             type="text"
-            value={properties.margin || ''}
+            value={properties.margin || ""}
             onChange={(e) => onUpdate({ margin: e.target.value })}
             placeholder="0px"
           />
@@ -83,7 +91,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Background Color</label>
           <input
             type="color"
-            value={properties.backgroundColor || '#ffffff'}
+            value={properties.backgroundColor || "#ffffff"}
             onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
           />
         </div>
@@ -93,14 +101,14 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
   const renderTypeSpecificProperties = () => {
     switch (type) {
-      case 'text':
+      case "text":
         return (
           <div className="property-group">
             <h4>Text</h4>
             <div className="property-field">
               <label>Content</label>
               <textarea
-                value={properties.text || ''}
+                value={properties.text || ""}
                 onChange={(e) => onUpdate({ text: e.target.value })}
                 rows={3}
               />
@@ -109,7 +117,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Font Size</label>
               <input
                 type="text"
-                value={properties.fontSize || ''}
+                value={properties.fontSize || ""}
                 onChange={(e) => onUpdate({ fontSize: e.target.value })}
                 placeholder="16px"
               />
@@ -118,14 +126,14 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Color</label>
               <input
                 type="color"
-                value={properties.color || '#000000'}
+                value={properties.color || "#000000"}
                 onChange={(e) => onUpdate({ color: e.target.value })}
               />
             </div>
             <div className="property-field">
               <label>Font Weight</label>
               <select
-                value={properties.fontWeight || 'normal'}
+                value={properties.fontWeight || "normal"}
                 onChange={(e) => onUpdate({ fontWeight: e.target.value })}
               >
                 <option value="normal">Normal</option>
@@ -136,7 +144,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
-      case 'image':
+      case "image":
         return (
           <div className="property-group">
             <h4>Image</h4>
@@ -144,7 +152,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Source URL</label>
               <input
                 type="text"
-                value={properties.src || ''}
+                value={properties.src || ""}
                 onChange={(e) => onUpdate({ src: e.target.value })}
                 placeholder="https://..."
               />
@@ -153,14 +161,14 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Alt Text</label>
               <input
                 type="text"
-                value={properties.alt || ''}
+                value={properties.alt || ""}
                 onChange={(e) => onUpdate({ alt: e.target.value })}
               />
             </div>
           </div>
         );
 
-      case 'button':
+      case "button":
         return (
           <div className="property-group">
             <h4>Button</h4>
@@ -168,7 +176,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Text</label>
               <input
                 type="text"
-                value={properties.buttonText || ''}
+                value={properties.buttonText || ""}
                 onChange={(e) => onUpdate({ buttonText: e.target.value })}
               />
             </div>
@@ -176,7 +184,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Background Color</label>
               <input
                 type="color"
-                value={properties.buttonColor || '#007bff'}
+                value={properties.buttonColor || "#007bff"}
                 onChange={(e) => onUpdate({ buttonColor: e.target.value })}
               />
             </div>
@@ -184,21 +192,21 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Text Color</label>
               <input
                 type="color"
-                value={properties.buttonTextColor || '#ffffff'}
+                value={properties.buttonTextColor || "#ffffff"}
                 onChange={(e) => onUpdate({ buttonTextColor: e.target.value })}
               />
             </div>
           </div>
         );
 
-      case 'input':
+      case "input":
         return (
           <div className="property-group">
             <h4>Input</h4>
             <div className="property-field">
               <label>Type</label>
               <select
-                value={properties.inputType || 'text'}
+                value={properties.inputType || "text"}
                 onChange={(e) => onUpdate({ inputType: e.target.value })}
               >
                 <option value="text">Text</option>
@@ -211,39 +219,45 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Placeholder</label>
               <input
                 type="text"
-                value={properties.placeholder || ''}
+                value={properties.placeholder || ""}
                 onChange={(e) => onUpdate({ placeholder: e.target.value })}
               />
             </div>
           </div>
         );
 
-      case 'dropdown':
+      case "dropdown":
         return (
           <div className="property-group">
             <h4>Dropdown</h4>
             <div className="property-field">
               <label>Options (one per line)</label>
               <textarea
-                value={(properties.options || []).join('\n')}
-                onChange={(e) => onUpdate({ options: e.target.value.split('\n') })}
+                value={(properties.options || []).join("\n")}
+                onChange={(e) =>
+                  onUpdate({ options: e.target.value.split("\n") })
+                }
                 rows={5}
               />
             </div>
           </div>
         );
 
-      case 'flex':
-      case 'row':
-      case 'column':
+      case "flex":
+      case "row":
+      case "column":
         return (
           <div className="property-group">
             <h4>Flex Layout</h4>
             <div className="property-field">
               <label>Direction</label>
               <select
-                value={properties.flexDirection || 'row'}
-                onChange={(e) => onUpdate({ flexDirection: e.target.value as 'row' | 'column' })}
+                value={properties.flexDirection || "row"}
+                onChange={(e) =>
+                  onUpdate({
+                    flexDirection: e.target.value as "row" | "column",
+                  })
+                }
               >
                 <option value="row">Row</option>
                 <option value="column">Column</option>
@@ -253,7 +267,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Gap</label>
               <input
                 type="text"
-                value={properties.gap || ''}
+                value={properties.gap || ""}
                 onChange={(e) => onUpdate({ gap: e.target.value })}
                 placeholder="10px"
               />
@@ -261,7 +275,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             <div className="property-field">
               <label>Justify Content</label>
               <select
-                value={properties.justifyContent || 'flex-start'}
+                value={properties.justifyContent || "flex-start"}
                 onChange={(e) => onUpdate({ justifyContent: e.target.value })}
               >
                 <option value="flex-start">Start</option>
@@ -274,7 +288,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             <div className="property-field">
               <label>Align Items</label>
               <select
-                value={properties.alignItems || 'stretch'}
+                value={properties.alignItems || "stretch"}
                 onChange={(e) => onUpdate({ alignItems: e.target.value })}
               >
                 <option value="flex-start">Start</option>
@@ -286,7 +300,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
-      case 'grid':
+      case "grid":
         return (
           <div className="property-group">
             <h4>Grid Layout</h4>
@@ -295,7 +309,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <input
                 type="number"
                 value={properties.gridColumns || 2}
-                onChange={(e) => onUpdate({ gridColumns: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  onUpdate({ gridColumns: parseInt(e.target.value) })
+                }
                 min="1"
               />
             </div>
@@ -304,7 +320,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <input
                 type="number"
                 value={properties.gridRows || 2}
-                onChange={(e) => onUpdate({ gridRows: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  onUpdate({ gridRows: parseInt(e.target.value) })
+                }
                 min="1"
               />
             </div>
@@ -312,7 +330,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Gap</label>
               <input
                 type="text"
-                value={properties.gap || ''}
+                value={properties.gap || ""}
                 onChange={(e) => onUpdate({ gap: e.target.value })}
                 placeholder="10px"
               />
@@ -335,7 +353,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       <div className="properties-content">
         {renderTypeSpecificProperties()}
         {renderCommonProperties()}
-        
+
         {onDelete && (
           <div className="property-group">
             <button className="delete-button" onClick={onDelete}>

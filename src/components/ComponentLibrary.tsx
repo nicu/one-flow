@@ -1,5 +1,5 @@
-import { useDrag } from 'react-dnd';
-import type { ComponentType } from '../types';
+import { useDrag } from "react-dnd";
+import type { ComponentType } from "../types";
 
 interface ComponentLibraryItemProps {
   type: ComponentType;
@@ -7,9 +7,13 @@ interface ComponentLibraryItemProps {
   icon: string;
 }
 
-export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({ type, label, icon }) => {
+export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({
+  type,
+  label,
+  icon,
+}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'COMPONENT',
+    type: "COMPONENT",
     item: { componentType: type },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -23,7 +27,7 @@ export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({ type
       className="component-library-item"
       style={{
         opacity: isDragging ? 0.5 : 1,
-        cursor: 'grab',
+        cursor: "grab",
       }}
     >
       <div className="component-icon">{icon}</div>
@@ -34,24 +38,24 @@ export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({ type
 
 export const ComponentLibrary: React.FC = () => {
   const primitiveComponents = [
-    { type: 'text' as ComponentType, label: 'Text', icon: '📝' },
-    { type: 'image' as ComponentType, label: 'Image', icon: '🖼️' },
-    { type: 'button' as ComponentType, label: 'Button', icon: '🔘' },
-    { type: 'input' as ComponentType, label: 'Input', icon: '📄' },
-    { type: 'dropdown' as ComponentType, label: 'Dropdown', icon: '📋' },
+    { type: "text" as ComponentType, label: "Text", icon: "📝" },
+    { type: "image" as ComponentType, label: "Image", icon: "🖼️" },
+    { type: "button" as ComponentType, label: "Button", icon: "🔘" },
+    { type: "input" as ComponentType, label: "Input", icon: "📄" },
+    { type: "dropdown" as ComponentType, label: "Dropdown", icon: "📋" },
   ];
 
   const layoutComponents = [
-    { type: 'flex' as ComponentType, label: 'Flex', icon: '📦' },
-    { type: 'grid' as ComponentType, label: 'Grid', icon: '⊞' },
-    { type: 'row' as ComponentType, label: 'Row', icon: '➡️' },
-    { type: 'column' as ComponentType, label: 'Column', icon: '⬇️' },
+    { type: "flex" as ComponentType, label: "Flex", icon: "📦" },
+    { type: "grid" as ComponentType, label: "Grid", icon: "⊞" },
+    { type: "row" as ComponentType, label: "Row", icon: "➡️" },
+    { type: "column" as ComponentType, label: "Column", icon: "⬇️" },
   ];
 
   return (
     <div className="component-library">
       <h3>Components</h3>
-      
+
       <div className="component-section">
         <h4>Primitives</h4>
         <div className="component-grid">

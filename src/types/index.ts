@@ -1,15 +1,15 @@
-export type ComponentType = 
-  | 'text'
-  | 'image'
-  | 'button'
-  | 'input'
-  | 'dropdown'
-  | 'flex'
-  | 'grid'
-  | 'row'
-  | 'column';
+export type ComponentType =
+  | "text"
+  | "image"
+  | "button"
+  | "input"
+  | "dropdown"
+  | "flex"
+  | "grid"
+  | "row"
+  | "column";
 
-export type AlignmentType = 'left' | 'center' | 'right' | 'stretch';
+export type AlignmentType = "left" | "center" | "right" | "stretch";
 
 export interface ComponentProperties {
   // Common properties
@@ -20,31 +20,31 @@ export interface ComponentProperties {
   margin?: string;
   backgroundColor?: string;
   alignment?: AlignmentType;
-  
+
   // Text properties
   text?: string;
   fontSize?: string;
   fontWeight?: string;
   color?: string;
-  
+
   // Image properties
   src?: string;
   alt?: string;
-  
+
   // Button properties
   buttonText?: string;
   buttonColor?: string;
   buttonTextColor?: string;
-  
+
   // Input properties
   placeholder?: string;
   inputType?: string;
-  
+
   // Dropdown properties
   options?: string[];
-  
+
   // Layout properties
-  flexDirection?: 'row' | 'column';
+  flexDirection?: "row" | "column";
   justifyContent?: string;
   alignItems?: string;
   gap?: string;

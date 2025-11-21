@@ -1,13 +1,13 @@
-import { useState } from 'react';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { useBuilder } from './hooks/useBuilder';
-import { ComponentLibrary } from './components/ComponentLibrary';
-import { Canvas } from './components/Canvas';
-import { PropertiesPanel } from './components/PropertiesPanel';
-import { ExportModal } from './components/ExportModal';
-import { exportToReact, exportToJSON } from './utils/export';
-import './App.css';
+import { useState } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+import { useBuilder } from "./hooks/useBuilder";
+import { ComponentLibrary } from "./components/ComponentLibrary";
+import { Canvas } from "./components/Canvas";
+import { PropertiesPanel } from "./components/PropertiesPanel";
+import { ExportModal } from "./components/ExportModal";
+import { exportToReact, exportToJSON } from "./utils/export";
+import "./App.css";
 
 function App() {
   const {
@@ -55,7 +55,9 @@ function App() {
           <aside className="sidebar right">
             <PropertiesPanel
               component={selectedComponent}
-              onUpdate={(props) => selectedId && updateComponent(selectedId, props)}
+              onUpdate={(props) =>
+                selectedId && updateComponent(selectedId, props)
+              }
               onDelete={() => selectedId && removeComponent(selectedId)}
             />
           </aside>

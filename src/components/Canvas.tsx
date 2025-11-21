@@ -1,6 +1,6 @@
-import { useDrop } from 'react-dnd';
-import type { BuilderComponent, DragItem, ComponentType } from '../types';
-import { RenderComponent } from './RenderComponent';
+import { useDrop } from "react-dnd";
+import type { BuilderComponent, DragItem, ComponentType } from "../types";
+import { RenderComponent } from "./RenderComponent";
 
 interface CanvasProps {
   components: BuilderComponent[];
@@ -16,7 +16,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   onSelectComponent,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'COMPONENT',
+    accept: "COMPONENT",
     drop: (item: DragItem) => {
       if (item.componentType) {
         onAddComponent(item.componentType);
@@ -37,8 +37,8 @@ export const Canvas: React.FC<CanvasProps> = ({
         ref={drop as any}
         className="canvas"
         style={{
-          backgroundColor: isOver ? '#f0f8ff' : '#ffffff',
-          minHeight: '100%',
+          backgroundColor: isOver ? "#f0f8ff" : "#ffffff",
+          minHeight: "100%",
         }}
         onClick={(e) => {
           if (e.target === e.currentTarget) {
