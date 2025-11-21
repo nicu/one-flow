@@ -7,6 +7,7 @@ import { Canvas } from "./components/Canvas";
 import { PropertiesPanel } from "./components/PropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
 import { exportToReact, exportToJSON } from "./utils/export";
+import examplePage from "./examples/complexPage.json";
 import "./App.css";
 
 function App() {
@@ -28,14 +29,33 @@ function App() {
     setIsExportModalOpen(true);
   };
 
+  const handleLoadExample = () => {
+    // load the example page into the builder
+    setComponents(examplePage as any);
+    selectComponent(null);
+  };
+
+  const handleReset = () => {
+    setComponents([]);
+    selectComponent(null);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app">
         <header className="app-header">
           <h1>OneFlow Builder</h1>
-          <button className="export-button" onClick={handleExport}>
-            Export
-          </button>
+          <div style={{ display: 'flex', gap: 12 }}>
+            <button className="export-button" onClick={handleExport}>
+              Export
+            </button>
+            <button className="export-button" onClick={handleLoadExample}>
+              Load Example
+            </button>
+            <button className="export-button" onClick={handleReset}>
+              Reset
+            </button>
+          </div>
         </header>
 
         <div className="app-content">
