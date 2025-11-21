@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { v4 as uuidv4 } from "uuid";
 import type { BuilderComponent } from "./types";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -62,6 +63,92 @@ function App() {
       setComponents(selection as BuilderComponent[]);
       selectComponent(null);
     }
+  };
+
+  // Helper to replace the children of a specific component by id
+  const replaceChildren = (
+    componentsArr: BuilderComponent[],
+    parentId: string,
+    newChildren: BuilderComponent[]
+  ): BuilderComponent[] => {
+    return componentsArr.map((c) => {
+      if (c.id === parentId) {
+        return { ...c, children: newChildren };
+      }
+      if (c.children) {
+        return {
+          ...c,
+          children: replaceChildren(c.children, parentId, newChildren),
+        };
+      }
+      return c;
+    });
+  };
+
+  const generateFormFromModel = (modelId: string) => {
+    const model = dataStore.models.find((m) => m.id === modelId);
+    if (!model || !selectedId) return;
+
+    const newChildren: BuilderComponent[] = model.fields
+      .filter(
+        (f) =>
+          f.type === "string" || f.type === "number" || f.type === "boolean"
+      )
+      .map((f) => {
+        if (f.type === "boolean") {
+          return {
+            id: uuidv4(),
+            type: "dropdown",
+            properties: {
+              label: f.name,
+              options: ["true", "false"],
+              dataBinding: { modelId: modelId, fieldId: f.id },
+            },
+          } as BuilderComponent;
+        }
+
+        // string or number -> input
+        return {
+          id: uuidv4(),
+          type: "input",
+          properties: {
+            label: f.name,
+            inputType: f.type === "number" ? "number" : "text",
+            placeholder: f.name,
+            dataBinding: { modelId: modelId, fieldId: f.id },
+          },
+        } as BuilderComponent;
+      });
+
+    setComponents((prev) => {
+      // Update the selected form's dataBinding.modelId so the form reads from the correct model
+      const withProps = updateComponentPropertiesById(prev, selectedId, {
+        dataBinding: {
+          ...(getSelectedComponent()?.properties.dataBinding || {}),
+          modelId,
+        },
+      });
+      return replaceChildren(withProps, selectedId, newChildren);
+    });
+  };
+
+  const updateComponentPropertiesById = (
+    componentsArr: BuilderComponent[],
+    id: string,
+    nextProps: Partial<Record<string, unknown>>
+  ): BuilderComponent[] => {
+    return componentsArr.map((c) => {
+      if (c.id === id) {
+        return { ...c, properties: { ...(c.properties || {}), ...nextProps } };
+      }
+      if (c.children) {
+        return {
+          ...c,
+          children: updateComponentPropertiesById(c.children, id, nextProps),
+        };
+      }
+      return c;
+    });
   };
 
   // keyboard shortcuts: Cmd/Ctrl+Z undo, Cmd/Ctrl+Shift+Z redo
@@ -370,6 +457,7 @@ function App() {
                 }
                 onDelete={() => selectedId && removeComponent(selectedId)}
                 dataStore={dataStore}
+                onGenerateForm={generateFormFromModel}
               />
             </aside>
           )}

@@ -146,7 +146,13 @@ export const BuilderForm: React.FC<Props> = ({
             (v: any) => v.type === "required"
           );
           const labelText = label + (isRequired ? " *" : "");
-          const val = getValueAtPath(values, fieldPath) ?? "";
+          const rawVal = getValueAtPath(values, fieldPath);
+          const val =
+            rawVal == null
+              ? ""
+              : typeof rawVal === "object"
+              ? JSON.stringify(rawVal)
+              : rawVal;
           const isSelected = selectedId === child.id;
           const isHoveredLocal = hoveredId === child.id;
           const wrapperStyle: React.CSSProperties = {
@@ -213,7 +219,13 @@ export const BuilderForm: React.FC<Props> = ({
             (v: any) => v.type === "required"
           );
           const labelText = label + (isRequired ? " *" : "");
-          const val = getValueAtPath(values, fieldPath) ?? "";
+          const rawVal = getValueAtPath(values, fieldPath);
+          const val =
+            rawVal == null
+              ? ""
+              : typeof rawVal === "object"
+              ? JSON.stringify(rawVal)
+              : rawVal;
           const isSelected = selectedId === child.id;
           const isHoveredLocal = hoveredId === child.id;
           const wrapperStyle: React.CSSProperties = {

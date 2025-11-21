@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import type {
   BuilderComponent,
   ComponentProperties,
@@ -10,6 +11,7 @@ interface PropertiesPanelProps {
   onUpdate: (properties: Partial<ComponentProperties>) => void;
   onDelete?: () => void;
   dataStore?: DataStore;
+  onGenerateForm?: (modelId: string) => void;
 }
 
 export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
@@ -17,7 +19,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   onUpdate,
   onDelete,
   dataStore,
+  onGenerateForm,
 }) => {
+  const [selectedModelForForm, setSelectedModelForForm] = useState<string>("");
   if (!component) {
     return (
       <div className="properties-panel">
@@ -419,6 +423,38 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 <option value="wrap">Wrap</option>
                 <option value="wrap-reverse">Wrap Reverse</option>
               </select>
+            </div>
+          </div>
+        );
+
+      case "form":
+        return (
+          <div className="property-group">
+            <h4>Form</h4>
+            <div className="property-field">
+              <label>Generate Form From Model</label>
+              <div style={{ display: "flex", gap: 8 }}>
+                <select
+                  value={selectedModelForForm || ""}
+                  onChange={(e) => setSelectedModelForForm(e.target.value)}
+                >
+                  <option value="">Select model...</option>
+                  {(dataStore?.models || []).map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  className="btn-primary"
+                  disabled={!selectedModelForForm}
+                  onClick={() =>
+                    onGenerateForm && onGenerateForm(selectedModelForForm)
+                  }
+                >
+                  Generate
+                </button>
+              </div>
             </div>
           </div>
         );
