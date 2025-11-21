@@ -4,6 +4,7 @@ export type ComponentType =
   | "button"
   | "input"
   | "dropdown"
+  | "datagrid"
   | "flex"
   | "grid"
   | "row"
@@ -64,6 +65,14 @@ export interface ComponentProperties {
     fieldId?: string; // For simple properties (string, number, boolean)
     collectionId?: string; // For arrays/lists (binds to a collection)
   };
+
+  // DataGrid specific
+  columns?: Array<{
+    field: string;
+    headerName?: string;
+    width?: number;
+  }>;
+  pageSize?: number;
 }
 
 export interface BuilderComponent {

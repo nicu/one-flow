@@ -12,6 +12,7 @@ import { exportToReact, exportToJSON } from "./utils/export";
 import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";
 import dataBindingPage from "./examples/dataBinding.json";
+import datagridHotels from "./examples/datagridHotels.json";
 import { initialDataStore, type DataStore } from "./store/dataStore";
 import "./App.css";
 
@@ -58,6 +59,7 @@ function App() {
     "Landing page": landingPage as unknown as BuilderComponent[],
     Airbnb: airbnbPage as unknown as BuilderComponent[],
     "Data binding": dataBindingPage as unknown as BuilderComponent[],
+    "DataGrid (Hotels)": datagridHotels as unknown as BuilderComponent[],
   };
 
   const [selectedExample, setSelectedExample] =

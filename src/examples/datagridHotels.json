@@ -1,0 +1,20 @@
+[
+  {
+    "id": "datagrid-hotels-1",
+    "type": "datagrid",
+    "properties": {
+      "width": "100%",
+      "height": "500px",
+      "pageSize": 6,
+      "dataBinding": { "collectionId": "hotel", "modelId": "hotel" },
+      "columns": [
+        { "field": "id", "headerName": "ID", "width": 120 },
+        { "field": "name", "headerName": "Name", "width": 240 },
+        { "field": "price", "headerName": "Price", "width": 120 },
+        { "field": "rating", "headerName": "Rating", "width": 120 },
+        { "field": "location", "headerName": "Location", "width": 180 },
+        { "field": "available", "headerName": "Available", "width": 120 }
+      ]
+    }
+  }
+]

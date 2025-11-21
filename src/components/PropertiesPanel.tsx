@@ -401,6 +401,87 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
+      case "datagrid":
+        return (
+          <div className="property-group">
+            <h4>Data Grid</h4>
+            <div className="property-field">
+              <label>Columns (one per line as field:Header:width)</label>
+              <textarea
+                value={(properties.columns || [])
+                  .map(
+                    (c) =>
+                      `${c.field}:${c.headerName || c.field}:${c.width || ""}`
+                  )
+                  .join("\n")}
+                onChange={(e) => {
+                  const lines = e.target.value.split(/\r?\n/).filter(Boolean);
+                  const cols = lines.map((ln) => {
+                    const parts = ln.split(":");
+                    return {
+                      field: parts[0].trim(),
+                      headerName: (parts[1] || parts[0]).trim(),
+                      width: parts[2] ? parseInt(parts[2], 10) : undefined,
+                    };
+                  });
+                  onUpdate({ columns: cols });
+                }}
+                rows={6}
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Page Size</label>
+              <input
+                type="number"
+                value={properties.pageSize || 5}
+                onChange={(e) =>
+                  onUpdate({ pageSize: parseInt(e.target.value, 10) })
+                }
+                min={1}
+              />
+            </div>
+
+            {dataStore && (
+              <div className="property-field">
+                <label>Auto-generate Columns From Model</label>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <select
+                    onChange={(e) => {
+                      const modelId = e.target.value;
+                      const model = dataStore.models.find(
+                        (m) => m.id === modelId
+                      );
+                      if (model) {
+                        const cols = model.fields.map((f) => ({
+                          field: f.id,
+                          headerName: f.name,
+                          width: 150,
+                        }));
+                        onUpdate({
+                          columns: cols,
+                          dataBinding: {
+                            ...(properties.dataBinding || {}),
+                            collectionId: modelId,
+                          },
+                        });
+                      }
+                    }}
+                    value={properties.dataBinding?.collectionId || ""}
+                  >
+                    <option value="">Select model...</option>
+                    {dataStore.models.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
+          </div>
+        );
+
       default:
         return null;
     }
@@ -413,17 +494,22 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     const currentBinding = properties.dataBinding;
 
     // For flex/grid containers, show collection binding
-    const canBindToCollection = type === "flex" || type === "grid" || type === "row" || type === "column";
+    const canBindToCollection =
+      type === "flex" || type === "grid" || type === "row" || type === "column";
 
     // For text/input/button/image, show field binding
-    const canBindToField = type === "text" || type === "input" || type === "button" || type === "image";
+    const canBindToField =
+      type === "text" ||
+      type === "input" ||
+      type === "button" ||
+      type === "image";
 
     if (!canBindToCollection && !canBindToField) return null;
 
     return (
       <div className="property-group">
         <h4>Data Binding</h4>
-        
+
         {canBindToCollection && (
           <div className="property-field">
             <label>Bind to Collection</label>

@@ -1,14 +1,11 @@
 import { useDrop } from "react-dnd";
-import type {
-  BuilderComponent,
-  ComponentType,
-  DragItem,
-} from "../types";
+import type { BuilderComponent, ComponentType, DragItem } from "../types";
 import { BuilderText } from "./builder/BuilderText";
 import { BuilderImage } from "./builder/BuilderImage";
 import { BuilderButton } from "./builder/BuilderButton";
 import { BuilderInput } from "./builder/BuilderInput";
 import { BuilderDropdown } from "./builder/BuilderDropdown";
+import BuilderDataGrid from "./builder/BuilderDataGrid";
 import { buildStyle } from "./builder/utils";
 import { useDataContext, DataContext } from "../contexts/DataContext";
 
@@ -39,7 +36,14 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     drop: (item: DragItem, monitor) => {
       if (monitor.didDrop()) return;
       if (isLayout && item.componentType) {
-        console.log("RenderComponent drop target:", component.id, "isLayout", isLayout, "isOver", monitor.isOver({ shallow: true }));
+        console.log(
+          "RenderComponent drop target:",
+          component.id,
+          "isLayout",
+          isLayout,
+          "isOver",
+          monitor.isOver({ shallow: true })
+        );
         onAddComponent(item.componentType, component.id);
       }
     },
@@ -63,12 +67,12 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   const getBoundValue = (fieldId?: string) => {
     if (!dataContext || !fieldId) return null;
     const { currentItem, currentModelId, dataStore } = dataContext;
-    
+
     // If we're inside a list, use the current item
     if (currentItem && currentModelId) {
       return currentItem[fieldId];
     }
-    
+
     // Otherwise, try to get from global data (first item)
     const binding = component.properties.dataBinding;
     if (binding?.modelId) {
@@ -77,7 +81,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         return data[0][fieldId];
       }
     }
-    
+
     return null;
   };
 
@@ -125,12 +129,25 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       case "dropdown":
         return <BuilderDropdown properties={boundProps} />;
 
+      case "datagrid": {
+        // Determine rows from collection binding or explicit data
+        const binding = component.properties.dataBinding;
+        let rows: any[] = [];
+        if (binding?.collectionId && dataContext) {
+          rows = dataContext.dataStore.data[binding.collectionId] || [];
+        }
+
+        return (
+          <BuilderDataGrid properties={component.properties} rows={rows} />
+        );
+      }
+
       case "flex":
       case "row":
       case "column":
       case "grid": {
         const children = component.children || [];
-        
+
         // Handle list rendering if bound to a collection
         if (binding?.collectionId && dataContext) {
           const data = dataContext.dataStore.data[binding.collectionId];
@@ -139,7 +156,10 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
             return (
               <div style={style}>
                 {data.map((item: any, index: number) => (
-                  <div key={`${component.id}-item-${index}`} style={{ display: 'contents' }}>
+                  <div
+                    key={`${component.id}-item-${index}`}
+                    style={{ display: "contents" }}
+                  >
                     <DataContext.Provider
                       value={{
                         dataStore: dataContext.dataStore,
@@ -165,7 +185,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
             );
           }
         }
-        
+
         // Normal rendering (no data binding)
         return (
           <div style={style}>
@@ -197,16 +217,14 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     <div
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={isLayout ? (drop as any) : null}
-      className={`rendered-component ${isSelected ? "selected" : ""} ${isHovered ? "hovered" : ""} ${
-        isOver ? "drop-over" : ""
-      }`}
+      className={`rendered-component ${isSelected ? "selected" : ""} ${
+        isHovered ? "hovered" : ""
+      } ${isOver ? "drop-over" : ""}`}
       onClick={handleClick}
       onMouseOver={handleMouseOver}
     >
       {isSelected && (
-        <div className="component-label-tag">
-          {component.type}
-        </div>
+        <div className="component-label-tag">{component.type}</div>
       )}
       {renderContent()}
     </div>

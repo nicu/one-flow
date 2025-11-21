@@ -50,17 +50,54 @@ export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({
 export const ComponentLibrary: React.FC = () => {
   const primitiveComponents = [
     { type: "text" as ComponentType, label: "Text", icon: <Type size={20} /> },
-    { type: "image" as ComponentType, label: "Image", icon: <ImageIcon size={20} /> },
-    { type: "button" as ComponentType, label: "Button", icon: <Square size={20} /> },
-    { type: "input" as ComponentType, label: "Input", icon: <Edit size={20} /> },
-    { type: "dropdown" as ComponentType, label: "Dropdown", icon: <ChevronDown size={20} /> },
+    {
+      type: "image" as ComponentType,
+      label: "Image",
+      icon: <ImageIcon size={20} />,
+    },
+    {
+      type: "button" as ComponentType,
+      label: "Button",
+      icon: <Square size={20} />,
+    },
+    {
+      type: "input" as ComponentType,
+      label: "Input",
+      icon: <Edit size={20} />,
+    },
+    {
+      type: "dropdown" as ComponentType,
+      label: "Dropdown",
+      icon: <ChevronDown size={20} />,
+    },
+    {
+      type: "datagrid" as ComponentType,
+      label: "Data Grid",
+      icon: <GridIcon size={20} />,
+    },
   ];
 
   const layoutComponents = [
-    { type: "flex" as ComponentType, label: "Flex", icon: <Columns size={20} /> },
-    { type: "grid" as ComponentType, label: "Grid", icon: <GridIcon size={20} /> },
-    { type: "row" as ComponentType, label: "Row", icon: <ArrowRight size={20} /> },
-    { type: "column" as ComponentType, label: "Column", icon: <ArrowDown size={20} /> },
+    {
+      type: "flex" as ComponentType,
+      label: "Flex",
+      icon: <Columns size={20} />,
+    },
+    {
+      type: "grid" as ComponentType,
+      label: "Grid",
+      icon: <GridIcon size={20} />,
+    },
+    {
+      type: "row" as ComponentType,
+      label: "Row",
+      icon: <ArrowRight size={20} />,
+    },
+    {
+      type: "column" as ComponentType,
+      label: "Column",
+      icon: <ArrowDown size={20} />,
+    },
   ];
 
   return (
