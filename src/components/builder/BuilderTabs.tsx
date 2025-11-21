@@ -66,9 +66,21 @@ export const BuilderTabs: React.FC<Props> = ({ properties }) => {
 
   return (
     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-      <Tabs value={value} onChange={handleChange} aria-label="hotel-tabs">
+      <Tabs
+        value={value}
+        onChange={handleChange}
+        aria-label="hotel-tabs"
+        variant="scrollable"
+        scrollButtons="auto"
+        TabIndicatorProps={{ style: { backgroundColor: "#1976d2", height: 3 } }}
+      >
         {tabs.map((t) => (
-          <Tab key={t.key} label={t.label} />
+          <Tab
+            key={t.key}
+            label={t.label}
+            disableRipple
+            sx={{ textTransform: "none", fontWeight: 600, fontSize: "14px" }}
+          />
         ))}
       </Tabs>
     </Box>

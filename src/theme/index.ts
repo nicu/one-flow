@@ -21,13 +21,14 @@ export const theme = {
     large: "0 8px 24px rgba(0,0,0,0.2)",
   },
   typography: {
-    fontFamily: "Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif",
+    fontFamily:
+      "Inter, Circular, -apple-system, BlinkMacSystemFont, Roboto, Helvetica Neue, sans-serif",
     fontSize: {
       small: "14px",
       base: "16px",
       large: "18px",
       xl: "24px",
       xxl: "32px",
-    }
-  }
+    },
+  },
 };

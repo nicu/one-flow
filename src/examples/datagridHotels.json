@@ -44,20 +44,22 @@
             },
             "children": [
               {
-                "id": "save-button",
-                "type": "button",
-                "properties": {
-                  "buttonText": "Save Changes",
-                  "buttonColor": "#1976d2",
-                  "buttonTextColor": "#ffffff"
-                }
-              },
-              {
                 "id": "add-button",
                 "type": "button",
                 "properties": {
                   "buttonText": "Add Hotel",
-                  "buttonColor": "#4caf50",
+                  "buttonVariant": "outlined",
+                  "buttonColor": "#1976d2",
+                  "buttonTextColor": "#1976d2"
+                }
+              },
+              {
+                "id": "save-button",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Save Changes",
+                  "buttonVariant": "contained",
+                  "buttonColor": "#1976d2",
                   "buttonTextColor": "#ffffff"
                 }
               }
@@ -73,7 +75,6 @@
           "tabField": "available"
         }
       },
-      {},
       {
         "id": "datagrid-hotels-1",
         "type": "datagrid",

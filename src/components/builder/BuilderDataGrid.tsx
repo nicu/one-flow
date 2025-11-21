@@ -58,6 +58,21 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
         rowsPerPageOptions={[5, 10, 20, 50]}
         disableSelectionOnClick
         getRowId={(row) => row.id}
+        density="compact"
+        rowHeight={48}
+        headerHeight={56}
+        sx={{
+          borderRadius: 8,
+          boxShadow: "0 6px 18px rgba(15,23,42,0.06)",
+          border: "1px solid rgba(0,0,0,0.06)",
+          fontFamily: "'" + (properties?.fontFamily || "Inter") + "'",
+          ".MuiDataGrid-cell": { padding: "8px 12px", fontSize: 14 },
+          ".MuiDataGrid-columnHeaders": {
+            backgroundColor: "#fafafa",
+            borderBottom: "1px solid rgba(0,0,0,0.06)",
+          },
+          ".MuiDataGrid-row:hover": { backgroundColor: "#f5f7ff" },
+        }}
       />
     </div>
   );

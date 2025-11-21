@@ -86,6 +86,8 @@ export interface ComponentProperties {
 
   // Chip
   chipField?: string; // field to build chips from
+  // Button variants
+  buttonVariant?: "contained" | "outlined";
 }
 
 export interface BuilderComponent {

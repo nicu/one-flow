@@ -14,7 +14,7 @@ export const buildStyle = (
   if (props.padding) style.padding = props.padding;
   if (props.margin) style.margin = props.margin;
   if (props.backgroundColor) style.backgroundColor = props.backgroundColor;
-  
+
   // Typography
   if (props.fontSize) style.fontSize = props.fontSize;
   if (props.fontWeight) style.fontWeight = props.fontWeight;
@@ -23,39 +23,56 @@ export const buildStyle = (
   // New properties
   if (props.boxShadow) style.boxShadow = props.boxShadow;
   if (props.objectFit) style.objectFit = props.objectFit;
-  
+
   // Border Radius logic
   if (props.borderRadius) {
     style.borderRadius = props.borderRadius;
   } else {
     // Defaults from theme
-    if (type === 'button') style.borderRadius = theme.borderRadius.button;
-    if (type === 'input') style.borderRadius = theme.borderRadius.input;
-    // if (type === 'image') style.borderRadius = theme.borderRadius.medium; 
+    if (type === "button") style.borderRadius = theme.borderRadius.button;
+    if (type === "input") style.borderRadius = theme.borderRadius.input;
+    // if (type === 'image') style.borderRadius = theme.borderRadius.medium;
   }
 
   // Type specific defaults
   if (type === "button") {
-    if (props.buttonColor) style.backgroundColor = props.buttonColor;
-    if (props.buttonTextColor) style.color = props.buttonTextColor;
-    style.border = "none";
+    const variant = (props as any).buttonVariant || "contained";
+    const btnColor = props.buttonColor || theme.colors.primary;
+    const btnText = props.buttonTextColor || "#ffffff";
+    if (variant === "outlined") {
+      style.backgroundColor = "#ffffff";
+      style.color = props.buttonTextColor || btnColor;
+      style.border = `1px solid ${btnColor}`;
+      style.boxShadow = "none";
+    } else {
+      style.backgroundColor = btnColor;
+      style.color = btnText;
+      style.border = "none";
+      style.boxShadow = props.boxShadow || theme.shadows.small;
+    }
     style.cursor = "pointer";
     style.fontFamily = theme.typography.fontFamily;
+    style.fontWeight = 600;
+    style.letterSpacing = "0.2px";
+    style.textTransform = "none";
     // Default padding for buttons if not set
-    if (!props.padding) style.padding = "10px 20px";
+    if (!props.padding) style.padding = "8px 16px";
     if (!props.fontSize) style.fontSize = theme.typography.fontSize.base;
+    if (!props.borderRadius) style.borderRadius = theme.borderRadius.button;
   }
 
   if (type === "input" || type === "dropdown") {
     style.border = `1px solid ${theme.colors.border}`;
     style.fontFamily = theme.typography.fontFamily;
-    if (!props.padding) style.padding = "12px 16px"; // Airbnb-ish inputs are chunky
+    if (!props.padding) style.padding = "8px 12px";
     if (!props.fontSize) style.fontSize = theme.typography.fontSize.base;
     style.outline = "none";
+    if (!props.borderRadius) style.borderRadius = theme.borderRadius.input;
   }
 
   if (type === "text") {
-     style.fontFamily = theme.typography.fontFamily;
+    style.fontFamily = theme.typography.fontFamily;
+    if (!props.fontSize) style.fontSize = theme.typography.fontSize.base;
   }
 
   if (props.alignment) {
@@ -77,8 +94,8 @@ export const buildStyle = (
   if (type === "grid") {
     style.display = "grid";
     if (props.minColumnWidth) {
-       // Responsive grid logic: repeat(auto-fit, minmax(minColumnWidth, 1fr))
-       style.gridTemplateColumns = `repeat(auto-fit, minmax(${props.minColumnWidth}, 1fr))`;
+      // Responsive grid logic: repeat(auto-fit, minmax(minColumnWidth, 1fr))
+      style.gridTemplateColumns = `repeat(auto-fit, minmax(${props.minColumnWidth}, 1fr))`;
     } else if (props.gridColumns) {
       style.gridTemplateColumns = `repeat(${props.gridColumns}, 1fr)`;
     }
