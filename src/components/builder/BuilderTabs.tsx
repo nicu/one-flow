@@ -15,17 +15,41 @@ export const BuilderTabs: React.FC<Props> = ({ properties }) => {
 
   const modelId =
     properties.dataBinding?.modelId || properties.dataBinding?.collectionId;
-  const field = properties.tabField || "available";
-
-  const tabs: Array<{ key: string; label: string; count: number }> =
+  const field = properties.dataBinding?.fieldId || properties.tabField || "available";
+  const tabs: Array<{ key: string; label: string; count?: number }> =
     React.useMemo(() => {
       if (!dataContext || !modelId)
         return [{ key: "all", label: "All", count: 0 }];
+
       const rows = dataContext.dataStore.data[modelId] || [];
       if (!rows || rows.length === 0)
         return [{ key: "all", label: "All", count: 0 }];
 
-      // Handle boolean field specially
+      // If this component is bound to a collection (collectionId), create
+      // one tab per item and use `tabField` to derive the label for each
+      // item. This allows binding tabs directly to items in a dataset.
+      const collectionId = properties.dataBinding?.collectionId;
+      const resolvePath = (obj: any, path: string) => {
+        if (!obj) return undefined;
+        const parts = path.split(".");
+        let cur = obj;
+        for (const p of parts) {
+          if (cur == null) return undefined;
+          cur = cur[p];
+        }
+        return cur;
+      };
+
+      if (collectionId) {
+        return rows.map((r: any, idx: number) => {
+          const raw = resolvePath(r, field) ?? r.name ?? r.title ?? "";
+          const label = raw === undefined || raw === null ? `Item ${idx + 1}` : String(raw);
+          const key = (r && (r.id || r._id)) || `item-${idx}`;
+          return { key: String(key), label };
+        });
+      }
+
+      // Handle boolean field specially (grouping)
       if (typeof rows[0][field] === "boolean") {
         const available = rows.filter((r: any) => r[field] === true).length;
         const unavailable = rows.length - available;
@@ -44,23 +68,23 @@ export const BuilderTabs: React.FC<Props> = ({ properties }) => {
         ];
       }
 
-      // Otherwise derive unique values
+      // Otherwise derive unique values (grouping)
       const map = new Map<string, number>();
       rows.forEach((r: any) => {
         const v = String(r[field] ?? "") || "(empty)";
         map.set(v, (map.get(v) || 0) + 1);
       });
 
-      const out = [
+      const out: Array<{ key: string; label: string; count?: number }> = [
         { key: "all", label: `All (${rows.length})`, count: rows.length },
       ];
       Array.from(map.entries()).forEach(([k, c]) =>
         out.push({ key: k, label: `${k} (${c})`, count: c })
       );
       return out;
-    }, [dataContext, modelId, field]);
+    }, [dataContext, modelId, field, properties.dataBinding?.collectionId]);
 
-  const handleChange = (e: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_e: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 

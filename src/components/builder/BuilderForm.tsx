@@ -53,7 +53,6 @@ export const BuilderForm: React.FC<Props> = ({
   hoveredId,
   onSelect,
   onHover,
-  onAddComponent,
 }) => {
   const dataContext = useDataContext();
   const binding = properties.dataBinding;

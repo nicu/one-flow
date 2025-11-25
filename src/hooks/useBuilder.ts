@@ -203,6 +203,20 @@ const getDefaultProperties = (type: ComponentType): ComponentProperties => {
       padding: "10px",
       backgroundColor: "#f9f9f9",
     },
+    datagrid: {
+      columns: [],
+      pageSize: 5,
+    },
+    breadcrumbs: {
+      breadcrumbs: [],
+    },
+    tabs: {
+      tabField: "",
+      gap: "8px",
+    },
+    chip: {
+      chipField: "",
+    },
     form: {
       padding: "16px",
       backgroundColor: "#ffffff",

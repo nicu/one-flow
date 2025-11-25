@@ -511,6 +511,8 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
+        
+
       case "grid":
         return (
           <div className="property-group">
@@ -731,16 +733,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     const { models, data } = dataStore;
     const currentBinding = properties.dataBinding;
 
-    // For flex/grid containers, show collection binding
+    // For flex/grid/tab containers, show collection binding
     const canBindToCollection =
-      type === "flex" || type === "grid" || type === "row" || type === "column";
+      type === "flex" || type === "grid" || type === "row" || type === "column" || type === "tabs";
 
-    // For text/input/button/image, show field binding
+    // For text/input/button/image/tabs, show field binding
     const canBindToField =
       type === "text" ||
       type === "input" ||
       type === "button" ||
-      type === "image";
+      type === "image" ||
+      type === "tabs";
 
     // For forms, allow binding to a model (the whole object)
     const canBindToModel = type === "form";
