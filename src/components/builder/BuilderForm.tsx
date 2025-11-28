@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from "react";
-import type {
-  ComponentProperties,
-  BuilderComponent,
-  ComponentType,
-} from "../../types";
+import type { ComponentProperties, BuilderComponent } from "../../types";
 import { useDataContext } from "../../contexts/DataContext";
 import { BuilderInput } from "./BuilderInput";
 import { BuilderDropdown } from "./BuilderDropdown";
 import { BuilderButton } from "./BuilderButton";
+import { RenderComponent } from "../RenderComponent";
 
 interface Props {
   properties: ComponentProperties;
@@ -16,18 +13,17 @@ interface Props {
   hoveredId?: string | null;
   onSelect?: (id: string) => void;
   onHover?: (id: string | null) => void;
-  onAddComponent?: (
-    type: ComponentType,
-    parentId?: string,
-    index?: number
-  ) => void;
+  onAddComponent?: (type: string, parentId?: string, index?: number) => void;
 }
 
 // Helpers to get/set nested paths like 'name.first'
-const getValueAtPath = (obj: any, path?: string) => {
-  if (!path) return undefined;
+const getValueAtPath = (
+  obj: Record<string, any> | undefined,
+  path?: string
+) => {
+  if (!path || !obj) return undefined;
   const parts = path.split(".");
-  let cur = obj;
+  let cur: any = obj;
   for (const p of parts) {
     if (cur == null) return undefined;
     cur = cur[p];
@@ -35,10 +31,10 @@ const getValueAtPath = (obj: any, path?: string) => {
   return cur;
 };
 
-const setValueAtPath = (obj: any, path: string, value: any) => {
+const setValueAtPath = (obj: Record<string, any>, path: string, value: any) => {
   const parts = path.split(".");
   const last = parts.pop() as string;
-  let cur = obj;
+  let cur: any = obj;
   for (const p of parts) {
     if (cur[p] == null) cur[p] = {};
     cur = cur[p];
@@ -53,6 +49,7 @@ export const BuilderForm: React.FC<Props> = ({
   hoveredId,
   onSelect,
   onHover,
+  onAddComponent,
 }) => {
   const dataContext = useDataContext();
   const binding = properties.dataBinding;
@@ -66,7 +63,11 @@ export const BuilderForm: React.FC<Props> = ({
     if (!dataContext || !modelId) return;
     const data = dataContext.dataStore.data[modelId];
     if (Array.isArray(data) && data.length > 0) {
-      setValues(JSON.parse(JSON.stringify(data[0])));
+      try {
+        setValues(JSON.parse(JSON.stringify(data[0])));
+      } catch {
+        setValues(data[0]);
+      }
     }
   }, [dataContext, modelId]);
 
@@ -89,7 +90,6 @@ export const BuilderForm: React.FC<Props> = ({
         if (value == null || String(value).trim() === "") return "Required";
       }
       if (rule.type === "duplicate") {
-        // duplicate check: if value equals forbiddenValue, return error
         const forbidden = rule.forbiddenValue ?? "ONE";
         if (String(value) === String(forbidden))
           return rule.message || `Value cannot be '${forbidden}'`;
@@ -131,252 +131,229 @@ export const BuilderForm: React.FC<Props> = ({
     }
   };
 
-  // Render a form using the styled builder inputs/dropdowns so the look
-  // matches the rest of the builder. Pass editable/value/onChange so
-  // controls are interactive at runtime.
+  const renderNode = (node: BuilderComponent): React.ReactNode => {
+    const childType = node.type;
+
+    // INPUT: keep interactive behavior (value/onChange/editable)
+    if (childType === "input") {
+      const fieldPath = node.properties?.dataBinding?.fieldId || "";
+      const p = node.properties as Record<string, unknown>;
+      const label = (p.label as string) || fieldPath;
+      const validations = p.validations as unknown as Array<
+        Record<string, unknown>
+      >;
+      const isRequired = Array.isArray(validations)
+        ? validations.some((v) => String(v.type) === "required")
+        : false;
+      const labelText = label + (isRequired ? " *" : "");
+      const rawVal = getValueAtPath(values, fieldPath);
+      const val =
+        rawVal == null
+          ? ""
+          : typeof rawVal === "object"
+          ? JSON.stringify(rawVal)
+          : rawVal;
+      const isSelected = selectedId === node.id;
+      const isHoveredLocal = hoveredId === node.id;
+      const wrapperStyle: React.CSSProperties = {
+        marginBottom: 10,
+        cursor: "pointer",
+        padding: 6,
+        borderRadius: 6,
+        border: isSelected
+          ? "2px solid #2563eb"
+          : isHoveredLocal
+          ? "1px dashed #9ca3af"
+          : "1px solid transparent",
+        backgroundColor: isSelected
+          ? "#e6f0ff"
+          : isHoveredLocal
+          ? "#fbfdff"
+          : undefined,
+      };
+      const labelStyle: React.CSSProperties = {
+        display: "block",
+        fontSize: 12,
+        marginBottom: 4,
+        fontWeight: isSelected ? 700 : 400,
+      };
+
+      return (
+        <div
+          key={node.id}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onSelect) onSelect(node.id);
+          }}
+          onMouseOver={(e) => {
+            e.stopPropagation();
+            if (onHover) onHover(node.id);
+          }}
+          onMouseLeave={() => {
+            if (onHover) onHover(null);
+          }}
+          style={wrapperStyle}
+        >
+          <label style={labelStyle}>{labelText}</label>
+          <BuilderInput
+            properties={node.properties}
+            value={val as string}
+            onChange={(v) => handleChange(fieldPath, v)}
+            editable
+            showLabel={false}
+          />
+          {errors[fieldPath] && (
+            <div style={{ color: "#c53030", fontSize: 12 }}>
+              {errors[fieldPath]}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // DROPDOWN: interactive
+    if (childType === "dropdown") {
+      const fieldPath = node.properties?.dataBinding?.fieldId || "";
+      const p2 = node.properties as Record<string, unknown>;
+      const label = (p2.label as string) || fieldPath;
+      const validations = p2.validations as unknown as Array<
+        Record<string, unknown>
+      >;
+      const isRequired = Array.isArray(validations)
+        ? validations.some((v) => String(v.type) === "required")
+        : false;
+      const labelText = label + (isRequired ? " *" : "");
+      const rawVal = getValueAtPath(values, fieldPath);
+      const val =
+        rawVal == null
+          ? ""
+          : typeof rawVal === "object"
+          ? JSON.stringify(rawVal)
+          : rawVal;
+      const isSelected = selectedId === node.id;
+      const isHoveredLocal = hoveredId === node.id;
+      const wrapperStyle: React.CSSProperties = {
+        marginBottom: 10,
+        cursor: "pointer",
+        padding: 6,
+        borderRadius: 6,
+        border: isSelected
+          ? "2px solid #2563eb"
+          : isHoveredLocal
+          ? "1px dashed #9ca3af"
+          : "1px solid transparent",
+        backgroundColor: isSelected
+          ? "#e6f0ff"
+          : isHoveredLocal
+          ? "#fbfdff"
+          : undefined,
+      };
+      const labelStyle: React.CSSProperties = {
+        display: "block",
+        fontSize: 12,
+        marginBottom: 4,
+        fontWeight: isSelected ? 700 : 400,
+      };
+
+      return (
+        <div
+          key={node.id}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onSelect) onSelect(node.id);
+          }}
+          onMouseOver={(e) => {
+            e.stopPropagation();
+            if (onHover) onHover(node.id);
+          }}
+          onMouseLeave={() => {
+            if (onHover) onHover(null);
+          }}
+          style={wrapperStyle}
+        >
+          <label style={labelStyle}>{labelText}</label>
+          <BuilderDropdown
+            properties={node.properties}
+            value={val as string}
+            onChange={(v) => handleChange(fieldPath, v)}
+            editable
+          />
+          {errors[fieldPath] && (
+            <div style={{ color: "#c53030", fontSize: 12 }}>
+              {errors[fieldPath]}
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // BUTTON: submit-like behavior
+    if (childType === "button") {
+      const isSelected = selectedId === node.id;
+      const isHoveredLocal = hoveredId === node.id;
+      const wrapperStyle: React.CSSProperties = {
+        marginTop: 8,
+        cursor: "pointer",
+        padding: 6,
+        borderRadius: 6,
+        border: isSelected
+          ? "2px solid #2563eb"
+          : isHoveredLocal
+          ? "1px dashed #9ca3af"
+          : "1px solid transparent",
+        backgroundColor: isSelected
+          ? "#e6f0ff"
+          : isHoveredLocal
+          ? "#fbfdff"
+          : undefined,
+        display: "inline-block",
+      };
+      return (
+        <div
+          key={node.id}
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onSelect) onSelect(node.id);
+          }}
+          onMouseOver={(e) => {
+            e.stopPropagation();
+            if (onHover) onHover(node.id);
+          }}
+          onMouseLeave={() => {
+            if (onHover) onHover(null);
+          }}
+          style={wrapperStyle}
+        >
+          <BuilderButton
+            properties={node.properties}
+            onClick={() => handleSubmit()}
+          />
+        </div>
+      );
+    }
+
+    // Everything else: delegate to shared renderer which supports recursion and data-binding
+    return (
+      <RenderComponent
+        key={node.id}
+        component={node}
+        selectedId={selectedId || null}
+        hoveredId={hoveredId || null}
+        onSelect={(id) => onSelect && onSelect(id)}
+        onHover={(id) => onHover && onHover(id)}
+        onAddComponent={(t, p, i) =>
+          onAddComponent ? onAddComponent(t, p, i) : undefined
+        }
+      />
+    );
+  };
+
   return (
     <form onSubmit={handleSubmit} style={{ padding: 12 }}>
-      {childrenComponents.map((child) => {
-        if (child.type === "input") {
-          const fieldPath = child.properties?.dataBinding?.fieldId || "";
-          const label = (child.properties as any).label || fieldPath;
-          const validations = (child.properties as any).validations || [];
-          const isRequired = validations.some(
-            (v: any) => v.type === "required"
-          );
-          const labelText = label + (isRequired ? " *" : "");
-          const rawVal = getValueAtPath(values, fieldPath);
-          const val =
-            rawVal == null
-              ? ""
-              : typeof rawVal === "object"
-              ? JSON.stringify(rawVal)
-              : rawVal;
-          const isSelected = selectedId === child.id;
-          const isHoveredLocal = hoveredId === child.id;
-          const wrapperStyle: React.CSSProperties = {
-            marginBottom: 10,
-            cursor: "pointer",
-            padding: 6,
-            borderRadius: 6,
-            border: isSelected
-              ? "2px solid #2563eb"
-              : isHoveredLocal
-              ? "1px dashed #9ca3af"
-              : "1px solid transparent",
-            backgroundColor: isSelected
-              ? "#e6f0ff"
-              : isHoveredLocal
-              ? "#fbfdff"
-              : undefined,
-          };
-          const labelStyle: React.CSSProperties = {
-            display: "block",
-            fontSize: 12,
-            marginBottom: 4,
-            fontWeight: isSelected ? 700 : 400,
-          };
-
-          return (
-            <div
-              key={child.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect && onSelect(child.id);
-              }}
-              onMouseOver={(e) => {
-                e.stopPropagation();
-                onHover && onHover(child.id);
-              }}
-              onMouseLeave={() => {
-                onHover && onHover(null);
-              }}
-              style={wrapperStyle}
-            >
-              <label style={labelStyle}>{labelText}</label>
-              <BuilderInput
-                properties={child.properties}
-                value={val}
-                onChange={(v) => handleChange(fieldPath, v)}
-                editable
-                showLabel={false}
-              />
-              {errors[fieldPath] && (
-                <div style={{ color: "#c53030", fontSize: 12 }}>
-                  {errors[fieldPath]}
-                </div>
-              )}
-            </div>
-          );
-        }
-
-        if (child.type === "dropdown") {
-          const fieldPath = child.properties?.dataBinding?.fieldId || "";
-          const label = (child.properties as any).label || fieldPath;
-          const validations = (child.properties as any).validations || [];
-          const isRequired = validations.some(
-            (v: any) => v.type === "required"
-          );
-          const labelText = label + (isRequired ? " *" : "");
-          const rawVal = getValueAtPath(values, fieldPath);
-          const val =
-            rawVal == null
-              ? ""
-              : typeof rawVal === "object"
-              ? JSON.stringify(rawVal)
-              : rawVal;
-          const isSelected = selectedId === child.id;
-          const isHoveredLocal = hoveredId === child.id;
-          const wrapperStyle: React.CSSProperties = {
-            marginBottom: 10,
-            cursor: "pointer",
-            padding: 6,
-            borderRadius: 6,
-            border: isSelected
-              ? "2px solid #2563eb"
-              : isHoveredLocal
-              ? "1px dashed #9ca3af"
-              : "1px solid transparent",
-            backgroundColor: isSelected
-              ? "#e6f0ff"
-              : isHoveredLocal
-              ? "#fbfdff"
-              : undefined,
-          };
-          const labelStyle: React.CSSProperties = {
-            display: "block",
-            fontSize: 12,
-            marginBottom: 4,
-            fontWeight: isSelected ? 700 : 400,
-          };
-
-          return (
-            <div
-              key={child.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect && onSelect(child.id);
-              }}
-              onMouseOver={(e) => {
-                e.stopPropagation();
-                onHover && onHover(child.id);
-              }}
-              onMouseLeave={() => {
-                onHover && onHover(null);
-              }}
-              style={wrapperStyle}
-            >
-              <label style={labelStyle}>{labelText}</label>
-              <BuilderDropdown
-                properties={child.properties}
-                value={val}
-                onChange={(v) => handleChange(fieldPath, v)}
-                editable
-              />
-              {errors[fieldPath] && (
-                <div style={{ color: "#c53030", fontSize: 12 }}>
-                  {errors[fieldPath]}
-                </div>
-              )}
-            </div>
-          );
-        }
-
-        if (child.type === "text") {
-          const isSelected = selectedId === child.id;
-          const isHoveredLocal = hoveredId === child.id;
-          const wrapperStyle: React.CSSProperties = {
-            marginBottom: 8,
-            cursor: "pointer",
-            padding: 6,
-            borderRadius: 6,
-            border: isSelected
-              ? "2px solid #2563eb"
-              : isHoveredLocal
-              ? "1px dashed #9ca3af"
-              : "1px solid transparent",
-            backgroundColor: isSelected
-              ? "#e6f0ff"
-              : isHoveredLocal
-              ? "#fbfdff"
-              : undefined,
-          };
-          const labelStyle: React.CSSProperties = {
-            fontWeight: isSelected ? 700 : 400,
-          };
-          return (
-            <div
-              key={child.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect && onSelect(child.id);
-              }}
-              onMouseOver={(e) => {
-                e.stopPropagation();
-                onHover && onHover(child.id);
-              }}
-              onMouseLeave={() => {
-                onHover && onHover(null);
-              }}
-              style={wrapperStyle}
-            >
-              <div style={labelStyle}>{child.properties?.text}</div>
-            </div>
-          );
-        }
-
-        if (child.type === "button") {
-          const isSelected = selectedId === child.id;
-          const isHoveredLocal = hoveredId === child.id;
-          const wrapperStyle: React.CSSProperties = {
-            marginTop: 8,
-            cursor: "pointer",
-            padding: 6,
-            borderRadius: 6,
-            border: isSelected
-              ? "2px solid #2563eb"
-              : isHoveredLocal
-              ? "1px dashed #9ca3af"
-              : "1px solid transparent",
-            backgroundColor: isSelected
-              ? "#e6f0ff"
-              : isHoveredLocal
-              ? "#fbfdff"
-              : undefined,
-            display: "inline-block",
-          };
-          return (
-            <div
-              key={child.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSelect && onSelect(child.id);
-              }}
-              onMouseOver={(e) => {
-                e.stopPropagation();
-                onHover && onHover(child.id);
-              }}
-              onMouseLeave={() => {
-                onHover && onHover(null);
-              }}
-              style={wrapperStyle}
-            >
-              <BuilderButton
-                properties={child.properties}
-                onClick={() => handleSubmit()}
-              />
-            </div>
-          );
-        }
-
-        return (
-          <div key={child.id} style={{ marginBottom: 8 }}>
-            <div style={{ fontSize: 12, color: "#666" }}>
-              Unsupported child: {child.type}
-            </div>
-          </div>
-        );
-      })}
+      {childrenComponents.map((child) => (
+        // Each child rendered via renderNode; keys handled inside renderNode
+        <React.Fragment key={child.id}>{renderNode(child)}</React.Fragment>
+      ))}
     </form>
   );
 };

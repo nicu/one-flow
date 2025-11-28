@@ -15,7 +15,8 @@ export const BuilderTabs: React.FC<Props> = ({ properties }) => {
 
   const modelId =
     properties.dataBinding?.modelId || properties.dataBinding?.collectionId;
-  const field = properties.dataBinding?.fieldId || properties.tabField || "available";
+  const field =
+    properties.dataBinding?.fieldId || properties.tabField || "available";
   const tabs: Array<{ key: string; label: string; count?: number }> =
     React.useMemo(() => {
       if (!dataContext || !modelId)
@@ -43,7 +44,8 @@ export const BuilderTabs: React.FC<Props> = ({ properties }) => {
       if (collectionId) {
         return rows.map((r: any, idx: number) => {
           const raw = resolvePath(r, field) ?? r.name ?? r.title ?? "";
-          const label = raw === undefined || raw === null ? `Item ${idx + 1}` : String(raw);
+          const label =
+            raw === undefined || raw === null ? `Item ${idx + 1}` : String(raw);
           const key = (r && (r.id || r._id)) || `item-${idx}`;
           return { key: String(key), label };
         });

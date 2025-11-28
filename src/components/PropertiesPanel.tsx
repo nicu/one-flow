@@ -511,8 +511,6 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
-        
-
       case "grid":
         return (
           <div className="property-group">
@@ -735,7 +733,11 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
     // For flex/grid/tab containers, show collection binding
     const canBindToCollection =
-      type === "flex" || type === "grid" || type === "row" || type === "column" || type === "tabs";
+      type === "flex" ||
+      type === "grid" ||
+      type === "row" ||
+      type === "column" ||
+      type === "tabs";
 
     // For text/input/button/image/tabs, show field binding
     const canBindToField =

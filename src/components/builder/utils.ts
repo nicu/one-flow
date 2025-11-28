@@ -139,7 +139,8 @@ export const buildStyle = (
     if (props.justifyItems) style.justifyItems = props.justifyItems as any;
     // alignItems maps to CSS `align-items` for grid as well
     if (props.alignItems) style.alignItems = props.alignItems as any;
-    if (props.justifyContent) style.justifyContent = props.justifyContent as any;
+    if (props.justifyContent)
+      style.justifyContent = props.justifyContent as any;
     if (props.alignContent) style.alignContent = props.alignContent as any;
   }
 

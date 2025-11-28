@@ -9,6 +9,7 @@ import { Canvas } from "./components/Canvas";
 import { PropertiesPanel } from "./components/PropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
 import { DataPanel } from "./components/DataPanel";
+import { AIAssistantPanel } from "./components/AIAssistantPanel";
 import { exportToReact, exportToJSON } from "./utils/export";
 import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";
@@ -468,6 +469,67 @@ function App() {
           onClose={() => setIsExportModalOpen(false)}
           reactCode={exportToReact(components)}
           jsonCode={exportToJSON(components)}
+        />
+
+        {/* AI Assistant floating panel */}
+        <AIAssistantPanel
+          context={
+            selectedComponent
+              ? `Selected: ${
+                  selectedComponent.type
+                } with props: ${JSON.stringify(selectedComponent.properties)}`
+              : undefined
+          }
+          onInsertUI={(newComponents) => {
+            // Assign fresh unique IDs to the inserted components to avoid
+            // key collisions with existing components, then append.
+            const remapIds = (
+              items: BuilderComponent[]
+            ): BuilderComponent[] => {
+              return items.map((item) => {
+                const newItem = JSON.parse(
+                  JSON.stringify(item)
+                ) as BuilderComponent;
+
+                const remapRecursive = (node: BuilderComponent) => {
+                  const newId = uuidv4();
+                  node.id = newId;
+                  if (Array.isArray(node.children)) {
+                    node.children.forEach((c) => remapRecursive(c));
+                  }
+                };
+
+                remapRecursive(newItem);
+                return newItem;
+              });
+            };
+
+            const remapped = remapIds(newComponents as BuilderComponent[]);
+
+            // Append AI-generated components to the selected layout, or to root if none selected
+            setComponents((prev) => {
+              const selected = getSelectedComponent();
+              const isLayout = selected
+                ? ["flex", "grid", "row", "column", "form"].includes(
+                    selected.type as string
+                  )
+                : false;
+
+              if (selected && isLayout) {
+                // append as children of the selected component
+                const appended = replaceChildren(prev, selected.id, [
+                  ...(selected.children || []),
+                  ...remapped,
+                ]);
+                return appended;
+              }
+
+              // otherwise append at root
+              return [...prev, ...remapped];
+            });
+
+            selectComponent(null);
+          }}
         />
       </div>
     </DndProvider>
