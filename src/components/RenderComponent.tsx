@@ -1,5 +1,5 @@
 import React from "react";
-import { useDrop } from "react-dnd";
+import { useDrop, useDrag } from "react-dnd";
 import type { BuilderComponent, ComponentType, DragItem } from "../types";
 import { BuilderText } from "./builder/BuilderText";
 import { BuilderImage } from "./builder/BuilderImage";
@@ -17,6 +17,7 @@ import { useDataContext, DataContext } from "../contexts/DataContext";
 interface RenderComponentProps {
   component: BuilderComponent;
   selectedId: string | null;
+  selectedIds?: string[];
   hoveredId: string | null;
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
@@ -25,15 +26,18 @@ interface RenderComponentProps {
     parentId?: string,
     index?: number
   ) => void;
+  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
 }
 
 export const RenderComponent: React.FC<RenderComponentProps> = ({
   component,
   selectedId,
+  selectedIds,
   hoveredId,
   onSelect,
   onHover,
   onAddComponent,
+  onMoveComponents,
 }) => {
   const dataContext = useDataContext();
   const isLayout = ["flex", "grid", "row", "column", "form"].includes(
@@ -42,8 +46,23 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   const isSelected = component.id === selectedId;
   const isHovered = component.id === hoveredId;
 
+  // Drag from canvas: include all selectedIds if this node is part of selection
+  const dragIds =
+    selectedIds && selectedIds.includes(component.id)
+      ? selectedIds
+      : [component.id];
+
+  const [{ isDragging }, drag] = useDrag(
+    () => ({
+      type: "MOVE_COMPONENT",
+      item: { ids: dragIds },
+      collect: (m) => ({ isDragging: m.isDragging() }),
+    }),
+    [dragIds]
+  );
+
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: "COMPONENT",
+    accept: ["COMPONENT", "MOVE_COMPONENT"],
     drop: (item: DragItem, monitor) => {
       // Debug: log didDrop status for tracing duplicate adds
       try {
@@ -62,6 +81,12 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       }
 
       if (monitor.didDrop()) return;
+      // moving existing components
+      if (item.ids && item.ids.length > 0 && onMoveComponents) {
+        onMoveComponents(item.ids, component.id);
+        return { moved: true };
+      }
+      // adding new component from palette
       if (isLayout && item.componentType) {
         console.debug(
           "RenderComponent: adding to layout",
@@ -88,7 +113,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     isEmpty?: boolean;
   }> = ({ parentId, index, parentType, isEmpty = false }) => {
     const [{ isOver: slotOver }, slotRef] = useDrop(() => ({
-      accept: "COMPONENT",
+      accept: ["COMPONENT", "MOVE_COMPONENT"],
       drop: (item: DragItem, monitor) => {
         try {
           console.debug(
@@ -107,6 +132,10 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         }
 
         if (monitor.didDrop()) return;
+        if (item.ids && item.ids.length > 0 && onMoveComponents) {
+          onMoveComponents(item.ids, parentId, index);
+          return { moved: true };
+        }
         if (item.componentType) {
           console.debug(
             "DropSlot: adding to parent",
@@ -325,9 +354,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                           component={child}
                           selectedId={selectedId}
                           hoveredId={hoveredId}
+                          selectedIds={selectedIds}
                           onSelect={onSelect}
                           onHover={onHover}
                           onAddComponent={onAddComponent}
+                          onMoveComponents={onMoveComponents}
                         />
                       ))}
                     </DataContext.Provider>
@@ -354,9 +385,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                   component={child}
                   selectedId={selectedId}
                   hoveredId={hoveredId}
+                  selectedIds={selectedIds}
                   onSelect={onSelect}
                   onHover={onHover}
                   onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
                 />
               ))}
 
@@ -394,9 +427,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
                       component={child}
                       selectedId={selectedId}
                       hoveredId={hoveredId}
+                      selectedIds={selectedIds}
                       onSelect={onSelect}
                       onHover={onHover}
                       onAddComponent={onAddComponent}
+                      onMoveComponents={onMoveComponents}
                     />
                   </React.Fragment>
                 ))}
@@ -424,7 +459,17 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   return (
     <div
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      ref={isLayout && hasChildren ? (drop as any) : null}
+      ref={(el: any) => {
+        if (!el) return;
+        try {
+          drag(el);
+        } catch {}
+        if (isLayout && hasChildren) {
+          try {
+            (drop as any)(el);
+          } catch {}
+        }
+      }}
       className={`rendered-component ${isSelected ? "selected" : ""} ${
         isHovered ? "hovered" : ""
       } ${isOver ? "drop-over" : ""}`}

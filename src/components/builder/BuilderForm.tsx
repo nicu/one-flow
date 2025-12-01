@@ -13,7 +13,7 @@ interface Props {
   hoveredId?: string | null;
   onSelect?: (id: string) => void;
   onHover?: (id: string | null) => void;
-  onAddComponent?: (type: string, parentId?: string, index?: number) => void;
+  onAddComponent?: (type: any, parentId?: string, index?: number) => void;
 }
 
 // Helpers to get/set nested paths like 'name.first'
@@ -344,6 +344,9 @@ export const BuilderForm: React.FC<Props> = ({
         onAddComponent={(t, p, i) =>
           onAddComponent ? onAddComponent(t, p, i) : undefined
         }
+        // pass through multi-select and move handlers if provided (RenderComponent will accept them)
+        selectedIds={undefined}
+        onMoveComponents={undefined}
       />
     );
   };

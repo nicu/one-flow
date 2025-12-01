@@ -1,5 +1,5 @@
 import { useDrag } from "react-dnd";
-import type { ComponentType } from "../types";
+import type { ComponentType, BuilderComponent } from "../types";
 import {
   Type,
   Image as ImageIcon,
@@ -11,6 +11,22 @@ import {
   ArrowRight,
   ArrowDown,
 } from "lucide-react";
+import ComponentTreeView from "./builder/ComponentTreeView";
+import type { Dispatch, SetStateAction } from "react";
+
+interface ComponentLibraryProps {
+  components?: BuilderComponent[];
+  selectedId?: string | null;
+  selectedIds?: string[];
+  setSelectedIds?: Dispatch<SetStateAction<string[]>>;
+  onSelect?: (id: string | null) => void;
+  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
+  onAddComponent?: (
+    type: ComponentType,
+    parentId?: string,
+    index?: number
+  ) => void;
+}
 
 interface ComponentLibraryItemProps {
   type: ComponentType;
@@ -47,7 +63,15 @@ export const ComponentLibraryItem: React.FC<ComponentLibraryItemProps> = ({
   );
 };
 
-export const ComponentLibrary: React.FC = () => {
+export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
+  components = [],
+  selectedId = null,
+  selectedIds = [],
+  setSelectedIds = () => {},
+  onSelect = () => {},
+  onMoveComponents = () => {},
+  onAddComponent = () => {},
+}) => {
   const primitiveComponents = [
     { type: "text" as ComponentType, label: "Text", icon: <Type size={20} /> },
     {
@@ -140,6 +164,19 @@ export const ComponentLibrary: React.FC = () => {
             <ComponentLibraryItem key={comp.type} {...comp} />
           ))}
         </div>
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <h4>Hierarchy</h4>
+        <ComponentTreeView
+          components={components}
+          selectedId={selectedId}
+          selectedIds={selectedIds}
+          setSelectedIds={setSelectedIds}
+          onSelect={onSelect}
+          onMoveComponents={onMoveComponents}
+          onAddComponent={onAddComponent}
+        />
       </div>
     </div>
   );

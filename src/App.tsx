@@ -23,9 +23,12 @@ function App() {
   const {
     components,
     selectedId,
+    selectedIds,
+    setSelectedIds,
     addComponent,
     updateComponent,
     removeComponent,
+    moveComponents,
     selectComponent,
     getSelectedComponent,
     setComponents,
@@ -401,7 +404,15 @@ function App() {
         <div className="app-content">
           {activeTab === "ui" && (
             <aside className="sidebar left">
-              <ComponentLibrary />
+              <ComponentLibrary
+                components={components}
+                selectedId={selectedId}
+                selectedIds={selectedIds}
+                setSelectedIds={setSelectedIds}
+                onSelect={selectComponent}
+                onMoveComponents={moveComponents}
+                onAddComponent={addComponent}
+              />
             </aside>
           )}
 
@@ -431,10 +442,12 @@ function App() {
                 <Canvas
                   components={components}
                   selectedId={selectedId}
+                  selectedIds={selectedIds}
                   hoveredId={hoveredId}
                   onAddComponent={addComponent}
                   onSelectComponent={selectComponent}
                   onHoverComponent={setHoveredId}
+                  onMoveComponents={moveComponents}
                   dataStore={dataStore}
                   setDataStore={setDataStore}
                 />

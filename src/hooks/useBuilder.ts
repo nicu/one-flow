@@ -9,6 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 export const useBuilder = () => {
   const [components, setComponentsState] = useState<BuilderComponent[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   // history stacks
@@ -97,8 +98,114 @@ export const useBuilder = () => {
     [selectedId, setComponents]
   );
 
+  const moveComponents = useCallback(
+    (ids: string[], parentId?: string, index?: number) => {
+      if (!ids || ids.length === 0) return;
+
+      setComponents((prev) => {
+        const idsSet = new Set(ids);
+
+        // Extract matching components and return remaining tree
+        const extract = (
+          nodes: BuilderComponent[]
+        ): { remaining: BuilderComponent[]; extracted: BuilderComponent[] } => {
+          const remaining: BuilderComponent[] = [];
+          const extracted: BuilderComponent[] = [];
+
+          for (const node of nodes) {
+            if (idsSet.has(node.id)) {
+              // collect extracted (deep clone to avoid accidental shared refs)
+              extracted.push(
+                JSON.parse(JSON.stringify(node)) as BuilderComponent
+              );
+              continue;
+            }
+
+            if (node.children) {
+              const childRes = extract(node.children);
+              if (childRes.extracted.length > 0) {
+                extracted.push(...childRes.extracted);
+              }
+              // If some children were removed, create a shallow copy with remaining children
+              if (childRes.remaining.length !== node.children.length) {
+                remaining.push({ ...node, children: childRes.remaining });
+                continue;
+              }
+            }
+
+            remaining.push(node);
+          }
+
+          return { remaining, extracted };
+        };
+
+        const { remaining, extracted } = extract(prev);
+
+        // If no extracted nodes, nothing to do
+        if (extracted.length === 0) return prev;
+
+        // Prevent moving a node into its own descendant: if parentId is inside any extracted node, ignore
+        const containsId = (node: BuilderComponent, id: string): boolean => {
+          if (node.id === id) return true;
+          if (!node.children) return false;
+          return node.children.some((c) => containsId(c, id));
+        };
+
+        if (parentId) {
+          for (const ex of extracted) {
+            if (containsId(ex, parentId)) {
+              // invalid move, return original
+              return prev;
+            }
+          }
+        }
+
+        // Insert extracted items into parent or root at index
+        const insertInto = (
+          nodes: BuilderComponent[],
+          parentId?: string
+        ): BuilderComponent[] => {
+          if (!parentId) {
+            const next = nodes.slice();
+            if (typeof index === "number") {
+              const idx = Math.max(0, Math.min(index, next.length));
+              next.splice(idx, 0, ...extracted);
+            } else {
+              next.push(...extracted);
+            }
+            return next;
+          }
+
+          return nodes.map((node) => {
+            if (node.id === parentId) {
+              const nextChildren = (node.children || []).slice();
+              if (typeof index === "number") {
+                const idx = Math.max(0, Math.min(index, nextChildren.length));
+                nextChildren.splice(idx, 0, ...extracted);
+              } else {
+                nextChildren.push(...extracted);
+              }
+              return { ...node, children: nextChildren };
+            }
+            if (node.children) {
+              return { ...node, children: insertInto(node.children, parentId) };
+            }
+            return node;
+          });
+        };
+
+        const next = insertInto(remaining, parentId);
+        // Select first moved component
+        setSelectedId(extracted[0].id);
+        return next;
+      }, true);
+    },
+    [setComponents]
+  );
+
   const selectComponent = useCallback((id: string | null) => {
     setSelectedId(id);
+    setSelectedIds(id ? [id] : []);
   }, []);
 
   const getSelectedComponent = useCallback((): BuilderComponent | null => {
@@ -132,9 +239,12 @@ export const useBuilder = () => {
   return {
     components,
     selectedId,
+    selectedIds,
+    setSelectedIds,
     addComponent,
     updateComponent,
     removeComponent,
+    moveComponents,
     selectComponent,
     getSelectedComponent,
     setComponents,

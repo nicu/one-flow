@@ -129,4 +129,5 @@ export interface DragItem {
   type: string;
   componentType: ComponentType;
   id?: string;
+  ids?: string[];
 }

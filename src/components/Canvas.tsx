@@ -7,12 +7,14 @@ import { DataContext } from "../contexts/DataContext";
 interface CanvasProps {
   components: BuilderComponent[];
   selectedId: string | null;
+  selectedIds?: string[];
   hoveredId: string | null;
   onAddComponent: (
     type: ComponentType,
     parentId?: string,
     index?: number
   ) => void;
+  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
 
   onSelectComponent: (id: string | null) => void;
   onHoverComponent: (id: string | null) => void;
@@ -23,18 +25,19 @@ interface CanvasProps {
 export const Canvas: React.FC<CanvasProps> = ({
   components,
   selectedId,
+  selectedIds,
   hoveredId,
   onAddComponent,
+  onMoveComponents,
   onSelectComponent,
   onHoverComponent,
   dataStore,
   setDataStore,
 }) => {
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: "COMPONENT",
+    accept: ["COMPONENT", "MOVE_COMPONENT"],
     drop: (item: DragItem, monitor) => {
       // Debug: log whether another nested target already handled the drop
-      // (temporary diagnostic logging — can be removed once root cause is found)
       try {
         // eslint-disable-next-line no-console
         console.debug(
@@ -49,6 +52,10 @@ export const Canvas: React.FC<CanvasProps> = ({
 
       // If a nested drop target already handled this drop, don't add to root.
       if (monitor && monitor.didDrop && monitor.didDrop()) return;
+      if (item.ids && item.ids.length > 0 && onMoveComponents) {
+        onMoveComponents(item.ids, undefined);
+        return;
+      }
       if (item.componentType) {
         // eslint-disable-next-line no-console
         console.debug("Canvas: adding component to root:", item.componentType);
@@ -97,10 +104,12 @@ export const Canvas: React.FC<CanvasProps> = ({
               key={component.id}
               component={component}
               selectedId={selectedId}
+              selectedIds={selectedIds}
               hoveredId={hoveredId}
               onSelect={onSelectComponent}
               onHover={onHoverComponent}
               onAddComponent={onAddComponent}
+              onMoveComponents={onMoveComponents}
             />
           ))
         )}
@@ -119,3 +128,5 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   return content;
 };
+
+export default Canvas;
