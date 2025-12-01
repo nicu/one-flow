@@ -1,0 +1,79 @@
+/* Compact, Figma-like tree styles */
+.tree-root {
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial;
+  font-size: 12px;
+  color: #111827;
+}
+.tree-node-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  user-select: none;
+  /* reserve a border so selecting doesn't shift layout */
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+.tree-node-row .chevron {
+  width: 14px;
+  height: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+}
+.tree-node-row .icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #374151;
+}
+.tree-node-row .label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.tree-node-row .meta {
+  font-size: 11px;
+  color: #6b7280;
+  margin-left: 8px;
+}
+.tree-node-row:hover {
+  background: #f8fafc;
+}
+.tree-node-row.selected {
+  background: linear-gradient(
+    90deg,
+    rgba(99, 102, 241, 0.08),
+    rgba(37, 99, 235, 0.04)
+  );
+  /* show a subtle border color but keep the border width reserved above */
+  border-color: rgba(99, 102, 241, 0.12);
+}
+.tree-node-children {
+  margin-top: 4px;
+}
+.tree-dropzone {
+  height: 8px;
+  margin: 4px 0;
+  border-radius: 4px;
+}
+.tree-dropzone.over {
+  background: rgba(37, 99, 235, 0.12);
+}
+.drag-handle {
+  width: 10px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  margin-right: 6px;
+  cursor: grab;
+}

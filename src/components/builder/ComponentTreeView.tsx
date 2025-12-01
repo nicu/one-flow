@@ -1,6 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { useDrag, useDrop } from "react-dnd";
 import type { BuilderComponent } from "../../types";
+import {
+  Grid as GridIcon,
+  Columns as ColumnsIcon,
+  Image as ImageIcon,
+  Edit as EditIcon,
+  Type as TextIcon,
+  Square as BoxIcon,
+  File as FileIcon,
+} from "lucide-react";
+import "./ComponentTreeView.css";
 
 interface TreeProps {
   components: BuilderComponent[];
@@ -46,6 +56,11 @@ const TreeItem: React.FC<{
     [dragIds]
   );
 
+  // whether this node accepts children (layout-like)
+  const isLayoutNode = ["flex", "grid", "row", "column", "form"].includes(
+    node.type as string
+  );
+
   // Node drop: accept move items (reparent) and new components from palette
   const [{ isOver: nodeOver }, nodeDrop] = useDrop(
     () => ({
@@ -64,11 +79,7 @@ const TreeItem: React.FC<{
       collect: (m) => ({ isOver: m.isOver({ shallow: true }) }),
       canDrop: () => isLayoutNode,
     }),
-    [node.id, onMoveComponents, onAddComponent]
-  );
-  // Only allow dropping into layout containers
-  const isLayoutNode = ["flex", "grid", "row", "column", "form"].includes(
-    node.type as string
+    [node.id, onMoveComponents, onAddComponent, isLayoutNode]
   );
 
   const handleClick = (e: React.MouseEvent) => {
@@ -89,8 +100,11 @@ const TreeItem: React.FC<{
   };
 
   return (
-    <div style={{ paddingLeft: level * 12 }} className="tree-node">
+    <div className="tree-node" style={{ paddingLeft: level * 12 }}>
       <div
+        className={`tree-node-row ${
+          selectedIds.includes(node.id) ? "selected" : ""
+        }`}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ref={(el: any) => {
           if (!el) return;
@@ -102,42 +116,25 @@ const TreeItem: React.FC<{
           } catch {}
         }}
         onClick={handleClick}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          padding: "4px 6px",
-          borderRadius: 6,
-          background: selectedIds.includes(node.id)
-            ? "#eef2ff"
-            : nodeOver
-            ? "#f8fafc"
-            : "transparent",
-          opacity: isDragging ? 0.5 : 1,
-          cursor: "pointer",
-        }}
+        style={{ opacity: isDragging ? 0.6 : 1 }}
       >
-        {node.children && node.children.length > 0 ? (
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setExpanded(!expanded);
-            }}
-            style={{
-              border: "none",
-              background: "transparent",
-              cursor: "pointer",
-            }}
-          >
-            {expanded ? "▾" : "▸"}
-          </button>
-        ) : (
-          <span style={{ width: 12 }} />
-        )}
-        <div style={{ fontSize: 12, color: "#111" }}>{node.type}</div>
-        <div style={{ fontSize: 11, color: "#666", marginLeft: "auto" }}>
-          {node.id.slice(0, 6)}
+        <div
+          className="chevron"
+          onClick={(e) => {
+            e.stopPropagation();
+            setExpanded(!expanded);
+          }}
+        >
+          {node.children && node.children.length > 0
+            ? expanded
+              ? "▾"
+              : "▸"
+            : ""}
         </div>
+        <div className="drag-handle">≡</div>
+        <div className="icon">{renderIconForType(node.type)}</div>
+        <div className="label">{node.type}</div>
+        <div className="meta">{node.id.slice(0, 6)}</div>
       </div>
       {expanded && node.children && node.children.length > 0 && (
         <div>
@@ -176,6 +173,26 @@ const TreeItem: React.FC<{
     </div>
   );
 };
+
+function renderIconForType(type: string) {
+  switch (type) {
+    case "grid":
+      return <GridIcon size={14} />;
+    case "flex":
+      return <ColumnsIcon size={14} />;
+    case "image":
+      return <ImageIcon size={14} />;
+    case "text":
+      return <TextIcon size={14} />;
+    case "button":
+      return <BoxIcon size={14} />;
+    case "input":
+    case "dropdown":
+      return <EditIcon size={14} />;
+    default:
+      return <FileIcon size={14} />;
+  }
+}
 
 export const ComponentTreeView: React.FC<TreeProps> = ({
   components,
