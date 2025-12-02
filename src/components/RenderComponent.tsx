@@ -211,9 +211,9 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     onHover(component.id);
   };
 
-  // Helper to get bound data value
-  const getBoundValue = (fieldId?: string) => {
-    if (!dataContext || !fieldId) return null;
+  // Helper to get bound data value. Accepts a binding object and a fieldId.
+  const getBoundValue = (binding?: any, fieldId?: string) => {
+    if (!dataContext || !fieldId || !binding) return null;
     const { currentItem, currentModelId, dataStore } = dataContext;
 
     // Helper to resolve nested paths like 'name.first'
@@ -227,18 +227,24 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       return cur;
     };
 
-    // If we're inside a list, use the current item
+    // If a current item is present (e.g. inside a list rendering), use it
     if (currentItem && currentModelId) {
       return resolvePath(currentItem, fieldId);
     }
 
-    // Otherwise, try to get from global data (first item)
-    const binding = component.properties.dataBinding;
-    if (binding?.modelId) {
-      const data = dataStore.data[binding.modelId];
-      if (data && data.length > 0) {
-        return resolvePath(data[0], fieldId);
+    // Otherwise resolve from the bound model using optional itemIndex or itemId
+    if (binding?.modelId && dataStore) {
+      const arr = dataStore.data[binding.modelId] || [];
+      let item: any = null;
+      if (typeof binding.itemIndex === "number") {
+        item = arr[Math.max(0, Math.min(binding.itemIndex, arr.length - 1))];
+      } else if (binding.itemId) {
+        item = arr.find((it: any) => it && (it.id === binding.itemId || it._id === binding.itemId));
+      } else if (arr.length > 0) {
+        item = arr[0];
       }
+
+      if (item) return resolvePath(item, fieldId);
     }
 
     return null;
@@ -252,7 +258,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     // Handle data binding for simple components
     const boundProps = { ...props };
     if (binding?.fieldId && dataContext) {
-      const value = getBoundValue(binding.fieldId);
+      const value = getBoundValue(binding, binding.fieldId);
       if (value !== null) {
         // Map field value to component property
         switch (component.type) {

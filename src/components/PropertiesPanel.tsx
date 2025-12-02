@@ -929,6 +929,38 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 </select>
               </div>
             )}
+            {currentBinding?.modelId && (
+              <div className="property-field">
+                <label>Pick Item</label>
+                <select
+                  value={
+                    typeof currentBinding?.itemIndex === "number"
+                      ? String(currentBinding?.itemIndex)
+                      : ""
+                  }
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    const nextIndex = val === "" ? undefined : parseInt(val, 10);
+                    onUpdate({
+                      dataBinding: {
+                        ...(currentBinding || {}),
+                        itemIndex: nextIndex,
+                      },
+                    });
+                  }}
+                >
+                  <option value="">(auto - first)</option>
+                  {((data[currentBinding.modelId] as any[]) || []).map((it: any, idx: number) => {
+                    const label = (it && (it.name || it.title || it.id)) || `#${idx}`;
+                    return (
+                      <option key={idx} value={String(idx)}>
+                        {label}
+                      </option>
+                    );
+                  })}
+                </select>
+              </div>
+            )}
           </>
         )}
         {canBindToModel && (

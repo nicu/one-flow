@@ -113,6 +113,9 @@ export interface ComponentProperties {
     fieldId?: string; // For simple properties (string, number, boolean)
     collectionId?: string; // For arrays/lists (binds to a collection)
     unwrapResults?: boolean; // optional helper for datagrid bindings
+    // Optionally pick a specific item from a bound model's items
+    itemIndex?: number;
+    itemId?: string;
   };
 
   // DataGrid specific

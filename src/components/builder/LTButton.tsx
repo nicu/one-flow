@@ -18,13 +18,29 @@ const LTButton: React.FC<{ properties?: ComponentProperties }> = ({
       if (!obj) return null;
       return path.split(".").reduce((acc, p) => acc?.[p], obj);
     };
+
     if (currentItem) {
       const v = resolvePath(currentItem, binding.fieldId);
       if (v != null) text = String(v);
     } else if (binding?.modelId && dataStore) {
-      const modelArr = dataStore.data[binding.modelId];
-      if (Array.isArray(modelArr) && modelArr.length > 0) {
-        const v = resolvePath(modelArr[0], binding.fieldId);
+      const arr = dataStore.data[binding.modelId] || [];
+      // allow `any` here for flexible runtime binding objects
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      let item: any = null;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const b: any = binding as any;
+      if (typeof b.itemIndex === "number") {
+        item = arr[Math.max(0, Math.min(b.itemIndex, arr.length - 1))];
+      } else if (b.itemId) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        item = arr.find((it: any) => it && (it.id === b.itemId || it._id === b.itemId));
+      } else if (arr.length > 0) {
+        item = arr[0];
+      }
+
+      if (item) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const v = resolvePath(item as any, binding.fieldId);
         if (v != null) text = String(v);
       }
     }
