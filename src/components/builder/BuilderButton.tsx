@@ -7,10 +7,20 @@ interface Props {
   onClick?: () => void;
 }
 
-export const BuilderButton: React.FC<Props> = ({ properties, onClick }) => {
+export const BuilderButton: React.FC<Props & { componentId?: string }> = ({
+  properties,
+  onClick,
+  componentId,
+}) => {
   const style = buildStyle(properties, "button");
+  const className = componentId ? `elem-${componentId}` : undefined;
   return (
-    <button style={style} onClick={onClick}>
+    <button
+      id={className}
+      className={className}
+      style={style}
+      onClick={onClick}
+    >
       {properties.buttonText || "Button"}
     </button>
   );

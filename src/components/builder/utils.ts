@@ -139,15 +139,20 @@ export const buildStyle = (
     // If the user explicitly requests fixed columns, prefer `gridColumns`
     // even when `minColumnWidth` is present. Otherwise, follow the
     // responsive/default behavior (minColumnWidth -> gridColumns).
-    const useFixed = !!(props.useFixedColumns && props.gridColumns);
-    if (!useFixed && props.minColumnWidth) {
+    // Resolve responsive values for grid columns/rows/minColumnWidth
+    const resolvedGridColumns = r(props.gridColumns) as any;
+    const resolvedGridRows = r(props.gridRows) as any;
+    const resolvedMinColumnWidth = r(props.minColumnWidth) as any;
+
+    const useFixed = !!(props.useFixedColumns && resolvedGridColumns);
+    if (!useFixed && resolvedMinColumnWidth) {
       // Responsive grid logic: repeat(auto-fit, minmax(minColumnWidth, 1fr))
-      style.gridTemplateColumns = `repeat(auto-fit, minmax(${props.minColumnWidth}, 1fr))`;
-    } else if (props.gridColumns) {
-      style.gridTemplateColumns = `repeat(${props.gridColumns}, 1fr)`;
+      style.gridTemplateColumns = `repeat(auto-fit, minmax(${resolvedMinColumnWidth}, 1fr))`;
+    } else if (resolvedGridColumns) {
+      style.gridTemplateColumns = `repeat(${resolvedGridColumns}, 1fr)`;
     }
-    if (props.gridRows) {
-      style.gridTemplateRows = `repeat(${props.gridRows}, 1fr)`;
+    if (resolvedGridRows) {
+      style.gridTemplateRows = `repeat(${resolvedGridRows}, 1fr)`;
     }
     if (r(props.gap)) style.gap = r(props.gap) as any;
     // Grid alignment helpers

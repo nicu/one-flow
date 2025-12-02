@@ -7,6 +7,7 @@ interface Props {
   value?: string;
   onChange?: (v: string) => void;
   editable?: boolean;
+  componentId?: string;
 }
 
 export const BuilderDropdown: React.FC<Props> = ({
@@ -14,13 +15,17 @@ export const BuilderDropdown: React.FC<Props> = ({
   value,
   onChange,
   editable,
+  componentId,
 }) => {
   const style = buildStyle(properties, "dropdown");
+  const className = componentId ? `elem-${componentId}` : undefined;
   const opts = properties.options || [];
 
   if (onChange || editable) {
     return (
       <select
+        id={className}
+        className={className}
         style={style}
         value={value ?? ""}
         onChange={(e) => onChange && onChange(e.target.value)}
@@ -36,7 +41,7 @@ export const BuilderDropdown: React.FC<Props> = ({
   }
 
   return (
-    <select style={style} disabled>
+    <select id={className} className={className} style={style} disabled>
       {opts.map((opt, idx) => (
         <option key={idx}>{opt}</option>
       ))}

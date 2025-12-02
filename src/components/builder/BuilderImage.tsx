@@ -6,7 +6,19 @@ interface Props {
   properties: ComponentProperties;
 }
 
-export const BuilderImage: React.FC<Props> = ({ properties }) => {
+export const BuilderImage: React.FC<Props & { componentId?: string }> = ({
+  properties,
+  componentId,
+}) => {
   const style = buildStyle(properties, "image");
-  return <img src={properties.src || ""} alt={properties.alt || ""} style={style} />;
+  const className = componentId ? `elem-${componentId}` : undefined;
+  return (
+    <img
+      id={className}
+      className={className}
+      src={properties.src || ""}
+      alt={properties.alt || ""}
+      style={style}
+    />
+  );
 };

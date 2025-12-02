@@ -12,6 +12,7 @@ import BuilderTabs from "./builder/BuilderTabs";
 import BuilderChip from "./builder/BuilderChip";
 import BuilderForm from "./builder/BuilderForm";
 import { buildStyle } from "./builder/utils";
+import { ensureElementStyles } from "../utils/dynamicStyles";
 import { useDataContext, DataContext } from "../contexts/DataContext";
 import LTBox from "./builder/LTBox";
 import LTTypography from "./builder/LTTypography";
@@ -259,6 +260,13 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     const props = component.properties || ({} as any);
     const binding = props.dataBinding;
     const style = buildStyle(props as any, component.type);
+    // Ensure per-element CSS rules are generated so we can target them
+    // with viewport-scoped selectors (e.g. `[data-viewport="tablet"]`).
+    try {
+      ensureElementStyles(component.id, props || {});
+    } catch (e) {
+      // ignore
+    }
 
     // Handle data binding for simple components
     const boundProps = { ...props };
@@ -286,7 +294,10 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     switch (component.type) {
       case "box":
         return (
-          <BuilderBox properties={component.properties}>
+          <BuilderBox
+            properties={component.properties}
+            componentId={component.id}
+          >
             {component.children &&
               component.children.map((c) => (
                 <RenderComponent
@@ -377,19 +388,29 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         );
 
       case "text":
-        return <BuilderText properties={boundProps} />;
+        return (
+          <BuilderText properties={boundProps} componentId={component.id} />
+        );
 
       case "image":
-        return <BuilderImage properties={boundProps} />;
+        return (
+          <BuilderImage properties={boundProps} componentId={component.id} />
+        );
 
       case "button":
-        return <BuilderButton properties={boundProps} />;
+        return (
+          <BuilderButton properties={boundProps} componentId={component.id} />
+        );
 
       case "input":
-        return <BuilderInput properties={boundProps} />;
+        return (
+          <BuilderInput properties={boundProps} componentId={component.id} />
+        );
 
       case "dropdown":
-        return <BuilderDropdown properties={boundProps} />;
+        return (
+          <BuilderDropdown properties={boundProps} componentId={component.id} />
+        );
 
       case "form":
         return (
@@ -437,7 +458,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         }
 
         return (
-          <BuilderDataGrid properties={component.properties} rows={rows} />
+          <BuilderDataGrid
+            properties={component.properties}
+            rows={rows}
+            componentId={component.id}
+          />
         );
       }
 
@@ -453,7 +478,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
           if (data && data.length > 0) {
             // Render children for each item in the collection
             return (
-              <div style={style}>
+              <div
+                id={`elem-${component.id}`}
+                className={`elem-${component.id}`}
+                style={style}
+              >
                 {data.map((item: any, index: number) => (
                   <div
                     key={`${component.id}-item-${index}`}
@@ -498,7 +527,11 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         // drop at the end.
         if (component.type === "grid") {
           return (
-            <div style={style}>
+            <div
+              id={`elem-${component.id}`}
+              className={`elem-${component.id}`}
+              style={style}
+            >
               {children.map((child, cidx) => (
                 <RenderComponent
                   key={child.id ?? `${component.id}-child-${cidx}`}

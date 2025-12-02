@@ -8,6 +8,7 @@ interface Props {
   onChange?: (v: string) => void;
   editable?: boolean;
   showLabel?: boolean;
+  componentId?: string;
 }
 
 export const BuilderInput: React.FC<Props> = ({
@@ -16,11 +17,15 @@ export const BuilderInput: React.FC<Props> = ({
   onChange,
   editable,
   showLabel = true,
+  componentId,
 }) => {
   const style = buildStyle(properties, "input");
   const inputType = properties.inputType || "text";
+  const className = componentId ? `elem-${componentId}` : undefined;
   const inputElement = (props: any) => (
     <input
+      id={className}
+      className={className}
       type={inputType}
       placeholder={properties.placeholder || ""}
       style={style}

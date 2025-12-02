@@ -29,8 +29,10 @@ const ResponsiveField: React.FC<{
 
   const getSingle = () => {
     if (!value) return "";
-    if (typeof value === "object")
+    if (typeof value === "object") {
+      // prefer desktop -> tablet -> mobile
       return value.desktop ?? value.tablet ?? value.mobile ?? "";
+    }
     return String(value);
   };
 
@@ -71,7 +73,7 @@ const ResponsiveField: React.FC<{
                     : value || "";
                 onUpdate({ [propName]: single });
               } else {
-                // expand: set all breakpoints to current single value
+                // expand: set all breakpoints to current single value (use current single)
                 const single = getSingle();
                 onUpdate({
                   [propName]: {
@@ -699,15 +701,133 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <div className="property-group">
             <h4>Grid Layout</h4>
             <div className="property-field">
-              <label>Columns (Fixed)</label>
-              <input
-                type="number"
-                value={properties.gridColumns || 2}
-                onChange={(e) =>
-                  onUpdate({ gridColumns: parseInt(e.target.value) })
-                }
-                min="1"
-              />
+              <label
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span>Columns</span>
+                <small style={{ fontSize: 12, color: "#666" }}>
+                  Responsive
+                </small>
+              </label>
+              {/* Responsive columns editor: single number or per-breakpoint numbers */}
+              {(() => {
+                const value = properties.gridColumns;
+                const isObj =
+                  value && typeof value === "object" && !Array.isArray(value);
+                const singleVal = isObj
+                  ? value.desktop ?? value.tablet ?? value.mobile ?? ""
+                  : value ?? "";
+                return (
+                  <div
+                    style={{ display: "flex", gap: 8, alignItems: "center" }}
+                  >
+                    {!isObj ? (
+                      <input
+                        type="number"
+                        value={singleVal}
+                        onChange={(e) =>
+                          onUpdate({
+                            gridColumns: parseInt(e.target.value) || 0,
+                          })
+                        }
+                        min={1}
+                      />
+                    ) : (
+                      <>
+                        <input
+                          type="number"
+                          placeholder="mobile"
+                          value={(value as any).mobile ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridColumns: {
+                                mobile: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                                tablet: (value as any).tablet || undefined,
+                                desktop: (value as any).desktop || undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                        <input
+                          type="number"
+                          placeholder="tablet"
+                          value={(value as any).tablet ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridColumns: {
+                                mobile: (value as any).mobile || undefined,
+                                tablet: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                                desktop: (value as any).desktop || undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                        <input
+                          type="number"
+                          placeholder="desktop"
+                          value={(value as any).desktop ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridColumns: {
+                                mobile: (value as any).mobile || undefined,
+                                tablet: (value as any).tablet || undefined,
+                                desktop: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                      </>
+                    )}
+                    <label style={{ fontSize: 12 }}>
+                      <input
+                        type="checkbox"
+                        checked={!!isObj}
+                        onChange={(e) => {
+                          const next = e.target.checked;
+                          if (!next) {
+                            // collapse to single: prefer desktop -> tablet -> mobile
+                            const single = isObj
+                              ? value.desktop ??
+                                value.tablet ??
+                                value.mobile ??
+                                ""
+                              : value || "";
+                            onUpdate({
+                              gridColumns: single
+                                ? parseInt(single as any)
+                                : undefined,
+                            });
+                          } else {
+                            // expand: set all breakpoints to current single value
+                            const base = singleVal || 1;
+                            onUpdate({
+                              gridColumns: {
+                                mobile: parseInt(base as any) || 1,
+                                tablet: parseInt(base as any) || 1,
+                                desktop: parseInt(base as any) || 1,
+                              },
+                            });
+                          }
+                        }}
+                      />
+                      Responsive
+                    </label>
+                  </div>
+                );
+              })()}
               <small style={{ fontSize: "10px", color: "#666" }}>
                 Tip: If you also set a Min Column Width, responsive mode may
                 override the fixed column count.
@@ -743,14 +863,116 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             </div>
             <div className="property-field">
               <label>Rows</label>
-              <input
-                type="number"
-                value={properties.gridRows || 2}
-                onChange={(e) =>
-                  onUpdate({ gridRows: parseInt(e.target.value) })
-                }
-                min="1"
-              />
+              {(() => {
+                const value = properties.gridRows;
+                const isObj =
+                  value && typeof value === "object" && !Array.isArray(value);
+                const singleVal = isObj
+                  ? value.desktop ?? value.tablet ?? value.mobile ?? ""
+                  : value ?? "";
+                return (
+                  <div
+                    style={{ display: "flex", gap: 8, alignItems: "center" }}
+                  >
+                    {!isObj ? (
+                      <input
+                        type="number"
+                        value={singleVal}
+                        onChange={(e) =>
+                          onUpdate({ gridRows: parseInt(e.target.value) || 0 })
+                        }
+                        min={1}
+                      />
+                    ) : (
+                      <>
+                        <input
+                          type="number"
+                          placeholder="mobile"
+                          value={(value as any).mobile ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridRows: {
+                                mobile: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                                tablet: (value as any).tablet || undefined,
+                                desktop: (value as any).desktop || undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                        <input
+                          type="number"
+                          placeholder="tablet"
+                          value={(value as any).tablet ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridRows: {
+                                mobile: (value as any).mobile || undefined,
+                                tablet: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                                desktop: (value as any).desktop || undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                        <input
+                          type="number"
+                          placeholder="desktop"
+                          value={(value as any).desktop ?? ""}
+                          onChange={(e) =>
+                            onUpdate({
+                              gridRows: {
+                                mobile: (value as any).mobile || undefined,
+                                tablet: (value as any).tablet || undefined,
+                                desktop: e.target.value
+                                  ? parseInt(e.target.value)
+                                  : undefined,
+                              },
+                            })
+                          }
+                          min={1}
+                        />
+                      </>
+                    )}
+                    <label style={{ fontSize: 12 }}>
+                      <input
+                        type="checkbox"
+                        checked={!!isObj}
+                        onChange={(e) => {
+                          const next = e.target.checked;
+                          if (!next) {
+                            const single = isObj
+                              ? value.desktop ??
+                                value.tablet ??
+                                value.mobile ??
+                                ""
+                              : value || "";
+                            onUpdate({
+                              gridRows: single
+                                ? parseInt(single as any)
+                                : undefined,
+                            });
+                          } else {
+                            const base = singleVal || 1;
+                            onUpdate({
+                              gridRows: {
+                                mobile: parseInt(base as any) || 1,
+                                tablet: parseInt(base as any) || 1,
+                                desktop: parseInt(base as any) || 1,
+                              },
+                            });
+                          }
+                        }}
+                      />
+                      Responsive
+                    </label>
+                  </div>
+                );
+              })()}
             </div>
             <div className="property-field">
               <label>Gap</label>

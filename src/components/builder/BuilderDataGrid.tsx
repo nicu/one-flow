@@ -7,12 +7,15 @@ import Chip from "@mui/material/Chip";
 interface BuilderDataGridProps {
   properties: ComponentProperties;
   rows?: any[];
+  componentId?: string;
 }
 
 export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
   properties,
   rows = [],
+  componentId,
 }) => {
+  const className = componentId ? `elem-${componentId}` : undefined;
   const formatCellValue = (val: unknown): string => {
     if (val == null) return "";
     if (typeof val === "object") {
@@ -82,7 +85,11 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
   const pageSize = properties.pageSize || 5;
 
   return (
-    <div style={{ width: "100%", height: properties.height || 400 }}>
+    <div
+      id={className}
+      className={className}
+      style={{ width: "100%", height: properties.height || 400 }}
+    >
       <DataGrid
         rows={rows || []}
         columns={inferredColumns}

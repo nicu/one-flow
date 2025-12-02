@@ -78,8 +78,8 @@ export interface ComponentProperties {
   alignContent?: string;
   gap?: string;
   flexWrap?: "nowrap" | "wrap" | "wrap-reverse";
-  gridColumns?: number;
-  gridRows?: number;
+  gridColumns?: number | { mobile?: number; tablet?: number; desktop?: number };
+  gridRows?: number | { mobile?: number; tablet?: number; desktop?: number };
   minColumnWidth?: string; // For responsive grid (auto-fit)
   // When true, prefer `gridColumns` (fixed columns) even if
   // `minColumnWidth` is set. Useful when author wants deterministic

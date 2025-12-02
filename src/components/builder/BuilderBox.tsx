@@ -7,7 +7,8 @@ import { useBreakpoint } from "../../hooks/useBreakpoint";
 const BuilderBox: React.FC<{
   properties?: ComponentProperties;
   children?: React.ReactNode;
-}> = ({ properties, children }) => {
+  componentId?: string;
+}> = ({ properties, children, componentId }) => {
   const props = properties || ({} as ComponentProperties);
   const { theme } = useTheme();
   const { breakpoint } = useBreakpoint();
@@ -19,7 +20,13 @@ const BuilderBox: React.FC<{
     ...(style as React.CSSProperties),
   };
 
-  return <div style={mergedStyle}>{children}</div>;
+  const className = componentId ? `elem-${componentId}` : undefined;
+
+  return (
+    <div id={className} className={className} style={mergedStyle}>
+      {children}
+    </div>
+  );
 };
 
 export default BuilderBox;

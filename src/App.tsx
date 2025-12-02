@@ -328,6 +328,18 @@ function App() {
     "desktop"
   );
 
+  // Keep a `data-viewport` attribute on the root so CSS rules scoped by
+  // `[data-viewport="..."] .elem-<id>` apply when the user toggles the
+  // editor viewport. This attribute is lightweight and purely presentational
+  // for CSS matching.
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute("data-viewport", viewport);
+    } catch (e) {
+      // ignore in SSR / non-browser
+    }
+  }, [viewport]);
+
   const getViewportWidth = () => {
     switch (viewport) {
       case "mobile":
