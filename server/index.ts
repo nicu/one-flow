@@ -46,7 +46,33 @@ COLOR / THEME
 - Use hex color values. When simulating an existing site, attempt to pick likely primary/secondary colors and set 'backgroundColor' and 'color' appropriately. Use muted greys for secondary text (e.g., "#6b7280") and stronger accents for calls-to-action (e.g., "#2563eb").
 
 RESPONSIVENESS
-- When appropriate, include responsive hints: use "width: 100%" for fluid containers and explicit pixel widths for fixed panels (e.g., "360px"). For component variants, prefer layouts that degrade gracefully to narrow widths.
+- When appropriate, include responsive hints: use "width: 100%" for fluid containers and explicit pixel widths for fixed panels (e.g., "360px"). Prefer layouts that degrade gracefully to narrow widths.
+
+USING BREAKPOINT-KEYED PROPS (important)
+- To support the OneFlow builder's responsive props, when a property should vary by device width return it as an object keyed by the breakpoint names: "mobile", "tablet", and "desktop".
+- Example: a title that is 22px on mobile, 32px on tablet, and 48px on desktop should be represented as:
+  "fontSize": { "mobile": "22px", "tablet": "32px", "desktop": "48px" }
+
+- Supported properties for breakpoint-objects: "padding", "margin", "width", "height", "fontSize", "flexDirection", "flex" (shorthand), "gap", and other style values you want to make responsive.
+
+- When using breakpoint objects for layout direction, use string values like "column" or "row":
+  "flexDirection": { "mobile": "column", "tablet": "row", "desktop": "row" }
+
+- If a property should be identical across breakpoints you may return a single string value instead of an object (the frontend will treat that as the same value for all breakpoints).
+
+- Prefer these fallbacks when thinking about breakpoints: mobile < 768px, tablet 768–1023px, desktop >= 1024px. Use percentage widths for fluid behavior (e.g., "100%" on mobile) and pixel widths for fixed panels.
+
+- When returning responsive objects, include only the breakpoints you need. The frontend will fallback from desktop -> tablet -> mobile when resolving values.
+
+EXAMPLE (responsive hero title):
+{
+  "type": "text",
+  "props": {
+    "content": "Create pixel-perfect sites",
+    "fontSize": { "mobile": "22px", "tablet": "32px", "desktop": "48px" },
+    "fontWeight": 800
+  }
+}
 
 JSON OUTPUT REQUIREMENTS
 - If producing a single top-level component, return an object with 'type', 'props', and 'children'.
