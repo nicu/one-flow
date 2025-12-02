@@ -4,15 +4,15 @@ import { buildStyle } from "./utils";
 import { useTheme } from "../../theme";
 import { useBreakpoint } from "../../hooks/useBreakpoint";
 
-const LTBox: React.FC<{
+const BuilderBox: React.FC<{
   properties?: ComponentProperties;
   children?: React.ReactNode;
 }> = ({ properties, children }) => {
   const props = properties || ({} as ComponentProperties);
   const { theme } = useTheme();
   const { breakpoint } = useBreakpoint();
-  const style = buildStyle(props as any, "lt-box", breakpoint);
-  // ensure background and spacing use theme defaults when not provided
+  const style = buildStyle(props as any, "box", breakpoint);
+
   const mergedStyle: React.CSSProperties = {
     background: props.backgroundColor ?? theme?.colors?.background,
     padding: props.padding ?? undefined,
@@ -22,4 +22,4 @@ const LTBox: React.FC<{
   return <div style={mergedStyle}>{children}</div>;
 };
 
-export default LTBox;
+export default BuilderBox;

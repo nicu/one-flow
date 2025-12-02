@@ -16,6 +16,127 @@ interface PropertiesPanelProps {
   onBindToEnclosingProvider?: () => void;
 }
 
+// Small responsive field editor: single value or per-breakpoint values
+const ResponsiveField: React.FC<{
+  label: string;
+  propName: string;
+  value?: any;
+  onUpdate: (v: any) => void;
+  placeholder?: string;
+}> = ({ label, propName, value, onUpdate, placeholder }) => {
+  const isObject = value && typeof value === "object" && !Array.isArray(value);
+  const [responsive, setResponsive] = useState<boolean>(!!isObject);
+
+  const getSingle = () => {
+    if (!value) return "";
+    if (typeof value === "object")
+      return value.desktop ?? value.tablet ?? value.mobile ?? "";
+    return String(value);
+  };
+
+  const updateSingle = (v: string) => onUpdate({ [propName]: v });
+
+  const updateResponsive = (next: Record<string, string>) =>
+    // remove empty keys
+    onUpdate({
+      [propName]: Object.fromEntries(
+        Object.entries(next).filter(([, val]) => val !== "")
+      ),
+    });
+
+  const obj = isObject ? (value as Record<string, string>) : {};
+
+  return (
+    <div className="property-field">
+      <label
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <span>{label}</span>
+        <label style={{ fontSize: 12 }}>
+          <input
+            type="checkbox"
+            checked={responsive}
+            onChange={(e) => {
+              const next = e.target.checked;
+              setResponsive(next);
+              if (!next) {
+                // collapse to single value (prefer desktop -> tablet -> mobile)
+                const single =
+                  value && typeof value === "object"
+                    ? value.desktop ?? value.tablet ?? value.mobile ?? ""
+                    : value || "";
+                onUpdate({ [propName]: single });
+              } else {
+                // expand: set all breakpoints to current single value
+                const single = getSingle();
+                onUpdate({
+                  [propName]: {
+                    mobile: single,
+                    tablet: single,
+                    desktop: single,
+                  },
+                });
+              }
+            }}
+          />{" "}
+          Responsive
+        </label>
+      </label>
+      {!responsive ? (
+        <input
+          type="text"
+          value={getSingle()}
+          placeholder={placeholder}
+          onChange={(e) => updateSingle(e.target.value)}
+        />
+      ) : (
+        <div style={{ display: "flex", gap: 8 }}>
+          <input
+            type="text"
+            placeholder="mobile"
+            value={obj.mobile || ""}
+            onChange={(e) =>
+              updateResponsive({
+                mobile: e.target.value,
+                tablet: obj.tablet || "",
+                desktop: obj.desktop || "",
+              })
+            }
+          />
+          <input
+            type="text"
+            placeholder="tablet"
+            value={obj.tablet || ""}
+            onChange={(e) =>
+              updateResponsive({
+                mobile: obj.mobile || "",
+                tablet: e.target.value,
+                desktop: obj.desktop || "",
+              })
+            }
+          />
+          <input
+            type="text"
+            placeholder="desktop"
+            value={obj.desktop || ""}
+            onChange={(e) =>
+              updateResponsive({
+                mobile: obj.mobile || "",
+                tablet: obj.tablet || "",
+                desktop: e.target.value,
+              })
+            }
+          />
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   component,
   onUpdate,
@@ -85,45 +206,45 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </select>
         </div>
 
-        <div className="property-field">
-          <label>Width</label>
-          <input
-            type="text"
-            value={properties.width || ""}
-            onChange={(e) => onUpdate({ width: e.target.value })}
-            placeholder="auto"
-          />
-        </div>
+        <ResponsiveField
+          label="Width"
+          propName="width"
+          value={properties.width}
+          onUpdate={(v) =>
+            onUpdate(v.width ? { width: v.width } : { width: "" })
+          }
+          placeholder="auto"
+        />
 
-        <div className="property-field">
-          <label>Height</label>
-          <input
-            type="text"
-            value={properties.height || ""}
-            onChange={(e) => onUpdate({ height: e.target.value })}
-            placeholder="auto"
-          />
-        </div>
+        <ResponsiveField
+          label="Height"
+          propName="height"
+          value={properties.height}
+          onUpdate={(v) =>
+            onUpdate(v.height ? { height: v.height } : { height: "" })
+          }
+          placeholder="auto"
+        />
 
-        <div className="property-field">
-          <label>Padding</label>
-          <input
-            type="text"
-            value={properties.padding || ""}
-            onChange={(e) => onUpdate({ padding: e.target.value })}
-            placeholder="0px"
-          />
-        </div>
+        <ResponsiveField
+          label="Padding"
+          propName="padding"
+          value={properties.padding}
+          onUpdate={(v) =>
+            onUpdate(v.padding ? { padding: v.padding } : { padding: "" })
+          }
+          placeholder="0px"
+        />
 
-        <div className="property-field">
-          <label>Margin</label>
-          <input
-            type="text"
-            value={properties.margin || ""}
-            onChange={(e) => onUpdate({ margin: e.target.value })}
-            placeholder="0px"
-          />
-        </div>
+        <ResponsiveField
+          label="Margin"
+          propName="margin"
+          value={properties.margin}
+          onUpdate={(v) =>
+            onUpdate(v.margin ? { margin: v.margin } : { margin: "" })
+          }
+          placeholder="0px"
+        />
 
         <div className="property-field">
           <label>Background Color</label>
@@ -156,10 +277,15 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             </div>
             <div className="property-field">
               <label>Font Size</label>
-              <input
-                type="text"
-                value={properties.fontSize || ""}
-                onChange={(e) => onUpdate({ fontSize: e.target.value })}
+              <ResponsiveField
+                label="Font Size"
+                propName="fontSize"
+                value={properties.fontSize}
+                onUpdate={(v) =>
+                  onUpdate(
+                    v.fontSize ? { fontSize: v.fontSize } : { fontSize: "" }
+                  )
+                }
                 placeholder="16px"
               />
             </div>
@@ -199,10 +325,15 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             </div>
             <div className="property-field">
               <label>Font Size</label>
-              <input
-                type="text"
-                value={properties.fontSize || ""}
-                onChange={(e) => onUpdate({ fontSize: e.target.value })}
+              <ResponsiveField
+                label="Font Size"
+                propName="fontSize"
+                value={properties.fontSize}
+                onUpdate={(v) =>
+                  onUpdate(
+                    v.fontSize ? { fontSize: v.fontSize } : { fontSize: "" }
+                  )
+                }
                 placeholder="16px"
               />
             </div>

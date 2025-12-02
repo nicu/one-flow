@@ -2,6 +2,8 @@ import React from "react";
 import type { ComponentProperties } from "../../types";
 import { useDataContext } from "../../contexts/DataContext";
 import { useTheme } from "../../theme";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { getResponsiveValue } from "../../utils/responsive";
 
 const LTInput: React.FC<{ properties?: ComponentProperties }> = ({
   properties,
@@ -9,6 +11,7 @@ const LTInput: React.FC<{ properties?: ComponentProperties }> = ({
   const props = properties || ({} as ComponentProperties);
   const dataContext = useDataContext();
   const { theme } = useTheme();
+  const { breakpoint } = useBreakpoint();
   const binding = props.dataBinding;
 
   let placeholder = props.placeholder ?? "";
@@ -31,10 +34,13 @@ const LTInput: React.FC<{ properties?: ComponentProperties }> = ({
   }
 
   const style: React.CSSProperties = {
-    padding: "8px 10px",
-    borderRadius: theme?.borderRadius?.input ?? "8px",
+    padding: getResponsiveValue(props.padding ?? "8px 10px", breakpoint) as any,
+    borderRadius: getResponsiveValue(
+      props.borderRadius ?? theme?.borderRadius?.input ?? "8px",
+      breakpoint
+    ) as any,
     border: "1px solid #d1d5db",
-    width: props.width ?? "100%",
+    width: (getResponsiveValue(props.width, breakpoint) as any) ?? "100%",
   };
 
   return <input style={style} placeholder={placeholder} />;

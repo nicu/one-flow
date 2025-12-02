@@ -2,6 +2,8 @@ import React from "react";
 import type { ComponentProperties } from "../../types";
 import { useDataContext } from "../../contexts/DataContext";
 import { useTheme } from "../../theme";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
+import { getResponsiveValue } from "../../utils/responsive";
 
 const LTTypography: React.FC<{ properties?: ComponentProperties }> = ({
   properties,
@@ -9,6 +11,7 @@ const LTTypography: React.FC<{ properties?: ComponentProperties }> = ({
   const props = properties || ({} as ComponentProperties);
   const dataContext = useDataContext();
   const { theme } = useTheme();
+  const { breakpoint } = useBreakpoint();
   const binding = props.dataBinding;
 
   let text = props.text ?? "Text";
@@ -48,9 +51,14 @@ const LTTypography: React.FC<{ properties?: ComponentProperties }> = ({
   }
 
   const style: React.CSSProperties = {
-    fontSize: props.fontSize ?? theme.typography?.fontSize?.base,
-    fontWeight: props.fontWeight ?? 400,
-    color: props.color ?? theme?.colors?.text,
+    fontSize:
+      (getResponsiveValue(props.fontSize, breakpoint) as any) ??
+      theme.typography?.fontSize?.base,
+    fontWeight:
+      (getResponsiveValue(props.fontWeight, breakpoint) as any) ?? 400,
+    color:
+      (getResponsiveValue(props.color, breakpoint) as any) ??
+      theme?.colors?.text,
   };
 
   return <div style={style}>{text}</div>;

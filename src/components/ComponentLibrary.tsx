@@ -82,6 +82,11 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
       icon: <Type size={20} />,
     },
     {
+      type: "box" as AllComponentType,
+      label: "Box",
+      icon: <Square size={20} />,
+    },
+    {
       type: "image" as AllComponentType,
       label: "Image",
       icon: <ImageIcon size={20} />,
@@ -128,43 +133,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
     },
   ];
 
-  const lateralLTComponents = [
-    {
-      type: "lt-box" as AllComponentType,
-      label: "LT Box",
-      icon: <Square size={18} />,
-    },
-    {
-      type: "lt-typography" as AllComponentType,
-      label: "LT Typography",
-      icon: <Type size={18} />,
-    },
-    {
-      type: "lt-button" as AllComponentType,
-      label: "LT Button",
-      icon: <Square size={18} />,
-    },
-    {
-      type: "lt-input" as AllComponentType,
-      label: "LT Input",
-      icon: <Edit size={18} />,
-    },
-    {
-      type: "lt-card" as AllComponentType,
-      label: "LT Card",
-      icon: <GridIcon size={18} />,
-    },
-    {
-      type: "lt-image" as AllComponentType,
-      label: "LT Image",
-      icon: <ImageIcon size={18} />,
-    },
-    {
-      type: "lt-data-provider" as AllComponentType,
-      label: "LT Data Provider",
-      icon: <Columns size={18} />,
-    },
-  ];
+  // LT components intentionally hidden for now — using primitives instead
 
   const layoutComponents = [
     {
@@ -234,14 +203,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
             </div>
           </div>
 
-          <div className="component-section">
-            <h4>Lateral (LT)</h4>
-            <div className="component-grid">
-              {lateralLTComponents.map((comp) => (
-                <ComponentLibraryItem key={String(comp.type)} {...comp} />
-              ))}
-            </div>
-          </div>
+          {/* LT components hidden — authors should use primitives */}
         </>
       )}
 

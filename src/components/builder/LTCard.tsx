@@ -2,6 +2,7 @@ import React from "react";
 import type { ComponentProperties } from "../../types";
 import { useTheme } from "../../theme";
 import { buildStyle } from "./utils";
+import { useBreakpoint } from "../../hooks/useBreakpoint";
 
 const LTCard: React.FC<{
   properties?: ComponentProperties;
@@ -9,7 +10,8 @@ const LTCard: React.FC<{
 }> = ({ properties, children }) => {
   const props = properties || ({} as ComponentProperties);
   const { theme } = useTheme();
-  const style = buildStyle(props as any, "lt-card");
+  const { breakpoint } = useBreakpoint();
+  const style = buildStyle(props as any, "lt-card", breakpoint);
 
   const cardStyle: React.CSSProperties = {
     background: theme?.colors?.background,

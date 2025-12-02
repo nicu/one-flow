@@ -33,6 +33,12 @@ export const theme = {
       xxl: "32px",
     },
   },
+  // Standard breakpoints for responsive props and layout
+  breakpoints: {
+    mobile: 0,
+    tablet: 768,
+    desktop: 1024,
+  },
 };
 
 type ThemeShape = typeof theme;

@@ -1,5 +1,6 @@
 export type ComponentType =
   | "text"
+  | "box"
   | "image"
   | "button"
   | "input"

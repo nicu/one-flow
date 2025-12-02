@@ -1,39 +1,50 @@
 import type { ComponentProperties } from "../../types";
 import { theme } from "../../theme";
+import {
+  getResponsiveValue,
+  getCurrentBreakpoint,
+} from "../../utils/responsive";
 
 export const buildStyle = (
   props: ComponentProperties,
-  type: string
+  type: string,
+  breakpoint?: string
 ): React.CSSProperties => {
   // Defensive: if props is undefined/null, return empty style
   if (!props) return {} as React.CSSProperties;
 
+  const bp = (breakpoint as any) ?? getCurrentBreakpoint();
+
   const style: React.CSSProperties = {};
 
-  // Common
-  if (props.width) style.width = props.width;
-  if (props.height) style.height = props.height;
-  if (props.minWidth) style.minWidth = props.minWidth;
-  if (props.maxWidth) style.maxWidth = props.maxWidth;
-  if (props.minHeight) style.minHeight = props.minHeight;
-  if (props.padding) style.padding = props.padding;
-  if (props.margin) style.margin = props.margin;
-  if (props.backgroundColor) style.backgroundColor = props.backgroundColor;
+  const r = <T>(v?: T | Record<string, any>) =>
+    getResponsiveValue<T>(v as any, bp as any);
+
+  // Common (resolve responsive values)
+  if (r(props.width)) style.width = r(props.width) as any;
+  if (r(props.height)) style.height = r(props.height) as any;
+  if (r(props.minWidth)) style.minWidth = r(props.minWidth) as any;
+  if (r(props.maxWidth)) style.maxWidth = r(props.maxWidth) as any;
+  if (r(props.minHeight)) style.minHeight = r(props.minHeight) as any;
+  if (r(props.padding)) style.padding = r(props.padding) as any;
+  if (r(props.margin)) style.margin = r(props.margin) as any;
+  if (r(props.backgroundColor))
+    style.backgroundColor = r(props.backgroundColor) as any;
 
   // Typography
-  if (props.fontSize) style.fontSize = props.fontSize;
-  if (props.fontWeight) style.fontWeight = props.fontWeight;
-  if (props.color) style.color = props.color;
+  if (r(props.fontSize)) style.fontSize = r(props.fontSize) as any;
+  if (r(props.fontWeight)) style.fontWeight = r(props.fontWeight) as any;
+  if (r(props.color)) style.color = r(props.color) as any;
 
   // New properties
-  if (props.boxShadow) style.boxShadow = props.boxShadow;
-  if (props.objectFit) style.objectFit = props.objectFit;
-  if ((props as any).aspectRatio)
-    style.aspectRatio = (props as any).aspectRatio;
+  if (r(props.boxShadow)) style.boxShadow = r(props.boxShadow) as any;
+  if (r(props.objectFit)) style.objectFit = r(props.objectFit) as any;
+  if (r((props as any).aspectRatio))
+    style.aspectRatio = r((props as any).aspectRatio) as any;
 
   // Border Radius logic
-  if (props.borderRadius) {
-    style.borderRadius = props.borderRadius;
+  if (r(props.borderRadius)) {
+    style.borderRadius = r(props.borderRadius) as any;
   } else {
     // Defaults from theme
     if (type === "button") style.borderRadius = theme.borderRadius.button;
@@ -104,10 +115,11 @@ export const buildStyle = (
     style.display = "flex";
     style.flexDirection =
       props.flexDirection || (type === "column" ? "column" : "row");
-    if (props.gap) style.gap = props.gap;
-    if (props.justifyContent) style.justifyContent = props.justifyContent;
-    if (props.alignItems) style.alignItems = props.alignItems;
-    if (props.flexWrap) style.flexWrap = props.flexWrap;
+    if (r(props.gap)) style.gap = r(props.gap) as any;
+    if (r(props.justifyContent))
+      style.justifyContent = r(props.justifyContent) as any;
+    if (r(props.alignItems)) style.alignItems = r(props.alignItems) as any;
+    if (r(props.flexWrap)) style.flexWrap = r(props.flexWrap) as any;
     // Prevent intrinsic sizing from expanding grid columns: allow
     // these layout containers to shrink and default to filling their
     // available grid cell width.
@@ -137,7 +149,7 @@ export const buildStyle = (
     if (props.gridRows) {
       style.gridTemplateRows = `repeat(${props.gridRows}, 1fr)`;
     }
-    if (props.gap) style.gap = props.gap;
+    if (r(props.gap)) style.gap = r(props.gap) as any;
     // Grid alignment helpers
     if (props.justifyItems) style.justifyItems = props.justifyItems as any;
     // alignItems maps to CSS `align-items` for grid as well

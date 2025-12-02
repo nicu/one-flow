@@ -20,6 +20,7 @@ import LTInput from "./builder/LTInput";
 import LTCard from "./builder/LTCard";
 import LTImage from "./builder/LTImage";
 import LTDataProvider from "./builder/LTDataProvider";
+import BuilderBox from "./builder/BuilderBox";
 
 interface RenderComponentProps {
   component: BuilderComponent;
@@ -55,6 +56,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     "form",
     // treat LT containers as layout-capable so drag & drop works
     "lt-box",
+    "box",
     "lt-card",
     "lt-nav",
     "lt-list",
@@ -282,6 +284,26 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     }
 
     switch (component.type) {
+      case "box":
+        return (
+          <BuilderBox properties={component.properties}>
+            {component.children &&
+              component.children.map((c) => (
+                <RenderComponent
+                  key={c.id}
+                  component={c}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  selectedIds={selectedIds}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
+                />
+              ))}
+          </BuilderBox>
+        );
+
       case "lt-box":
         return (
           <LTBox properties={component.properties}>
