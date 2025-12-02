@@ -73,6 +73,30 @@ export const LTPropertiesPanel: React.FC<LTProps> = ({
   const [selectedColorIdx, setSelectedColorIdx] = useState<number | null>(null);
   const [customColor, setCustomColor] = useState<string>(props.color || "");
 
+  // Normalize color values for <input type="color"> which expects a hex string
+  const colorToHex = (val: string | undefined, fallback = "#000000") => {
+    if (!val) return fallback;
+    const s = String(val).trim();
+    if (s.startsWith("#")) {
+      if (s.length === 4) {
+        return ("#" + s[1] + s[1] + s[2] + s[2] + s[3] + s[3]).toLowerCase();
+      }
+      if (s.length === 7) return s.toLowerCase();
+      return fallback;
+    }
+    const m = s.match(
+      /rgba?\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/i
+    );
+    if (m) {
+      const r = Math.max(0, Math.min(255, parseInt(m[1], 10)));
+      const g = Math.max(0, Math.min(255, parseInt(m[2], 10)));
+      const b = Math.max(0, Math.min(255, parseInt(m[3], 10)));
+      const toHex = (n: number) => n.toString(16).padStart(2, "0");
+      return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+    }
+    return fallback;
+  };
+
   const applySize = (key: string) => {
     setSelectedSizeKey(key);
     if (key === "custom") {
@@ -220,11 +244,12 @@ export const LTPropertiesPanel: React.FC<LTProps> = ({
             </button>
             <input
               type="color"
-              value={
+              value={colorToHex(
                 selectedColorIdx === null
                   ? customColor || "#000000"
-                  : palette[selectedColorIdx]
-              }
+                  : palette[selectedColorIdx],
+                "#000000"
+              )}
               onChange={(e) => {
                 setCustomColor(e.target.value);
                 applyColor(null);

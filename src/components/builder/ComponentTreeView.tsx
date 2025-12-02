@@ -32,6 +32,8 @@ const TreeItem: React.FC<{
   onSelect: (id: string | null) => void;
   onMoveComponents: (ids: string[], parentId?: string, index?: number) => void;
   onAddComponent?: (type: any, parentId?: string, index?: number) => void;
+  globalExpandKey?: number;
+  globalCollapseKey?: number;
 }> = ({
   node,
   level = 0,
@@ -42,8 +44,19 @@ const TreeItem: React.FC<{
   onSelect,
   onMoveComponents,
   onAddComponent,
+  globalExpandKey,
+  globalCollapseKey,
 }) => {
   const [expanded, setExpanded] = useState(true);
+
+  // respond to global expand/collapse triggers
+  useEffect(() => {
+    if (typeof globalExpandKey === "number") setExpanded(true);
+  }, [globalExpandKey]);
+
+  useEffect(() => {
+    if (typeof globalCollapseKey === "number") setExpanded(false);
+  }, [globalCollapseKey]);
 
   // Drag payload: include all selected ids if this node is selected, otherwise just this node
   const dragIds = selectedIds.includes(node.id) ? selectedIds : [node.id];
@@ -226,6 +239,9 @@ export const ComponentTreeView: React.FC<TreeProps> = ({
   onMoveComponents,
   onAddComponent,
 }) => {
+  const [expandKey, setExpandKey] = React.useState(0);
+  const [collapseKey, setCollapseKey] = React.useState(0);
+
   useEffect(() => {
     // sync single selection into multi-selection when external selectedId changes
     if (!selectedId) {
@@ -237,29 +253,54 @@ export const ComponentTreeView: React.FC<TreeProps> = ({
   }, [selectedId]);
 
   return (
-    <div style={{ maxHeight: "60vh", overflow: "auto" }}>
-      {components.length === 0 ? (
-        <div style={{ padding: 8, color: "#666" }}>No components</div>
-      ) : (
-        components.map((c, idx) => (
-          <React.Fragment key={c.id}>
-            <TreeDropZone
-              parentId={undefined}
-              index={idx}
-              onMove={onMoveComponents}
-              onAdd={onAddComponent}
-            />
-            <TreeItem
-              node={c}
-              selectedIds={selectedIds}
-              setSelectedIds={setSelectedIds}
-              onSelect={onSelect}
-              onMoveComponents={onMoveComponents}
-              onAddComponent={onAddComponent}
-            />
-          </React.Fragment>
-        ))
-      )}
+    <div>
+      <div
+        style={{ display: "flex", gap: 8, padding: 8, alignItems: "center" }}
+      >
+        <button
+          className="btn-ghost"
+          onClick={() => setExpandKey((k) => k + 1)}
+          title="Expand all nodes"
+          style={{ fontSize: 12, padding: "6px 8px" }}
+        >
+          Expand All
+        </button>
+        <button
+          className="btn-ghost"
+          onClick={() => setCollapseKey((k) => k + 1)}
+          title="Collapse all nodes"
+          style={{ fontSize: 12, padding: "6px 8px" }}
+        >
+          Collapse All
+        </button>
+        <div style={{ flex: 1 }} />
+      </div>
+      <div>
+        {components.length === 0 ? (
+          <div style={{ padding: 8, color: "#666" }}>No components</div>
+        ) : (
+          components.map((c, idx) => (
+            <React.Fragment key={c.id}>
+              <TreeDropZone
+                parentId={undefined}
+                index={idx}
+                onMove={onMoveComponents}
+                onAdd={onAddComponent}
+              />
+              <TreeItem
+                node={c}
+                selectedIds={selectedIds}
+                setSelectedIds={setSelectedIds}
+                onSelect={onSelect}
+                onMoveComponents={onMoveComponents}
+                onAddComponent={onAddComponent}
+                globalExpandKey={expandKey}
+                globalCollapseKey={collapseKey}
+              />
+            </React.Fragment>
+          ))
+        )}
+      </div>
     </div>
   );
 };

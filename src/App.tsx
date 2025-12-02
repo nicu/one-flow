@@ -12,6 +12,7 @@ import { ExportModal } from "./components/ExportModal";
 import { DataPanel } from "./components/DataPanel";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
 import { exportToReact, exportToJSON } from "./utils/export";
+import aiToBuilder from "./utils/aiToBuilder";
 import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";
 import dataBindingPage from "./examples/dataBinding.json";
@@ -227,13 +228,29 @@ function App() {
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
-      // Note: Delete should remove the selected component even when inputs are focused
+      // Note: Delete should remove the selected component generally,
+      // but Backspace must behave normally when focus is inside an input/textarea/contentEditable.
 
       // Undo/redo (Cmd/Ctrl+Z) handled above; keep that behavior
       const isMod = e.ctrlKey || e.metaKey;
       if (isMod) return;
 
-      // The Delete or Backspace keys remove the selected component.
+      const target = e.target as HTMLElement | null;
+      const tag = target?.tagName?.toLowerCase() ?? "";
+      const isEditableField = !!(
+        target &&
+        (target.isContentEditable ||
+          tag === "input" ||
+          tag === "textarea" ||
+          tag === "select")
+      );
+
+      // If Backspace and focus is inside an editable field, let it behave normally
+      if (e.key === "Backspace") {
+        if (isEditableField) return;
+      }
+
+      // The Delete key (or Backspace when not focused on input) removes the selected component.
       if (e.key === "Delete" || e.key === "Backspace") {
         if (selectedId) {
           e.preventDefault();
@@ -435,8 +452,46 @@ function App() {
                   const reader = new FileReader();
                   reader.onload = (event) => {
                     try {
-                      const json = JSON.parse(event.target?.result as string);
-                      setComponents(json as unknown as BuilderComponent[]);
+                      const parsed = JSON.parse(event.target?.result as string);
+
+                      // Normalize common shapes produced by the assistant or saved
+                      // export files. Accept:
+                      // - an array of components
+                      // - a single component object
+                      // - an object like { ui: ... } produced by the assistant endpoint
+                      // Use `aiToBuilder` to convert single-node responses into a
+                      // BuilderComponent[] so the rest of the app can assume an array.
+                      let toSet: BuilderComponent[] = [];
+                      if (Array.isArray(parsed)) {
+                        toSet = parsed as BuilderComponent[];
+                      } else if (parsed && typeof parsed === "object") {
+                        // assistant-wrapped response
+                        if (parsed.ui) {
+                          const u = parsed.ui;
+                          if (Array.isArray(u)) toSet = u as BuilderComponent[];
+                          else toSet = aiToBuilder(u);
+                        } else if (
+                          parsed.components &&
+                          Array.isArray(parsed.components)
+                        ) {
+                          toSet = parsed.components as BuilderComponent[];
+                        } else if (parsed.type) {
+                          toSet = aiToBuilder(parsed);
+                        } else {
+                          // Fallback: attempt to convert whatever we received
+                          toSet = aiToBuilder(parsed);
+                        }
+                      }
+
+                      if (!Array.isArray(toSet)) {
+                        console.error(
+                          "Imported JSON could not be normalized to a component array",
+                          parsed
+                        );
+                        return;
+                      }
+
+                      setComponents(toSet);
                       selectComponent(null);
                     } catch (err) {
                       console.error("Failed to import JSON", err);
@@ -581,6 +636,25 @@ function App() {
             };
 
             const remapped = remapIds(newComponents as BuilderComponent[]);
+            // Debug: count nodes helper
+            const countNodes = (
+              items: BuilderComponent[] | undefined
+            ): number => {
+              if (!items || items.length === 0) return 0;
+              let c = 0;
+              for (const it of items) {
+                c += 1;
+                if (it.children) c += countNodes(it.children);
+              }
+              return c;
+            };
+
+            console.info(
+              "[AI] inserting components: top-level count=",
+              remapped.length,
+              "total nodes(estimated)=",
+              countNodes(remapped)
+            );
 
             // Append AI-generated components to the selected layout, or to root if none selected
             setComponents((prev) => {
@@ -591,17 +665,34 @@ function App() {
                   )
                 : false;
 
+              let next: BuilderComponent[];
               if (selected && isLayout) {
                 // append as children of the selected component
                 const appended = replaceChildren(prev, selected.id, [
                   ...(selected.children || []),
                   ...remapped,
                 ]);
-                return appended;
+                next = appended;
+              } else {
+                // otherwise append at root
+                next = [...prev, ...remapped];
               }
 
-              // otherwise append at root
-              return [...prev, ...remapped];
+              // Log resulting counts for debugging
+              try {
+                const prevCount = countNodes(prev);
+                const nextCount = countNodes(next);
+                console.info(
+                  "[AI] components before=",
+                  prevCount,
+                  "after=",
+                  nextCount
+                );
+              } catch (e) {
+                console.info("[AI] components inserted (counts unavailable)");
+              }
+
+              return next;
             });
 
             selectComponent(null);

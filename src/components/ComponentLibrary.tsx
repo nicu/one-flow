@@ -192,8 +192,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
   return (
     <div className="component-library">
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-        <h3 style={{ margin: 0 }}>Library</h3>
-        <div style={{ marginLeft: "auto" }}>
+        <div style={{ marginBottom: "8px" }}>
           <div className="viewport-controls">
             <button
               className={`viewport-btn ${

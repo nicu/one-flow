@@ -129,7 +129,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           <label>Background Color</label>
           <input
             type="color"
-            value={properties.backgroundColor || "#ffffff"}
+            value={colorToHex(properties.backgroundColor, "#ffffff")}
             onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
           />
         </div>
@@ -167,7 +167,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Color</label>
               <input
                 type="color"
-                value={properties.color || "#000000"}
+                value={colorToHex(properties.color, "#000000")}
                 onChange={(e) => onUpdate({ color: e.target.value })}
               />
             </div>
@@ -210,7 +210,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Color</label>
               <input
                 type="color"
-                value={properties.color || "#000000"}
+                value={colorToHex(properties.color, "#000000")}
                 onChange={(e) => onUpdate({ color: e.target.value })}
               />
             </div>
@@ -279,7 +279,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Background Color</label>
               <input
                 type="color"
-                value={properties.buttonColor || "#007bff"}
+                value={colorToHex(properties.buttonColor, "#007bff")}
                 onChange={(e) => onUpdate({ buttonColor: e.target.value })}
               />
             </div>
@@ -287,7 +287,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Text Color</label>
               <input
                 type="color"
-                value={properties.buttonTextColor || "#ffffff"}
+                value={colorToHex(properties.buttonTextColor, "#ffffff")}
                 onChange={(e) => onUpdate({ buttonTextColor: e.target.value })}
               />
             </div>
@@ -1202,4 +1202,32 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       </div>
     </div>
   );
+};
+
+// Normalize color values for <input type="color"> which expects a hex string
+const colorToHex = (val: string | undefined, fallback = "#000000") => {
+  if (!val) return fallback;
+  const s = String(val).trim();
+  if (s.startsWith("#")) {
+    // ensure 7-char #rrggbb
+    if (s.length === 4) {
+      // #rgb -> #rrggbb
+      return ("#" + s[1] + s[1] + s[2] + s[2] + s[3] + s[3]).toLowerCase();
+    }
+    if (s.length === 7) return s.toLowerCase();
+    // fallback
+    return fallback;
+  }
+
+  // rgb(...) or rgba(...)
+  const m = s.match(/rgba?\s*\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})/i);
+  if (m) {
+    const r = Math.max(0, Math.min(255, parseInt(m[1], 10)));
+    const g = Math.max(0, Math.min(255, parseInt(m[2], 10)));
+    const b = Math.max(0, Math.min(255, parseInt(m[3], 10)));
+    const toHex = (n: number) => n.toString(16).padStart(2, "0");
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+
+  return fallback;
 };

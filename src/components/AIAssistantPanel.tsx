@@ -1,6 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useAIAssistant } from "../hooks/useAIAssistant";
-import aiToBuilder from "../utils/aiToBuilder";
 import type { BuilderComponent } from "../types";
 
 interface Props {
@@ -11,6 +10,7 @@ interface Props {
 export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
   const { messages, isLoading, error, sendMessage, clearMessages } =
     useAIAssistant();
+  // always insert UI by default
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -19,12 +19,20 @@ export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  const submitInput = () => {
+    if (!input.trim() || isLoading) return;
+    // Always request structured UI and insert it into the page
+    if (onInsertUI) {
+      sendMessage(input, context, { autoInsert: true, onInsert: onInsertUI });
+    } else {
+      sendMessage(input, context);
+    }
+    setInput("");
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim() || isLoading) return;
-    // Send message and request structured UI insertion automatically
-    sendMessage(input, context, { autoInsert: true, onInsert: onInsertUI });
-    setInput("");
+    submitInput();
   };
 
   if (!isOpen) {
@@ -82,7 +90,7 @@ export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
         }}
       >
         <span style={{ fontWeight: 600 }}>🤖 AI Assistant</span>
-        <div style={{ display: "flex", gap: 8 }}>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
           <button
             onClick={clearMessages}
             style={{
@@ -175,8 +183,7 @@ export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
           gap: 8,
         }}
       >
-        <input
-          type="text"
+        <textarea
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask about layouts, components..."
@@ -187,8 +194,18 @@ export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
             borderRadius: 8,
             fontSize: 14,
             outline: "none",
+            resize: "vertical",
+            minHeight: 40,
+            maxHeight: 200,
           }}
           disabled={isLoading}
+          onKeyDown={(e) => {
+            // Enter submits; Shift+Enter inserts newline
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              submitInput();
+            }
+          }}
         />
         <button
           type="submit"

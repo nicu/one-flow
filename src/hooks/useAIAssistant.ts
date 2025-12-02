@@ -21,6 +21,7 @@ export function useAIAssistant() {
       options?: {
         autoInsert?: boolean;
         onInsert?: (components: BuilderComponent[]) => void;
+        stream?: boolean;
       }
     ) => {
       if (!userMessage.trim()) return;
@@ -69,33 +70,36 @@ export function useAIAssistant() {
               const components = aiToBuilder(data.ui) as BuilderComponent[];
               if (components && components.length > 0) {
                 options.onInsert(components);
-                // add a lightweight assistant acknowledgment (do not expose JSON)
+                // acknowledge insertion with a simple 'Done' message
                 const assistantMsg: ChatMessage = {
                   role: "assistant",
-                  content: data.raw
-                    ? String(data.raw).slice(0, 100)
-                    : "Inserted suggestion",
+                  content: "Done",
                 };
                 setMessages((prev) => [...prev, assistantMsg]);
               } else {
+                const assistantContent =
+                  data.text || data.raw || "No structured UI produced";
                 const assistantMsg: ChatMessage = {
                   role: "assistant",
-                  content: data.raw || "No structured UI produced",
+                  content: String(assistantContent),
                 };
                 setMessages((prev) => [...prev, assistantMsg]);
               }
             } catch {
+              const assistantContent =
+                data.text || data.raw || "No structured UI produced";
               const assistantMsg: ChatMessage = {
                 role: "assistant",
-                content: data.raw || "No structured UI produced",
+                content: String(assistantContent),
               };
               setMessages((prev) => [...prev, assistantMsg]);
             }
           } else {
             // fallback: no structured UI, just show raw assistant text
+            const assistantContent = data.text || data.raw || "No response";
             const assistantMsg: ChatMessage = {
               role: "assistant",
-              content: data.raw || "No response",
+              content: String(assistantContent),
             };
             setMessages((prev) => [...prev, assistantMsg]);
           }

@@ -1,0 +1,476 @@
+[
+  {
+    "id": "e280a7a6-0514-4a03-9963-5d8cd3b43da1",
+    "type": "flex",
+    "properties": {
+      "backgroundColor": "#000000",
+      "width": "100%",
+      "color": "#ffffff",
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "aebf0f31-2955-48ca-9d59-9cf3a8b7ce9f",
+        "type": "flex",
+        "properties": {
+          "padding": "16",
+          "width": "100%",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "cb0f25d6-ab62-4e92-8d76-92283c41d4a5",
+            "type": "text",
+            "properties": {
+              "text": "Apple",
+              "fontSize": "18px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "bf4eaea0-501c-4744-9cd2-cd8b7ea4e8b2",
+            "type": "flex",
+            "properties": {
+              "gap": "24",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "5c09ee1a-9efe-4837-b3f5-655f98523017",
+                "type": "text",
+                "properties": {
+                  "text": "Store",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "039cd39b-780c-4332-8cbb-d336b038095f",
+                "type": "text",
+                "properties": {
+                  "text": "Mac",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "de64429a-e6fb-43a9-a46a-0704e478965b",
+                "type": "text",
+                "properties": {
+                  "text": "iPad",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "2a69ccab-77bc-495b-af87-769d314b2ce5",
+                "type": "text",
+                "properties": {
+                  "text": "iPhone",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "dbfb821f-d5e4-425e-aeb8-612d7847cc5a",
+                "type": "text",
+                "properties": {
+                  "text": "Watch",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "d1400a7c-5304-44db-ab41-dc994612f6f1",
+                "type": "text",
+                "properties": {
+                  "text": "AirPods",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "8fe00a6f-24ab-4077-b7a8-b63589f19b20",
+                "type": "text",
+                "properties": {
+                  "text": "TV & Home",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "6866d0c2-ff22-4262-9231-09881633f87b",
+                "type": "text",
+                "properties": {
+                  "text": "Entertainment",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "cbcdf148-6ad6-4277-92da-a2c23bf3ebf5",
+                "type": "text",
+                "properties": {
+                  "text": "Accessories",
+                  "fontSize": "14px"
+                }
+              },
+              {
+                "id": "df7aa9a7-3cb7-4b99-a937-fb6a3190af5f",
+                "type": "text",
+                "properties": {
+                  "text": "Support",
+                  "fontSize": "14px"
+                }
+              }
+            ]
+          },
+          {
+            "id": "39dbb05c-2c4e-4a81-98e1-1547e2ad018a",
+            "type": "flex",
+            "properties": {
+              "gap": "16",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "3c3e65bb-bfbc-4db4-8541-967fb84229c6",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Button",
+                  "buttonColor": "transparent",
+                  "backgroundColor": "transparent",
+                  "width": "24px",
+                  "height": "24px"
+                }
+              },
+              {
+                "id": "c9783ff0-0afa-47e8-8e90-7e6ef9a95880",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Button",
+                  "buttonColor": "transparent",
+                  "backgroundColor": "transparent",
+                  "width": "24px",
+                  "height": "24px"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "58d7a4db-aee7-44e6-beba-3f32025a85d4",
+        "type": "flex",
+        "properties": {
+          "padding": "64",
+          "width": "100%",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "b6ef1774-4ee1-48a4-aa11-da94e4e462ee",
+            "type": "text",
+            "properties": {
+              "text": "iPhone 15 Pro",
+              "fontSize": "64px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "22ac9319-904d-4a49-a4b3-a8983a5e327f",
+            "type": "text",
+            "properties": {
+              "text": "Titanium. So strong. So light. So Pro.",
+              "fontSize": "24px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "8e488463-cc9e-4d18-af12-0425a39d119d",
+            "type": "flex",
+            "properties": {
+              "gap": "16",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "588aff87-cded-4b82-9644-f80b3b245052",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Learn more",
+                  "buttonColor": "transparent",
+                  "buttonTextColor": "#0071e3",
+                  "backgroundColor": "transparent",
+                  "color": "#0071e3",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              },
+              {
+                "id": "ebdd3886-e6a3-4e2e-b821-b03d4ab23773",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Buy",
+                  "buttonColor": "#0071e3",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "8px 16px",
+                  "backgroundColor": "#0071e3",
+                  "borderRadius": "18",
+                  "color": "#ffffff",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              }
+            ]
+          },
+          {
+            "id": "002b09a0-2cd1-4570-ad78-e7675dacf614",
+            "type": "image",
+            "properties": {
+              "alt": "iPhone 15 Pro",
+              "src": "https://source.unsplash.com/random/800x600?iphone",
+              "width": "600px",
+              "height": "450px",
+              "borderRadius": "24"
+            }
+          }
+        ]
+      },
+      {
+        "id": "65eebca1-4d61-47b4-bfeb-eeac91a80bfb",
+        "type": "flex",
+        "properties": {
+          "padding": "64",
+          "width": "100%",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "139ce523-e923-4577-84ae-382ddad79532",
+            "type": "text",
+            "properties": {
+              "text": "MacBook Air",
+              "fontSize": "64px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "940f60e6-94ad-4549-afb1-86a91f75b192",
+            "type": "text",
+            "properties": {
+              "text": "Supercharged by M2.",
+              "fontSize": "24px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "90225553-9fa4-486c-b17c-a54af1e46003",
+            "type": "flex",
+            "properties": {
+              "gap": "16",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "fa74d909-8592-487c-b330-2ad64551db6b",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Learn more",
+                  "buttonColor": "transparent",
+                  "buttonTextColor": "#0071e3",
+                  "backgroundColor": "transparent",
+                  "color": "#0071e3",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              },
+              {
+                "id": "44bb4608-576c-42b3-b530-4384fa80e600",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Buy",
+                  "buttonColor": "#0071e3",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "8px 16px",
+                  "backgroundColor": "#0071e3",
+                  "borderRadius": "18",
+                  "color": "#ffffff",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              }
+            ]
+          },
+          {
+            "id": "28855107-54fc-4e2d-8e51-0517047ecc22",
+            "type": "image",
+            "properties": {
+              "alt": "MacBook Air",
+              "src": "https://source.unsplash.com/random/800x600?macbook",
+              "width": "600px",
+              "height": "450px",
+              "borderRadius": "24"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c6097fcc-a562-4331-beb3-7d263f9f70c3",
+        "type": "flex",
+        "properties": {
+          "padding": "64",
+          "width": "100%",
+          "flexDirection": "column",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "792737dc-c201-4186-97f4-9f967511d544",
+            "type": "text",
+            "properties": {
+              "text": "iPad Pro",
+              "fontSize": "64px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "612445ce-02b8-4730-8783-0bab37bd7ca4",
+            "type": "text",
+            "properties": {
+              "text": "Supercharged by M2.",
+              "fontSize": "24px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "a52ff98c-5c2b-421e-a1c7-6cac6ac0c9f5",
+            "type": "flex",
+            "properties": {
+              "gap": "16",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "1d8ed6ac-be9a-4496-bf6f-3938c7d0fe9a",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Learn more",
+                  "buttonColor": "transparent",
+                  "buttonTextColor": "#0071e3",
+                  "backgroundColor": "transparent",
+                  "color": "#0071e3",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              },
+              {
+                "id": "f9e8d460-86b1-4493-96aa-6cf30ad08562",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Buy",
+                  "buttonColor": "#0071e3",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "8px 16px",
+                  "backgroundColor": "#0071e3",
+                  "borderRadius": "18",
+                  "color": "#ffffff",
+                  "fontSize": "17px",
+                  "fontWeight": "400"
+                }
+              }
+            ]
+          },
+          {
+            "id": "f5ad0920-58ab-47f4-bb64-efaea14a3ec2",
+            "type": "image",
+            "properties": {
+              "alt": "iPad Pro",
+              "src": "https://source.unsplash.com/random/800x600?ipad",
+              "width": "600px",
+              "height": "450px",
+              "borderRadius": "24"
+            }
+          }
+        ]
+      },
+      {
+        "id": "1b3f9494-5d31-4fcd-8a75-c249e95977a1",
+        "type": "flex",
+        "properties": {
+          "padding": "32",
+          "backgroundColor": "#111111",
+          "width": "100%",
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "de03132a-0a8a-4bb9-8b67-e85548996eb8",
+            "type": "text",
+            "properties": {
+              "text": "Copyright © 2023 Apple Inc. All rights reserved.",
+              "color": "#86868b",
+              "fontSize": "12px"
+            }
+          },
+          {
+            "id": "2f9262c3-c1a1-432f-885f-9434bf3ad4ab",
+            "type": "flex",
+            "properties": {
+              "gap": "24",
+              "flexDirection": "row"
+            },
+            "children": [
+              {
+                "id": "5236432d-76e6-4f3a-a7b2-d83135527ae6",
+                "type": "text",
+                "properties": {
+                  "text": "Privacy Policy",
+                  "color": "#86868b",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "b96c9a76-dc63-4a7a-a493-b708a607cd31",
+                "type": "text",
+                "properties": {
+                  "text": "Terms of Use",
+                  "color": "#86868b",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "413d99fd-186f-4d44-970f-8ae916587daa",
+                "type": "text",
+                "properties": {
+                  "text": "Sales and Refunds",
+                  "color": "#86868b",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "9ad3a996-1d20-4d22-9e44-0b909e1a6190",
+                "type": "text",
+                "properties": {
+                  "text": "Legal",
+                  "color": "#86868b",
+                  "fontSize": "12px"
+                }
+              },
+              {
+                "id": "4e0519cc-8d6c-4c35-8e56-8ecc92eee787",
+                "type": "text",
+                "properties": {
+                  "text": "Site Map",
+                  "color": "#86868b",
+                  "fontSize": "12px"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

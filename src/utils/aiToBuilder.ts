@@ -42,23 +42,33 @@ function mapStyleToProperties(style: Record<string, any>) {
   if (style.margin) props.margin = String(style.margin);
   if (style.backgroundColor)
     props.backgroundColor = String(style.backgroundColor);
-  if (style.width)
-    props.width =
-      typeof style.width === "number"
-        ? `${style.width}px`
-        : String(style.width);
-  if (style.height)
-    props.height =
-      typeof style.height === "number"
-        ? `${style.height}px`
-        : String(style.height);
+
+  // Normalize width/height: numbers -> px, numeric-strings -> px, keep units if present
+  const normalizeSize = (val: any) => {
+    if (val == null) return undefined;
+    if (typeof val === "number") return `${val}px`;
+    if (typeof val === "string") {
+      const s = val.trim();
+      // already has a unit like % or px or em
+      if (
+        /^\d+(?:\.\d+)?%$/.test(s) ||
+        /px$/.test(s) ||
+        /em$/.test(s) ||
+        /rem$/.test(s)
+      )
+        return s;
+      // plain numeric string -> treat as px
+      if (/^\d+(?:\.\d+)?$/.test(s)) return `${s}px`;
+      return s;
+    }
+    return String(val);
+  };
+
+  if (style.width) props.width = normalizeSize(style.width);
+  if (style.height) props.height = normalizeSize(style.height);
   if (style.borderRadius) props.borderRadius = String(style.borderRadius);
   if (style.color) props.color = String(style.color);
-  if (style.fontSize)
-    props.fontSize =
-      typeof style.fontSize === "number"
-        ? `${style.fontSize}px`
-        : String(style.fontSize);
+  if (style.fontSize) props.fontSize = normalizeSize(style.fontSize);
   if (style.fontWeight) props.fontWeight = String(style.fontWeight);
   if (style.gap) props.gap = String(style.gap);
   if (style.flexDirection) props.flexDirection = style.flexDirection;
@@ -106,9 +116,12 @@ function convertNode(node: any): BuilderComponent {
   }
 
   if (type === "image") {
-    properties.src =
+    const src =
       incomingProps.src ?? incomingProps.url ?? incomingProps.props?.src;
     properties.alt = incomingProps.alt ?? "";
+    // Use the original image URL directly. Do not rewrite to a local proxy.
+    // Keep the incoming src value as-is (it may be an absolute URL or a path).
+    properties.src = src;
   }
 
   // copy style block into properties where applicable
@@ -126,7 +139,15 @@ function convertNode(node: any): BuilderComponent {
 
   // children
   const childrenNodes: BuilderComponent[] = [];
-  const rawChildren = node.children || [];
+  // Accept children from common locations the model may use: `children`,
+  // `components`, or nested under `props`/`props.style` etc. This makes the
+  // converter robust to different JSON shapes returned by various models.
+  const rawChildren =
+    node.children ||
+    node.components ||
+    node.props?.children ||
+    node.props?.components ||
+    [];
   for (const child of rawChildren) {
     if (typeof child === "string") {
       childrenNodes.push({
@@ -143,11 +164,11 @@ function convertNode(node: any): BuilderComponent {
     id,
     type: type,
     properties,
-    children:
-      childrenNodes.length > 0 &&
-      ["flex", "grid", "row", "column", "form"].includes(type)
-        ? childrenNodes
-        : undefined,
+    // Attach children for any node that has them. The renderer will decide
+    // whether to treat the node as a layout container or render children
+    // inline. This ensures generated trees aren't lost simply because the
+    // node type isn't a known layout type.
+    children: childrenNodes.length > 0 ? childrenNodes : undefined,
   };
 
   return builder;
@@ -164,6 +185,26 @@ export function aiToBuilder(root: any): BuilderComponent[] {
     return root.children.map((c: any) => convertNode(c));
   }
   // single node
+  // Heuristic: if the model returned a single top-level layout wrapper
+  // (e.g. a full-page `flex` with width:100% and multiple section children),
+  // unwrap and return its children as top-level components so the Layers
+  // panel shows each major section separately.
+  try {
+    const topType = String((root.type || "").toLowerCase());
+    const style = (root.props && root.props.style) || root.style || {};
+    const width = style.width || "";
+    if (
+      ["flex", "column", "row"].includes(topType) &&
+      Array.isArray(root.children) &&
+      root.children.length > 0 &&
+      (String(width).trim() === "100%" || String(width).trim() === "100")
+    ) {
+      return root.children.map((c: any) => convertNode(c));
+    }
+  } catch {
+    // ignore and fall back to single node
+  }
+
   return [convertNode(root)];
 }
 
