@@ -12,12 +12,14 @@ const LTDataProvider: React.FC<{
   // property `providerId` references a model id exposed by DataProvidersContext
   const providerId =
     (properties as any)?.providerId || properties?.dataBinding?.modelId;
-
-  // build a simple DataStore-shaped object from dp.models
+  // If a providerId is set and exists in DataProvidersContext, expose only
+  // that model to children. This scopes child components to see only the
+  // data the provider explicitly exposes (not the global app models).
   const data: Record<string, any[]> = {};
   const models = [] as any[];
-  for (const key of Object.keys(dp.models)) {
-    const model = dp.models[key];
+
+  if (providerId && dp.models && dp.models[providerId]) {
+    const model = dp.models[providerId];
     models.push({
       id: model.id,
       name: model.name,
@@ -36,10 +38,11 @@ const LTDataProvider: React.FC<{
     data,
   };
 
-  // When providerId is set and corresponds to a model, we will not set
-  // currentItem (children can use dataBinding.collectionId etc.)
+  const contextValue: any = { dataStore };
+  if (providerId) contextValue.currentModelId = providerId;
+
   return (
-    <DataContext.Provider value={{ dataStore }}>
+    <DataContext.Provider value={contextValue}>
       <div style={{ border: "1px dashed rgba(0,0,0,0.06)", padding: 8 }}>
         {children}
       </div>

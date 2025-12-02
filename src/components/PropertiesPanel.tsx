@@ -13,6 +13,7 @@ interface PropertiesPanelProps {
   onDelete?: () => void;
   dataStore?: DataStore;
   onGenerateForm?: (modelId: string) => void;
+  onBindToEnclosingProvider?: () => void;
 }
 
 export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
@@ -21,6 +22,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   onDelete,
   dataStore,
   onGenerateForm,
+  onBindToEnclosingProvider,
 }) => {
   const [selectedModelForForm, setSelectedModelForForm] = useState<string>("");
   // Ensure hooks order stability: call `useDataProviders` at the top level
@@ -827,7 +829,25 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
     return (
       <div className="property-group">
-        <h4>Data Binding</h4>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <h4 style={{ margin: 0 }}>Data Binding</h4>
+          {onBindToEnclosingProvider && component && (
+            <button
+              className="btn-ghost"
+              onClick={() => onBindToEnclosingProvider()}
+              title="Bind this component to the nearest enclosing LT Data Provider"
+              style={{ fontSize: 12, padding: "6px 8px" }}
+            >
+              Bind to enclosing provider
+            </button>
+          )}
+        </div>
 
         {canBindToCollection && (
           <div className="property-field">
@@ -899,11 +919,13 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   <option value="">None</option>
                   {models
                     .find((m) => m.id === currentBinding.modelId)
-                    ?.fields.map((field) => (
-                      <option key={field.id} value={field.id}>
-                        {field.name} ({field.type})
-                      </option>
-                    ))}
+                    ?.fields.map(
+                      (field: { id: string; name: string; type: string }) => (
+                        <option key={field.id} value={field.id}>
+                          {field.name} ({field.type})
+                        </option>
+                      )
+                    )}
                 </select>
               </div>
             )}

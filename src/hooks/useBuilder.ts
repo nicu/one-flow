@@ -428,14 +428,39 @@ const addToParent = (
       // it wasn't initialized (this happens for LT containers created
       // before we started treating them as layout components).
       const nextChildren = (component.children || []).slice();
+
+      // If the parent is an LT Data Provider and it exposes a specific
+      // model, pre-bind the new child's dataBinding.modelId to that
+      // provider so children added directly into a provider default to
+      // using the provider's data without manual selection.
+      const newChild = { ...newComponent } as any;
+      try {
+        if (component.type === "lt-data-provider") {
+          const provId =
+            (component.properties as any)?.providerId ||
+            (component.properties as any)?.dataBinding?.modelId;
+          if (provId) {
+            newChild.properties = {
+              ...(newChild.properties || {}),
+              dataBinding: {
+                ...(newChild.properties?.dataBinding || {}),
+                modelId: provId,
+              },
+            };
+          }
+        }
+      } catch (e) {
+        // ignore
+      }
+
       if (
         typeof index === "number" &&
         index >= 0 &&
         index <= nextChildren.length
       ) {
-        nextChildren.splice(index, 0, newComponent);
+        nextChildren.splice(index, 0, newChild);
       } else {
-        nextChildren.push(newComponent);
+        nextChildren.push(newChild);
       }
       return {
         ...component,

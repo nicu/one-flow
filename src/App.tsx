@@ -46,6 +46,56 @@ function App() {
 
   const selectedComponent = getSelectedComponent();
 
+  // Find the ancestor path for a component id, returning array of ancestor
+  // components from root -> immediate parent. If not found, returns null.
+  const findAncestorPath = (
+    nodes: BuilderComponent[],
+    targetId: string,
+    path: BuilderComponent[] = []
+  ): BuilderComponent[] | null => {
+    for (const node of nodes) {
+      if (node.id === targetId) return path;
+      if (node.children) {
+        const res = findAncestorPath(node.children, targetId, [...path, node]);
+        if (res) return res;
+      }
+    }
+    return null;
+  };
+
+  // Bind the currently selected component to the nearest enclosing
+  // `lt-data-provider` by setting the child's `properties.dataBinding.modelId`
+  // to the provider's model id (if one exists). This is a convenience used
+  // from the Properties panel.
+  const bindSelectedToEnclosingProvider = () => {
+    if (!selectedId) return window.alert("No component selected");
+    const path = findAncestorPath(components, selectedId);
+    if (!path) return window.alert("No enclosing provider found");
+
+    // Find the nearest provider starting from the end of the path (closest parent)
+    for (let i = path.length - 1; i >= 0; i--) {
+      const ancestor = path[i];
+      if (ancestor.type === "lt-data-provider") {
+        const provId =
+          (ancestor.properties as any)?.providerId ||
+          (ancestor.properties as any)?.dataBinding?.modelId;
+        if (!provId)
+          return window.alert("Enclosing provider has no model selected");
+
+        // Apply binding to selected component
+        updateComponent(selectedId, {
+          dataBinding: {
+            ...(selectedComponent?.properties.dataBinding || {}),
+            modelId: provId,
+          },
+        });
+        return;
+      }
+    }
+
+    return window.alert("No enclosing provider found");
+  };
+
   const handleExport = () => {
     setIsExportModalOpen(true);
   };
@@ -411,7 +461,7 @@ function App() {
                 setSelectedIds={setSelectedIds}
                 onSelect={selectComponent}
                 onMoveComponents={moveComponents}
-                onAddComponent={addComponent}
+                onAddComponent={addComponent as any}
               />
             </aside>
           )}
@@ -472,6 +522,7 @@ function App() {
                 onDelete={() => selectedId && removeComponent(selectedId)}
                 dataStore={dataStore}
                 onGenerateForm={generateFormFromModel}
+                onBindToEnclosingProvider={bindSelectedToEnclosingProvider}
               />
             </aside>
           )}
