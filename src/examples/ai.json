@@ -1,0 +1,96 @@
+[
+  {
+    "id": "e8a3c4b9-4a70-4af1-8b46-57aa304ee9f6",
+    "type": "flex",
+    "properties": {
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "c11edb22-c2ca-410c-a725-8beba74e9273",
+        "type": "row",
+        "properties": {},
+        "children": [
+          {
+            "id": "e2cb77b5-b754-44be-b15c-9c37fc21bd43",
+            "type": "image",
+            "properties": {
+              "src": "logo.png",
+              "alt": ""
+            }
+          },
+          {
+            "id": "e9407018-383c-47cd-a026-e58570f833c1",
+            "type": "text",
+            "properties": {
+              "text": "Welcome to Our Service",
+              "fontSize": "24",
+              "fontWeight": "bold"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5034a24d-178c-42b7-b859-2064e72a6285",
+        "type": "column",
+        "properties": {},
+        "children": [
+          {
+            "id": "8db9a863-cbd8-42be-b5f9-2b052cd9cfdd",
+            "type": "text",
+            "properties": {
+              "text": "Discover Our Features",
+              "fontSize": "18",
+              "fontWeight": "bold"
+            }
+          },
+          {
+            "id": "af8e6537-cd18-475b-9ce1-dd99f6b7fda5",
+            "type": "grid",
+            "properties": {
+              "gridColumns": 3
+            },
+            "children": [
+              {
+                "id": "71dc4fa5-8d36-4aad-b88b-9c9403a8d5c3",
+                "type": "text",
+                "properties": {
+                  "text": "Feature 1"
+                }
+              },
+              {
+                "id": "889f2747-6a74-4557-9cce-b41344b218da",
+                "type": "text",
+                "properties": {
+                  "text": "Feature 2"
+                }
+              },
+              {
+                "id": "eb86d899-ddd5-4cbe-bb30-1110424d333a",
+                "type": "text",
+                "properties": {
+                  "text": "Feature 3"
+                }
+              }
+            ]
+          },
+          {
+            "id": "9df64d62-6489-4b8e-a4e6-75a1416bd15f",
+            "type": "button",
+            "properties": {
+              "buttonText": "Get Started"
+            }
+          }
+        ]
+      },
+      {
+        "id": "8e985fad-a3b0-4a71-a2e5-b55c38907f68",
+        "type": "text",
+        "properties": {
+          "text": "Contact Us: support@example.com",
+          "fontSize": "12"
+        }
+      }
+    ]
+  }
+]

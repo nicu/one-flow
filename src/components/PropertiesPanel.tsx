@@ -940,7 +940,8 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   }
                   onChange={(e) => {
                     const val = e.target.value;
-                    const nextIndex = val === "" ? undefined : parseInt(val, 10);
+                    const nextIndex =
+                      val === "" ? undefined : parseInt(val, 10);
                     onUpdate({
                       dataBinding: {
                         ...(currentBinding || {}),
@@ -950,14 +951,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                   }}
                 >
                   <option value="">(auto - first)</option>
-                  {((data[currentBinding.modelId] as any[]) || []).map((it: any, idx: number) => {
-                    const label = (it && (it.name || it.title || it.id)) || `#${idx}`;
-                    return (
-                      <option key={idx} value={String(idx)}>
-                        {label}
-                      </option>
-                    );
-                  })}
+                  {((data[currentBinding.modelId] as any[]) || []).map(
+                    (it: any, idx: number) => {
+                      const label =
+                        (it && (it.name || it.title || it.id)) || `#${idx}`;
+                      return (
+                        <option key={idx} value={String(idx)}>
+                          {label}
+                        </option>
+                      );
+                    }
+                  )}
                 </select>
               </div>
             )}

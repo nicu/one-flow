@@ -12,7 +12,12 @@ import {
   ArrowDown,
 } from "lucide-react";
 import ComponentTreeView from "./builder/ComponentTreeView";
-import type { Dispatch, SetStateAction } from "react";
+import {
+  useState,
+  type ComponentType,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 
 interface ComponentLibraryProps {
   components?: BuilderComponent[];
@@ -72,6 +77,9 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
   onMoveComponents = () => {},
   onAddComponent = () => {},
 }) => {
+  const [activeTab, setActiveTab] = useState<"components" | "layers">(
+    "components"
+  );
   const primitiveComponents = [
     { type: "text" as ComponentType, label: "Text", icon: <Type size={20} /> },
     {
@@ -184,47 +192,69 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
 
   return (
     <div className="component-library">
-      <h3>Components</h3>
-
-      <div className="component-section">
-        <h4>Primitives</h4>
-        <div className="component-grid">
-          {primitiveComponents.map((comp) => (
-            <ComponentLibraryItem key={comp.type} {...comp} />
-          ))}
+      <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+        <h3 style={{ margin: 0 }}>Library</h3>
+        <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
+          <button
+            className={`tab-btn ${activeTab === "components" ? "active" : ""}`}
+            onClick={() => setActiveTab("components")}
+          >
+            Components
+          </button>
+          <button
+            className={`tab-btn ${activeTab === "layers" ? "active" : ""}`}
+            onClick={() => setActiveTab("layers")}
+          >
+            Layers
+          </button>
         </div>
       </div>
 
-      <div className="component-section">
-        <h4>Layout</h4>
-        <div className="component-grid">
-          {layoutComponents.map((comp) => (
-            <ComponentLibraryItem key={comp.type} {...comp} />
-          ))}
-        </div>
-      </div>
+      {activeTab === "components" && (
+        <>
+          <div className="component-section">
+            <h4>Primitives</h4>
+            <div className="component-grid">
+              {primitiveComponents.map((comp) => (
+                <ComponentLibraryItem key={comp.type} {...comp} />
+              ))}
+            </div>
+          </div>
 
-      <div className="component-section">
-        <h4>Lateral (LT)</h4>
-        <div className="component-grid">
-          {lateralLTComponents.map((comp) => (
-            <ComponentLibraryItem key={comp.type} {...comp} />
-          ))}
-        </div>
-      </div>
+          <div className="component-section">
+            <h4>Layout</h4>
+            <div className="component-grid">
+              {layoutComponents.map((comp) => (
+                <ComponentLibraryItem key={comp.type} {...comp} />
+              ))}
+            </div>
+          </div>
 
-      <div style={{ marginTop: 12 }}>
-        <h4>Hierarchy</h4>
-        <ComponentTreeView
-          components={components}
-          selectedId={selectedId}
-          selectedIds={selectedIds}
-          setSelectedIds={setSelectedIds}
-          onSelect={onSelect}
-          onMoveComponents={onMoveComponents}
-          onAddComponent={onAddComponent}
-        />
-      </div>
+          <div className="component-section">
+            <h4>Lateral (LT)</h4>
+            <div className="component-grid">
+              {lateralLTComponents.map((comp) => (
+                <ComponentLibraryItem key={comp.type} {...comp} />
+              ))}
+            </div>
+          </div>
+        </>
+      )}
+
+      {activeTab === "layers" && (
+        <div style={{ marginTop: 12 }}>
+          <h4>Layers</h4>
+          <ComponentTreeView
+            components={components}
+            selectedId={selectedId}
+            selectedIds={selectedIds}
+            setSelectedIds={setSelectedIds}
+            onSelect={onSelect}
+            onMoveComponents={onMoveComponents}
+            onAddComponent={onAddComponent}
+          />
+        </div>
+      )}
     </div>
   );
 };

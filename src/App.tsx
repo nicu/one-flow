@@ -7,6 +7,7 @@ import { useBuilder } from "./hooks/useBuilder";
 import { ComponentLibrary } from "./components/ComponentLibrary";
 import { Canvas } from "./components/Canvas";
 import { PropertiesPanel } from "./components/PropertiesPanel";
+import LTPropertiesPanel from "./components/LTPropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
 import { DataPanel } from "./components/DataPanel";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
@@ -232,8 +233,8 @@ function App() {
       const isMod = e.ctrlKey || e.metaKey;
       if (isMod) return;
 
-      // Only the Delete key removes the selected component. Do not remove on Backspace.
-      if (e.key === "Delete") {
+      // The Delete or Backspace keys remove the selected component.
+      if (e.key === "Delete" || e.key === "Backspace") {
         if (selectedId) {
           e.preventDefault();
           removeComponent(selectedId);
@@ -514,16 +515,27 @@ function App() {
 
           {activeTab === "ui" && (
             <aside className="sidebar right">
-              <PropertiesPanel
-                component={selectedComponent}
-                onUpdate={(props) =>
-                  selectedId && updateComponent(selectedId, props)
-                }
-                onDelete={() => selectedId && removeComponent(selectedId)}
-                dataStore={dataStore}
-                onGenerateForm={generateFormFromModel}
-                onBindToEnclosingProvider={bindSelectedToEnclosingProvider}
-              />
+              {selectedComponent &&
+              String(selectedComponent.type).startsWith("lt-") ? (
+                <LTPropertiesPanel
+                  component={selectedComponent}
+                  onUpdate={(props) =>
+                    selectedId && updateComponent(selectedId, props)
+                  }
+                  onDelete={() => selectedId && removeComponent(selectedId)}
+                />
+              ) : (
+                <PropertiesPanel
+                  component={selectedComponent}
+                  onUpdate={(props) =>
+                    selectedId && updateComponent(selectedId, props)
+                  }
+                  onDelete={() => selectedId && removeComponent(selectedId)}
+                  dataStore={dataStore}
+                  onGenerateForm={generateFormFromModel}
+                  onBindToEnclosingProvider={bindSelectedToEnclosingProvider}
+                />
+              )}
             </aside>
           )}
         </div>

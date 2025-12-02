@@ -33,7 +33,9 @@ const LTButton: React.FC<{ properties?: ComponentProperties }> = ({
         item = arr[Math.max(0, Math.min(b.itemIndex, arr.length - 1))];
       } else if (b.itemId) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        item = arr.find((it: any) => it && (it.id === b.itemId || it._id === b.itemId));
+        item = arr.find(
+          (it: any) => it && (it.id === b.itemId || it._id === b.itemId)
+        );
       } else if (arr.length > 0) {
         item = arr[0];
       }

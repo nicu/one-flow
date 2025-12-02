@@ -239,7 +239,10 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       if (typeof binding.itemIndex === "number") {
         item = arr[Math.max(0, Math.min(binding.itemIndex, arr.length - 1))];
       } else if (binding.itemId) {
-        item = arr.find((it: any) => it && (it.id === binding.itemId || it._id === binding.itemId));
+        item = arr.find(
+          (it: any) =>
+            it && (it.id === binding.itemId || it._id === binding.itemId)
+        );
       } else if (arr.length > 0) {
         item = arr[0];
       }
