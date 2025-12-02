@@ -13,7 +13,7 @@ const PORT = Number(process.env.PORT ?? 4040);
 
 // Ollama config
 const LLM_BASE_URL = process.env.LLM_BASE_URL || "http://localhost:11434";
-const LLM_MODEL = process.env.LLM_MODEL || "phi4";
+const LLM_MODEL = process.env.LLM_MODEL || "qwen3-coder:30b";
 const LLM_API_KEY = process.env.LLM_API_KEY || ""; // not used by Ollama, but kept for symmetry
 
 // ---------- SYSTEM PROMPT ----------
@@ -404,6 +404,31 @@ app.post("/api/assistant/ui", async (req: Request, res: Response) => {
   } catch (err) {
     console.error("[assistant/ui] unexpected error:", err);
     return res.status(502).json({ error: String(err) });
+  }
+});
+
+// LLM / Ollama health endpoint — checks base URL and lists available models
+app.get("/api/llm/health", async (req: Request, res: Response) => {
+  try {
+    const url = `${LLM_BASE_URL}/api/models`;
+    console.log("[LLM] health check", url);
+    const resp = await fetch(url, { method: "GET" });
+    if (!resp.ok) {
+      const text = await resp.text();
+      return res
+        .status(502)
+        .json({ ok: false, status: resp.status, error: text });
+    }
+    const data = await resp.json();
+    return res.json({
+      ok: true,
+      baseUrl: LLM_BASE_URL,
+      model: LLM_MODEL,
+      models: data,
+    });
+  } catch (err) {
+    console.error("[LLM] health check failed:", err);
+    return res.status(502).json({ ok: false, error: String(err) });
   }
 });
 

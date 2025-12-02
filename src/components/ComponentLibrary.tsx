@@ -12,12 +12,7 @@ import {
   ArrowDown,
 } from "lucide-react";
 import ComponentTreeView from "./builder/ComponentTreeView";
-import {
-  useState,
-  type ComponentType,
-  type Dispatch,
-  type SetStateAction,
-} from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 
 interface ComponentLibraryProps {
   components?: BuilderComponent[];
@@ -81,49 +76,53 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
     "components"
   );
   const primitiveComponents = [
-    { type: "text" as ComponentType, label: "Text", icon: <Type size={20} /> },
     {
-      type: "image" as ComponentType,
+      type: "text" as AllComponentType,
+      label: "Text",
+      icon: <Type size={20} />,
+    },
+    {
+      type: "image" as AllComponentType,
       label: "Image",
       icon: <ImageIcon size={20} />,
     },
     {
-      type: "button" as ComponentType,
+      type: "button" as AllComponentType,
       label: "Button",
       icon: <Square size={20} />,
     },
     {
-      type: "input" as ComponentType,
+      type: "input" as AllComponentType,
       label: "Input",
       icon: <Edit size={20} />,
     },
     {
-      type: "form" as ComponentType,
+      type: "form" as AllComponentType,
       label: "Form",
       icon: <Edit size={20} />,
     },
     {
-      type: "dropdown" as ComponentType,
+      type: "dropdown" as AllComponentType,
       label: "Dropdown",
       icon: <ChevronDown size={20} />,
     },
     {
-      type: "datagrid" as ComponentType,
+      type: "datagrid" as AllComponentType,
       label: "Data Grid",
       icon: <GridIcon size={20} />,
     },
     {
-      type: "breadcrumbs" as ComponentType,
+      type: "breadcrumbs" as AllComponentType,
       label: "Breadcrumbs",
       icon: <ChevronDown size={20} />,
     },
     {
-      type: "tabs" as ComponentType,
+      type: "tabs" as AllComponentType,
       label: "Tabs",
       icon: <Columns size={20} />,
     },
     {
-      type: "chip" as ComponentType,
+      type: "chip" as AllComponentType,
       label: "Chip",
       icon: <Columns size={20} />,
     },
@@ -131,37 +130,37 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
 
   const lateralLTComponents = [
     {
-      type: "lt-box" as ComponentType,
+      type: "lt-box" as AllComponentType,
       label: "LT Box",
       icon: <Square size={18} />,
     },
     {
-      type: "lt-typography" as ComponentType,
+      type: "lt-typography" as AllComponentType,
       label: "LT Typography",
       icon: <Type size={18} />,
     },
     {
-      type: "lt-button" as ComponentType,
+      type: "lt-button" as AllComponentType,
       label: "LT Button",
       icon: <Square size={18} />,
     },
     {
-      type: "lt-input" as ComponentType,
+      type: "lt-input" as AllComponentType,
       label: "LT Input",
       icon: <Edit size={18} />,
     },
     {
-      type: "lt-card" as ComponentType,
+      type: "lt-card" as AllComponentType,
       label: "LT Card",
       icon: <GridIcon size={18} />,
     },
     {
-      type: "lt-image" as ComponentType,
+      type: "lt-image" as AllComponentType,
       label: "LT Image",
       icon: <ImageIcon size={18} />,
     },
     {
-      type: "lt-data-provider" as ComponentType,
+      type: "lt-data-provider" as AllComponentType,
       label: "LT Data Provider",
       icon: <Columns size={18} />,
     },
@@ -169,22 +168,22 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
 
   const layoutComponents = [
     {
-      type: "flex" as ComponentType,
+      type: "flex" as AllComponentType,
       label: "Flex",
       icon: <Columns size={20} />,
     },
     {
-      type: "grid" as ComponentType,
+      type: "grid" as AllComponentType,
       label: "Grid",
       icon: <GridIcon size={20} />,
     },
     {
-      type: "row" as ComponentType,
+      type: "row" as AllComponentType,
       label: "Row",
       icon: <ArrowRight size={20} />,
     },
     {
-      type: "column" as ComponentType,
+      type: "column" as AllComponentType,
       label: "Column",
       icon: <ArrowDown size={20} />,
     },
@@ -194,19 +193,25 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
     <div className="component-library">
       <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
         <h3 style={{ margin: 0 }}>Library</h3>
-        <div style={{ marginLeft: "auto", display: "flex", gap: 6 }}>
-          <button
-            className={`tab-btn ${activeTab === "components" ? "active" : ""}`}
-            onClick={() => setActiveTab("components")}
-          >
-            Components
-          </button>
-          <button
-            className={`tab-btn ${activeTab === "layers" ? "active" : ""}`}
-            onClick={() => setActiveTab("layers")}
-          >
-            Layers
-          </button>
+        <div style={{ marginLeft: "auto" }}>
+          <div className="viewport-controls">
+            <button
+              className={`viewport-btn ${
+                activeTab === "components" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("components")}
+            >
+              Components
+            </button>
+            <button
+              className={`viewport-btn ${
+                activeTab === "layers" ? "active" : ""
+              }`}
+              onClick={() => setActiveTab("layers")}
+            >
+              Layers
+            </button>
+          </div>
         </div>
       </div>
 
@@ -216,7 +221,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
             <h4>Primitives</h4>
             <div className="component-grid">
               {primitiveComponents.map((comp) => (
-                <ComponentLibraryItem key={comp.type} {...comp} />
+                <ComponentLibraryItem key={String(comp.type)} {...comp} />
               ))}
             </div>
           </div>
@@ -225,7 +230,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
             <h4>Layout</h4>
             <div className="component-grid">
               {layoutComponents.map((comp) => (
-                <ComponentLibraryItem key={comp.type} {...comp} />
+                <ComponentLibraryItem key={String(comp.type)} {...comp} />
               ))}
             </div>
           </div>
@@ -234,7 +239,7 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
             <h4>Lateral (LT)</h4>
             <div className="component-grid">
               {lateralLTComponents.map((comp) => (
-                <ComponentLibraryItem key={comp.type} {...comp} />
+                <ComponentLibraryItem key={String(comp.type)} {...comp} />
               ))}
             </div>
           </div>
