@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDataProviders } from "../contexts/DataProvidersContext";
 import type {
   BuilderComponent,
   ComponentProperties,
@@ -22,6 +23,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   onGenerateForm,
 }) => {
   const [selectedModelForForm, setSelectedModelForForm] = useState<string>("");
+  // Ensure hooks order stability: call `useDataProviders` at the top level
+  // so we don't conditionally call hooks inside nested render helpers.
+  const dp = useDataProviders();
   if (!component) {
     return (
       <div className="properties-panel">
@@ -33,7 +37,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     );
   }
 
-  const { properties, type } = component;
+  const { properties = {} as ComponentProperties, type } = component;
 
   const renderStyleProperties = () => (
     <div className="property-group">
@@ -133,6 +137,52 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
 
   const renderTypeSpecificProperties = () => {
     switch (type) {
+      case "lt-data-provider":
+        return <LTDataProviderEditor />;
+
+      case "lt-typography":
+        return (
+          <div className="property-group">
+            <h4>Text</h4>
+            <div className="property-field">
+              <label>Content</label>
+              <textarea
+                value={properties.text || ""}
+                onChange={(e) => onUpdate({ text: e.target.value })}
+                rows={3}
+              />
+            </div>
+            <div className="property-field">
+              <label>Font Size</label>
+              <input
+                type="text"
+                value={properties.fontSize || ""}
+                onChange={(e) => onUpdate({ fontSize: e.target.value })}
+                placeholder="16px"
+              />
+            </div>
+            <div className="property-field">
+              <label>Color</label>
+              <input
+                type="color"
+                value={properties.color || "#000000"}
+                onChange={(e) => onUpdate({ color: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Font Weight</label>
+              <select
+                value={properties.fontWeight || "normal"}
+                onChange={(e) => onUpdate({ fontWeight: e.target.value })}
+              >
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+                <option value="lighter">Lighter</option>
+              </select>
+            </div>
+          </div>
+        );
+
       case "text":
         return (
           <div className="property-group">
@@ -726,9 +776,26 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   };
 
   const renderDataBindingProperties = () => {
-    if (!dataStore) return null;
+    // Merge global dataStore (app) models with DataProviders models (editor)
+    const providerModels = Object.values(dp.models || {}).map((m) => ({
+      id: m.id,
+      name: m.name,
+      fields: Object.keys(m.fields).map((f) => ({
+        id: f,
+        name: f,
+        type: m.fields[f],
+      })),
+    }));
 
-    const { models, data } = dataStore;
+    // Merge and deduplicate models by id to avoid duplicate <option> keys
+    const rawModels = [...(dataStore?.models || []), ...providerModels];
+    const modelMap: Map<string, any> = new Map();
+    for (const m of rawModels) {
+      if (!modelMap.has(m.id)) modelMap.set(m.id, m);
+    }
+    const models = Array.from(modelMap.values());
+    const data = { ...(dataStore?.data || {}) } as Record<string, any[]>;
+    for (const m of Object.values(dp.models || {})) data[m.id] = m.items || [];
     const currentBinding = properties.dataBinding;
 
     // For flex/grid/tab containers, show collection binding
@@ -740,12 +807,18 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       type === "tabs";
 
     // For text/input/button/image/tabs, show field binding
-    const canBindToField =
-      type === "text" ||
-      type === "input" ||
-      type === "button" ||
-      type === "image" ||
-      type === "tabs";
+    const canBindToField = [
+      "text",
+      "input",
+      "button",
+      "image",
+      "tabs",
+      // LT-prefixed equivalents
+      "lt-typography",
+      "lt-input",
+      "lt-button",
+      "lt-image",
+    ].includes(type as string);
 
     // For forms, allow binding to a model (the whole object)
     const canBindToModel = type === "form";
@@ -860,6 +933,191 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             </select>
           </div>
         )}
+      </div>
+    );
+  };
+
+  // Inline editor for LT Data Provider components
+  const LTDataProviderEditor: React.FC = () => {
+    const models = Object.values(dp.models || {});
+    const currentProviderId = (properties as any)?.providerId || "";
+
+    const [editingModelId, setEditingModelId] = useState<string>(
+      currentProviderId || ""
+    );
+    const [newModelId, setNewModelId] = useState("");
+    const [newModelName, setNewModelName] = useState("");
+    const [itemsJson, setItemsJson] = useState("");
+    const [error, setError] = useState<string | null>(null);
+
+    // Sync itemsJson when editingModelId changes
+    React.useEffect(() => {
+      if (editingModelId) {
+        const m = dp.models[editingModelId];
+        setItemsJson(m ? JSON.stringify(m.items || [], null, 2) : "");
+        setNewModelName(m ? m.name : "");
+      } else {
+        setItemsJson("");
+        setNewModelName("");
+      }
+    }, [editingModelId]);
+
+    const handleSelectProvider = (id: string) => {
+      onUpdate({ ...(properties as any), providerId: id });
+    };
+
+    const handleAddModel = () => {
+      if (!newModelId) return setError("Model id is required");
+      let items = [] as any[];
+      try {
+        items = newModelId && itemsJson ? JSON.parse(itemsJson) : [];
+      } catch (e) {
+        return setError("Invalid JSON for items");
+      }
+      dp.addModel({
+        id: newModelId,
+        name: newModelName || newModelId,
+        fields: {},
+        items,
+      });
+      setNewModelId("");
+      setNewModelName("");
+      setItemsJson("");
+      setError(null);
+    };
+
+    const handleSaveModel = () => {
+      if (!editingModelId) return;
+      try {
+        const parsed = itemsJson ? JSON.parse(itemsJson) : [];
+        dp.updateModel(editingModelId, { name: newModelName, items: parsed });
+        setError(null);
+      } catch (e) {
+        setError("Invalid JSON for items");
+      }
+    };
+
+    const handleRemoveModel = (id: string) => {
+      if (!confirm(`Delete model ${id}?`)) return;
+      dp.removeModel(id);
+      if (currentProviderId === id)
+        onUpdate({ ...(properties as any), providerId: undefined });
+      setEditingModelId("");
+    };
+
+    return (
+      <div className="property-group">
+        <h4>Data Provider</h4>
+        <div className="property-field">
+          <label>Provider Model</label>
+          <select
+            value={currentProviderId || ""}
+            onChange={(e) => handleSelectProvider(e.target.value)}
+          >
+            <option value="">(none)</option>
+            {models.map((m) => (
+              <option key={m.id} value={m.id}>
+                {m.name} ({m.id})
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div style={{ marginTop: 8 }}>
+          <strong>Edit models</strong>
+          <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+            <select
+              value={editingModelId}
+              onChange={(e) => setEditingModelId(e.target.value)}
+            >
+              <option value="">Select model to edit...</option>
+              {models.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.name} ({m.id})
+                </option>
+              ))}
+            </select>
+            <button
+              onClick={() => {
+                setEditingModelId("");
+                setNewModelId("");
+                setNewModelName("");
+                setItemsJson("");
+              }}
+            >
+              Clear
+            </button>
+          </div>
+
+          {editingModelId ? (
+            <div style={{ marginTop: 8 }}>
+              <div className="property-field">
+                <label>Model Name</label>
+                <input
+                  type="text"
+                  value={newModelName}
+                  onChange={(e) => setNewModelName(e.target.value)}
+                />
+              </div>
+              <div className="property-field">
+                <label>Items (JSON array)</label>
+                <textarea
+                  rows={6}
+                  value={itemsJson}
+                  onChange={(e) => setItemsJson(e.target.value)}
+                />
+              </div>
+              {error && <div style={{ color: "#b91c1c" }}>{error}</div>}
+              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                <button className="btn-primary" onClick={handleSaveModel}>
+                  Save
+                </button>
+                <button onClick={() => handleRemoveModel(editingModelId)}>
+                  Delete
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div style={{ marginTop: 8 }}>
+              <div style={{ fontSize: 13, color: "#666" }}>
+                Create new model
+              </div>
+              <div className="property-field">
+                <label>Model ID</label>
+                <input
+                  type="text"
+                  value={newModelId}
+                  onChange={(e) => setNewModelId(e.target.value)}
+                  placeholder="slug-id"
+                />
+              </div>
+              <div className="property-field">
+                <label>Model Name</label>
+                <input
+                  type="text"
+                  value={newModelName}
+                  onChange={(e) => setNewModelName(e.target.value)}
+                  placeholder="Friendly name"
+                />
+              </div>
+              <div className="property-field">
+                <label>Items (JSON array)</label>
+                <textarea
+                  rows={6}
+                  value={itemsJson}
+                  onChange={(e) => setItemsJson(e.target.value)}
+                  placeholder='[ { "id": "1", "name": "Alice" } ]'
+                />
+              </div>
+              {error && <div style={{ color: "#b91c1c" }}>{error}</div>}
+              <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
+                <button className="btn-primary" onClick={handleAddModel}>
+                  Add Model
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     );
   };

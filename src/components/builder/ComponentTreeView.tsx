@@ -57,9 +57,19 @@ const TreeItem: React.FC<{
   );
 
   // whether this node accepts children (layout-like)
-  const isLayoutNode = ["flex", "grid", "row", "column", "form"].includes(
-    node.type as string
-  );
+  // include LT-prefixed container types so the tree allows dropping into them
+  const isLayoutNode = [
+    "flex",
+    "grid",
+    "row",
+    "column",
+    "form",
+    "lt-box",
+    "lt-card",
+    "lt-data-provider",
+    "lt-list",
+    "lt-nav",
+  ].includes(node.type as string);
 
   // Node drop: accept move items (reparent) and new components from palette
   const [{ isOver: nodeOver }, nodeDrop] = useDrop(
@@ -189,6 +199,19 @@ function renderIconForType(type: string) {
     case "input":
     case "dropdown":
       return <EditIcon size={14} />;
+    // LT-prefixed variants
+    case "lt-image":
+      return <ImageIcon size={14} />;
+    case "lt-typography":
+      return <TextIcon size={14} />;
+    case "lt-button":
+      return <BoxIcon size={14} />;
+    case "lt-box":
+      return <BoxIcon size={14} />;
+    case "lt-card":
+      return <GridIcon size={14} />;
+    case "lt-data-provider":
+      return <FileIcon size={14} />;
     default:
       return <FileIcon size={14} />;
   }

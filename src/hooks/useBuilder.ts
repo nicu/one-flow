@@ -63,6 +63,10 @@ export const useBuilder = () => {
         id: uuidv4(),
         type,
         properties: getDefaultProperties(type),
+        // Initialize children for layout-capable components. Extend
+        // layout detection to include LT-prefixed container types so
+        // components like `lt-data-provider` can receive children when
+        // created and accept drops from the canvas/palette.
         children: isLayoutComponent(type) ? [] : undefined,
       };
 
@@ -335,11 +339,28 @@ const getDefaultProperties = (type: ComponentType): ComponentProperties => {
       width: "100%",
     },
   };
-  return defaults[type];
+  // Return an empty object for unknown types to avoid undefined
+  // properties on newly created components (helps LT components
+  // which may not be listed in the defaults map yet).
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (defaults as any)[type] || ({} as ComponentProperties);
 };
 
 const isLayoutComponent = (type: ComponentType): boolean => {
-  return ["flex", "grid", "row", "column", "form"].includes(type);
+  // Treat LT container types as layout-capable so they receive
+  // children and behave like other layout components.
+  return [
+    "flex",
+    "grid",
+    "row",
+    "column",
+    "form",
+    "lt-box",
+    "lt-card",
+    "lt-data-provider",
+    "lt-list",
+    "lt-nav",
+  ].includes(type as string);
 };
 
 const findComponentById = (
@@ -402,8 +423,11 @@ const addToParent = (
   index?: number
 ): BuilderComponent[] => {
   return components.map((component) => {
-    if (component.id === parentId && component.children) {
-      const nextChildren = component.children.slice();
+    if (component.id === parentId) {
+      // Ensure the parent has a children array; allow adding even when
+      // it wasn't initialized (this happens for LT containers created
+      // before we started treating them as layout components).
+      const nextChildren = (component.children || []).slice();
       if (
         typeof index === "number" &&
         index >= 0 &&

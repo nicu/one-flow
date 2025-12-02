@@ -1,10 +1,13 @@
-import type { ComponentProperties, ComponentType } from "../../types";
+import type { ComponentProperties } from "../../types";
 import { theme } from "../../theme";
 
 export const buildStyle = (
   props: ComponentProperties,
-  type: ComponentType
+  type: string
 ): React.CSSProperties => {
+  // Defensive: if props is undefined/null, return empty style
+  if (!props) return {} as React.CSSProperties;
+
   const style: React.CSSProperties = {};
 
   // Common

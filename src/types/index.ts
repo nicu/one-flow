@@ -14,6 +14,24 @@ export type ComponentType =
   | "row"
   | "column";
 
+// Added LT-prefixed component types for the new themed component set
+export type LTComponentType =
+  | "lt-box"
+  | "lt-typography"
+  | "lt-button"
+  | "lt-input"
+  | "lt-card"
+  | "lt-image"
+  | "lt-link"
+  | "lt-nav"
+  | "lt-menu"
+  | "lt-menu-item"
+  | "lt-list"
+  | "lt-list-item"
+  | "lt-data-provider";
+
+export type AllComponentType = ComponentType | LTComponentType;
+
 export type AlignmentType = "left" | "center" | "right" | "stretch";
 
 export interface ComponentProperties {
@@ -120,7 +138,7 @@ export interface ComponentProperties {
 
 export interface BuilderComponent {
   id: string;
-  type: ComponentType;
+  type: AllComponentType;
   properties: ComponentProperties;
   children?: BuilderComponent[];
 }

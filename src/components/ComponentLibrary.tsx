@@ -1,5 +1,5 @@
 import { useDrag } from "react-dnd";
-import type { ComponentType, BuilderComponent } from "../types";
+import type { AllComponentType, BuilderComponent } from "../types";
 import {
   Type,
   Image as ImageIcon,
@@ -22,14 +22,14 @@ interface ComponentLibraryProps {
   onSelect?: (id: string | null) => void;
   onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
   onAddComponent?: (
-    type: ComponentType,
+    type: AllComponentType,
     parentId?: string,
     index?: number
   ) => void;
 }
 
 interface ComponentLibraryItemProps {
-  type: ComponentType;
+  type: AllComponentType;
   label: string;
   icon: React.ReactNode;
 }
@@ -121,6 +121,44 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
     },
   ];
 
+  const lateralLTComponents = [
+    {
+      type: "lt-box" as ComponentType,
+      label: "LT Box",
+      icon: <Square size={18} />,
+    },
+    {
+      type: "lt-typography" as ComponentType,
+      label: "LT Typography",
+      icon: <Type size={18} />,
+    },
+    {
+      type: "lt-button" as ComponentType,
+      label: "LT Button",
+      icon: <Square size={18} />,
+    },
+    {
+      type: "lt-input" as ComponentType,
+      label: "LT Input",
+      icon: <Edit size={18} />,
+    },
+    {
+      type: "lt-card" as ComponentType,
+      label: "LT Card",
+      icon: <GridIcon size={18} />,
+    },
+    {
+      type: "lt-image" as ComponentType,
+      label: "LT Image",
+      icon: <ImageIcon size={18} />,
+    },
+    {
+      type: "lt-data-provider" as ComponentType,
+      label: "LT Data Provider",
+      icon: <Columns size={18} />,
+    },
+  ];
+
   const layoutComponents = [
     {
       type: "flex" as ComponentType,
@@ -161,6 +199,15 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
         <h4>Layout</h4>
         <div className="component-grid">
           {layoutComponents.map((comp) => (
+            <ComponentLibraryItem key={comp.type} {...comp} />
+          ))}
+        </div>
+      </div>
+
+      <div className="component-section">
+        <h4>Lateral (LT)</h4>
+        <div className="component-grid">
+          {lateralLTComponents.map((comp) => (
             <ComponentLibraryItem key={comp.type} {...comp} />
           ))}
         </div>

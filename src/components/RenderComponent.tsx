@@ -1,6 +1,6 @@
 import React from "react";
 import { useDrop, useDrag } from "react-dnd";
-import type { BuilderComponent, ComponentType, DragItem } from "../types";
+import type { BuilderComponent, AllComponentType, DragItem } from "../types";
 import { BuilderText } from "./builder/BuilderText";
 import { BuilderImage } from "./builder/BuilderImage";
 import { BuilderButton } from "./builder/BuilderButton";
@@ -13,6 +13,13 @@ import BuilderChip from "./builder/BuilderChip";
 import BuilderForm from "./builder/BuilderForm";
 import { buildStyle } from "./builder/utils";
 import { useDataContext, DataContext } from "../contexts/DataContext";
+import LTBox from "./builder/LTBox";
+import LTTypography from "./builder/LTTypography";
+import LTButton from "./builder/LTButton";
+import LTInput from "./builder/LTInput";
+import LTCard from "./builder/LTCard";
+import LTImage from "./builder/LTImage";
+import LTDataProvider from "./builder/LTDataProvider";
 
 interface RenderComponentProps {
   component: BuilderComponent;
@@ -22,7 +29,7 @@ interface RenderComponentProps {
   onSelect: (id: string) => void;
   onHover: (id: string | null) => void;
   onAddComponent: (
-    type: ComponentType,
+    type: AllComponentType,
     parentId?: string,
     index?: number
   ) => void;
@@ -40,9 +47,19 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
   onMoveComponents,
 }) => {
   const dataContext = useDataContext();
-  const isLayout = ["flex", "grid", "row", "column", "form"].includes(
-    component.type
-  );
+  const isLayout = [
+    "flex",
+    "grid",
+    "row",
+    "column",
+    "form",
+    // treat LT containers as layout-capable so drag & drop works
+    "lt-box",
+    "lt-card",
+    "lt-nav",
+    "lt-list",
+    "lt-data-provider",
+  ].includes(component.type as string);
   const isSelected = component.id === selectedId;
   const isHovered = component.id === hoveredId;
 
@@ -256,6 +273,78 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     }
 
     switch (component.type) {
+      case "lt-box":
+        return (
+          <LTBox properties={component.properties}>
+            {component.children &&
+              component.children.map((c) => (
+                <RenderComponent
+                  key={c.id}
+                  component={c}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  selectedIds={selectedIds}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
+                />
+              ))}
+          </LTBox>
+        );
+
+      case "lt-typography":
+        return <LTTypography properties={component.properties} />;
+
+      case "lt-button":
+        return <LTButton properties={component.properties} />;
+
+      case "lt-input":
+        return <LTInput properties={component.properties} />;
+
+      case "lt-card":
+        return (
+          <LTCard properties={component.properties}>
+            {component.children &&
+              component.children.map((c) => (
+                <RenderComponent
+                  key={c.id}
+                  component={c}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  selectedIds={selectedIds}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
+                />
+              ))}
+          </LTCard>
+        );
+
+      case "lt-image":
+        return <LTImage properties={component.properties} />;
+
+      case "lt-data-provider":
+        return (
+          <LTDataProvider properties={component.properties}>
+            {component.children &&
+              component.children.map((c) => (
+                <RenderComponent
+                  key={c.id}
+                  component={c}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  selectedIds={selectedIds}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
+                />
+              ))}
+          </LTDataProvider>
+        );
+
       case "text":
         return <BuilderText properties={boundProps} />;
 
@@ -464,7 +553,12 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         try {
           drag(el);
         } catch {}
-        if (isLayout && hasChildren) {
+        // Attach the drop handler for all layout-capable nodes so empty
+        // LT containers (e.g. `lt-data-provider`, `lt-box`, `lt-card`)
+        // accept drops from the canvas. Previously drop() was only
+        // attached when a node already had children which prevented
+        // dropping into an empty provider via the canvas.
+        if (isLayout) {
           try {
             (drop as any)(el);
           } catch {}
