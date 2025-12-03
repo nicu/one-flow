@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useDataProviders } from "../contexts/DataProvidersContext";
 import VisibilityExpressionModal from "./VisibilityExpressionModal";
+import { useTranslation } from "react-i18next";
+import { setTranslationForKey } from "../utils/i18nUtils";
 import type {
   BuilderComponent,
   ComponentProperties,
@@ -156,6 +158,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   // so we don't conditionally call hooks inside nested render helpers.
   const dp = useDataProviders();
   const [isVisibilityModalOpen, setIsVisibilityModalOpen] = useState(false);
+  const { t, i18n } = useTranslation();
   if (!component) {
     return (
       <div className="properties-panel">
@@ -278,8 +281,22 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             <div className="property-field">
               <label>Content</label>
               <textarea
-                value={properties.text || ""}
-                onChange={(e) => onUpdate({ text: e.target.value })}
+                value={
+                  component?.id
+                    ? t(`${component.id}.text`, properties.text || "")
+                    : properties.text || ""
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.text`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ text: val });
+                }}
                 rows={3}
               />
             </div>
@@ -342,8 +359,22 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             <div className="property-field">
               <label>Content</label>
               <textarea
-                value={properties.text || ""}
-                onChange={(e) => onUpdate({ text: e.target.value })}
+                value={
+                  component?.id
+                    ? t(`${component.id}.text`, properties.text || "")
+                    : properties.text || ""
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.text`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ text: val });
+                }}
                 rows={3}
               />
             </div>
@@ -401,7 +432,17 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <input
                 type="text"
                 value={properties.alt || ""}
-                onChange={(e) => onUpdate({ alt: e.target.value })}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.alt`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ alt: val });
+                }}
               />
             </div>
             <div className="property-field">
@@ -426,8 +467,25 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Text</label>
               <input
                 type="text"
-                value={properties.buttonText || ""}
-                onChange={(e) => onUpdate({ buttonText: e.target.value })}
+                value={
+                  component?.id
+                    ? t(
+                        `${component.id}.buttonText`,
+                        properties.buttonText || ""
+                      )
+                    : properties.buttonText || ""
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.buttonText`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ buttonText: val });
+                }}
               />
             </div>
             <div className="property-field">
@@ -457,10 +515,25 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Label</label>
               <input
                 type="text"
-                value={(properties as any).label || ""}
-                onChange={(e) =>
-                  onUpdate({ ...(properties as any), label: e.target.value })
+                value={
+                  component?.id
+                    ? t(
+                        `${component.id}.label`,
+                        (properties as any).label || ""
+                      )
+                    : (properties as any).label || ""
                 }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.label`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ ...(properties as any), label: val });
+                }}
                 placeholder="Label text (e.g. First name)"
               />
             </div>
@@ -480,8 +553,25 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
               <label>Placeholder</label>
               <input
                 type="text"
-                value={properties.placeholder || ""}
-                onChange={(e) => onUpdate({ placeholder: e.target.value })}
+                value={
+                  component?.id
+                    ? t(
+                        `${component.id}.placeholder`,
+                        properties.placeholder || ""
+                      )
+                    : properties.placeholder || ""
+                }
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (component?.id) {
+                    setTranslationForKey(
+                      `${component.id}.placeholder`,
+                      val,
+                      i18n.language
+                    );
+                  }
+                  onUpdate({ placeholder: val });
+                }}
               />
             </div>
             <div className="property-field">

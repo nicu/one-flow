@@ -1,6 +1,7 @@
 import React from "react";
 import type { ComponentProperties } from "../../types";
 import { buildStyle } from "./utils";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   properties: ComponentProperties;
@@ -10,14 +11,17 @@ export const BuilderImage: React.FC<Props & { componentId?: string }> = ({
   properties,
   componentId,
 }) => {
+  const { t } = useTranslation();
   const style = buildStyle(properties, "image");
   const className = componentId ? `elem-${componentId}` : undefined;
+  const altKey = componentId ? `${componentId}.alt` : undefined;
+  const alt = altKey ? t(altKey, properties.alt || "") : properties.alt;
   return (
     <img
       id={className}
       className={className}
       src={properties.src || ""}
-      alt={properties.alt || ""}
+      alt={alt || ""}
       style={style}
     />
   );

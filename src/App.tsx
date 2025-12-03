@@ -21,6 +21,9 @@ import datagridHotels from "./examples/datagridHotels.json";
 import userForm from "./examples/userForm.json";
 import { initialDataStore, type DataStore } from "./store/dataStore";
 import "./App.css";
+import "./i18n";
+import LanguageSelector from "./components/LanguageSelector";
+import { seedTranslationsFromComponents } from "./utils/i18nUtils";
 
 function App() {
   const {
@@ -292,6 +295,17 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // After initial hydration, seed translations for any loaded components
+  useEffect(() => {
+    try {
+      if (hydrated.current && components && components.length > 0) {
+        seedTranslationsFromComponents(components, "en");
+      }
+    } catch (e) {
+      // ignore
+    }
+  }, [components]);
+
   useEffect(() => {
     // don't persist until we've attempted the initial hydration
     if (!hydrated.current) return;
@@ -534,6 +548,8 @@ function App() {
               <button className="btn-ghost" onClick={handleReset}>
                 Reset
               </button>
+
+              <LanguageSelector />
             </div>
           </div>
         </header>

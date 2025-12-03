@@ -1,6 +1,7 @@
 import React from "react";
 import type { ComponentProperties } from "../../types";
 import { buildStyle } from "./utils";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   properties: ComponentProperties;
@@ -19,21 +20,29 @@ export const BuilderInput: React.FC<Props> = ({
   showLabel = true,
   componentId,
 }) => {
+  const { t } = useTranslation();
   const style = buildStyle(properties, "input");
   const inputType = properties.inputType || "text";
   const className = componentId ? `elem-${componentId}` : undefined;
+  const placeholderKey = componentId ? `${componentId}.placeholder` : undefined;
+  const labelKey = componentId ? `${componentId}.label` : undefined;
+  const placeholder = placeholderKey
+    ? t(placeholderKey, properties.placeholder || "")
+    : properties.placeholder;
+  const labelText = labelKey
+    ? t(labelKey, properties.label || "")
+    : properties.label;
+
   const inputElement = (props: any) => (
     <input
       id={className}
       className={className}
       type={inputType}
-      placeholder={properties.placeholder || ""}
+      placeholder={placeholder || ""}
       style={style}
       {...props}
     />
   );
-
-  const labelText = properties.label;
 
   if (onChange || editable) {
     return (
