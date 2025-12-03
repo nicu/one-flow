@@ -10,6 +10,8 @@ interface Props {
 export const AIAssistantPanel: React.FC<Props> = ({ context, onInsertUI }) => {
   const { messages, isLoading, error, sendMessage, clearMessages } =
     useAIAssistant();
+  // Hide the AI assistant UI in production builds — it's only supported in dev currently
+  if (import.meta.env.PROD) return null;
   // always insert UI by default
   const [input, setInput] = useState("");
   const [isOpen, setIsOpen] = useState(false);
