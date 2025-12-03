@@ -32,7 +32,10 @@ const ResponsiveField: React.FC<{
     if (!value) return "";
     if (typeof value === "object") {
       // prefer desktop -> tablet -> mobile
-      return value.desktop ?? value.tablet ?? value.mobile ?? "";
+      const pick = value.desktop ?? value.tablet ?? value.mobile ?? "";
+      // If the picked value is itself an object, stringify it for display
+      if (pick && typeof pick === "object") return JSON.stringify(pick);
+      return String(pick ?? "");
     }
     return String(value);
   };

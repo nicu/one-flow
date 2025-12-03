@@ -6,6 +6,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import ReactFlow, {
   Background,
   Controls,
@@ -73,22 +75,30 @@ export const VisibilityExpressionModal: React.FC<
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge<any>[]>([]);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
 
-  const [flagsJson, setFlagsJson] = useState<string>(() =>
-    JSON.stringify(loadFlags(), null, 2)
-  );
   const [flagsObj, setFlagsObj] = useState<Record<string, any>>(() =>
     loadFlags()
   );
 
+  const [toastOpen, setToastOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastSeverity, setToastSeverity] = useState<
+    "success" | "info" | "warning" | "error"
+  >("info");
+
+  const handleCloseToast = (_: any, reason?: string) => {
+    if (reason === "clickaway") return;
+    setToastOpen(false);
+  };
+
+  // Reload flags when the modal opens or when an external update occurs
   useEffect(() => {
-    try {
-      const parsed = JSON.parse(flagsJson || "{}");
-      setFlagsObj(parsed);
-      localStorage.setItem(FLAGS_KEY, JSON.stringify(parsed));
-    } catch {
-      // ignore invalid json while editing
-    }
-  }, [flagsJson]);
+    if (!isOpen) return;
+    const reload = () => setFlagsObj(loadFlags());
+    reload();
+    window.addEventListener("of_flags_updated", reload as EventListener);
+    return () =>
+      window.removeEventListener("of_flags_updated", reload as EventListener);
+  }, [isOpen]);
 
   useEffect(() => {
     setExpressions(loadExpressions());
@@ -459,6 +469,21 @@ export const VisibilityExpressionModal: React.FC<
     if (!isOpen) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Backspace" || e.key === "Delete") {
+        // If focus is inside an editable field (input/textarea/contentEditable/select),
+        // let the browser handle deletion (do not remove the selected graph node).
+        const target = e.target as HTMLElement | null;
+        const tag = target?.tagName?.toLowerCase() ?? "";
+        const isEditableField = !!(
+          target &&
+          (target.isContentEditable ||
+            tag === "input" ||
+            tag === "textarea" ||
+            tag === "select")
+        );
+        if (isEditableField) {
+          return; // allow default behavior (deleting text)
+        }
+
         if (!selectedNodeId) return;
         e.preventDefault();
         const nid = selectedNodeId;
@@ -481,7 +506,12 @@ export const VisibilityExpressionModal: React.FC<
   }, [isOpen, selectedNodeId, setNodes, setEdges]);
 
   const handleSave = () => {
-    if (!name) return alert("Please provide a name to save the expression");
+    if (!name) {
+      setToastMsg("Please provide a name to save the expression");
+      setToastSeverity("info");
+      setToastOpen(true);
+      return;
+    }
     // always compute payload from the current nodes/edges to avoid saving stale data
     const payloadToSave = JSON.stringify({ nodes, edges });
     const next = expressions
@@ -491,7 +521,9 @@ export const VisibilityExpressionModal: React.FC<
     setExpressions(next);
     setPayload(payloadToSave);
     if (onSave) onSave(name, { payload: payloadToSave });
-    alert("Saved expression");
+    setToastMsg("Saved expression");
+    setToastSeverity("success");
+    setToastOpen(true);
   };
 
   const handleDelete = () => {
@@ -532,8 +564,6 @@ export const VisibilityExpressionModal: React.FC<
       }))
     );
   };
-
-  const selectedNode = nodes.find((n: any) => n.id === selectedNodeId) || null;
 
   // inline inspector helper removed (unused) to avoid unused-variable errors
 
@@ -669,99 +699,7 @@ export const VisibilityExpressionModal: React.FC<
             </div>
           </div>
 
-          <div
-            style={{
-              width: 320,
-              borderLeft: "1px solid #eee",
-              padding: 12,
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}
-          >
-            <div style={{ fontWeight: 600 }}>Expression Inspector</div>
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>
-                Flags / Variables
-              </div>
-              <textarea
-                rows={8}
-                style={{
-                  width: "100%",
-                  fontFamily: "monospace",
-                  padding: 8,
-                  borderRadius: 6,
-                }}
-                value={flagsJson}
-                onChange={(e) => setFlagsJson(e.target.value)}
-              />
-              <div style={{ fontSize: 12, color: "#666", marginTop: 6 }}>
-                Edit JSON of variables (e.g. {"{"}"isLoggedIn": true{"}"})
-              </div>
-            </div>
-
-            <div style={{ borderTop: "1px solid #f0f0f0", paddingTop: 8 }}>
-              <div style={{ fontSize: 13, fontWeight: 600 }}>Selected Node</div>
-              {!selectedNode && (
-                <div style={{ color: "#666" }}>
-                  Click a node to edit inline on the canvas
-                </div>
-              )}
-              {selectedNode && (
-                <div
-                  style={{ display: "flex", flexDirection: "column", gap: 8 }}
-                >
-                  <div>
-                    <strong>Type:</strong>{" "}
-                    {selectedNode?.type || (selectedNode as any)?.data?.label}
-                  </div>
-                  <div style={{ fontSize: 13, color: "#666" }}>
-                    Edit values directly inside the node box on the canvas. This
-                    inspector shows a read-only preview below.
-                  </div>
-                  <div
-                    style={{
-                      fontFamily: "monospace",
-                      fontSize: 12,
-                      background: "#fafafa",
-                      padding: 8,
-                      borderRadius: 6,
-                    }}
-                  >
-                    {JSON.stringify(selectedNode.data || {}, null, 2)}
-                  </div>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <button
-                      className="btn-ghost"
-                      onClick={() => {
-                        if (!selectedNode) return;
-                        const nid = selectedNode.id;
-                        setNodes((nds: any[]) => {
-                          const nextNodes = nds.filter((n) => n.id !== nid);
-                          setEdges((eds: any[]) => {
-                            const nextEdges = eds.filter(
-                              (e) => e.source !== nid && e.target !== nid
-                            );
-                            setPayload(
-                              JSON.stringify({
-                                nodes: nextNodes,
-                                edges: nextEdges,
-                              })
-                            );
-                            return nextEdges;
-                          });
-                          return nextNodes;
-                        });
-                        setSelectedNodeId(null);
-                      }}
-                    >
-                      Delete Node
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+          {/* Expression Inspector removed per request; flags editor handled in dedicated Feature Flags modal */}
         </div>
       </DialogContent>
       <DialogActions>
@@ -769,6 +707,22 @@ export const VisibilityExpressionModal: React.FC<
           Close
         </Button>
       </DialogActions>
+      <Snackbar
+        open={toastOpen}
+        autoHideDuration={3000}
+        onClose={handleCloseToast}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        {/* Use MuiAlert for consistent look */}
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleCloseToast}
+          severity={toastSeverity}
+        >
+          {toastMsg}
+        </MuiAlert>
+      </Snackbar>
     </Dialog>
   );
 };
