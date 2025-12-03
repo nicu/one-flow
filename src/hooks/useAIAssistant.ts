@@ -48,13 +48,22 @@ export function useAIAssistant() {
             ]
           : baseMessages;
 
+      // Hint for the model so it prefers responsive, breakpoint-aware properties
+      const RESPONSIVE_GUIDANCE: ChatMessage = {
+        role: "user",
+        content:
+          "When generating UI JSON, prefer responsive properties for layout: for grids and flex containers provide per-breakpoint values (desktop/tablet/mobile) for keys like gridColumns, gridRows, minColumnWidth, gap, padding, margin, width, height and fontSize. Use objects like { desktop: 4, tablet: 2, mobile: 1 } or { minColumnWidth: { desktop: 220 } } where appropriate. For grids prefer explicit gridColumns or minColumnWidth for auto-fit behavior. Return structured UI with these properties when calling the UI endpoint.",
+      };
+
+      const enrichedMessages = [...payloadMessages, RESPONSIVE_GUIDANCE];
+
       try {
         if (options?.autoInsert) {
           // call the UI endpoint which may return structured UI
           const res = await fetch("/api/assistant/ui", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: payloadMessages }),
+            body: JSON.stringify({ messages: enrichedMessages }),
           });
 
           if (!res.ok) {
@@ -107,7 +116,7 @@ export function useAIAssistant() {
           const res = await fetch(PROXY_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ messages: payloadMessages }),
+            body: JSON.stringify({ messages: enrichedMessages }),
           });
 
           if (!res.ok) {
