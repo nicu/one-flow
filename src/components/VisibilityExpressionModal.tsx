@@ -156,7 +156,6 @@ export const VisibilityExpressionModal: React.FC<
   useEffect(() => {
     if (!isOpen) return;
     const existing = loadExpressions();
-    if (existing && existing.length > 0) return;
     const sampleNodes = [
       {
         id: "n-s-1",
@@ -174,7 +173,7 @@ export const VisibilityExpressionModal: React.FC<
         id: "n-s-3",
         type: "constantNode",
         position: { x: 450, y: 80 },
-        data: { value: "true" },
+        data: { value: "enabled" },
       },
     ];
     const sampleEdges = [
@@ -187,23 +186,42 @@ export const VisibilityExpressionModal: React.FC<
       },
       {
         id: "e-s-2",
-        // comparison (n-s-2) feeds the constant (n-s-3)
         source: "n-s-2",
         target: "n-s-3",
         sourceHandle: "out",
         targetHandle: "in",
       },
     ];
+
     const sample = {
       name: "sample-expression",
       payload: JSON.stringify({ nodes: sampleNodes, edges: sampleEdges }),
     };
-    const next = [sample];
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    setExpressions(next);
-    setPayload(sample.payload);
-    setNodes(sampleNodes as any[]);
-    setEdges(sampleEdges as any[]);
+
+    // If there are no existing expressions, seed the sample expression and apply it immediately.
+    if (!existing || existing.length === 0) {
+      const next = [sample];
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+      setExpressions(next);
+      setPayload(sample.payload);
+      setNodes(sampleNodes as any[]);
+      setEdges(sampleEdges as any[]);
+      return;
+    }
+
+    // Ensure a sample expression exists in storage (do not mutate saved entries).
+    try {
+      const sampleIdx = existing.findIndex(
+        (e: any) => e.name === "sample-expression"
+      );
+      if (sampleIdx === -1) {
+        const next = existing.concat(sample);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        setExpressions(next);
+      }
+    } catch {
+      // if anything fails, don't block the UI
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isOpen]);
 

@@ -9,6 +9,7 @@ import { Canvas } from "./components/Canvas";
 import { PropertiesPanel } from "./components/PropertiesPanel";
 import LTPropertiesPanel from "./components/LTPropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
+import FeatureFlagsModal from "./components/FeatureFlagsModal";
 import { DataPanel } from "./components/DataPanel";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
 import { exportToReact, exportToJSON } from "./utils/export";
@@ -43,6 +44,9 @@ function App() {
   } = useBuilder();
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isFlagsModalOpen, setIsFlagsModalOpen] = useState(false);
+  // used to force re-render when flags are updated
+  const [flagsVersion, setFlagsVersion] = useState(0);
   const [activeTab, setActiveTab] = useState<"ui" | "data">("ui");
   const [dataStore, setDataStore] = useState<DataStore>(initialDataStore);
 
@@ -316,6 +320,13 @@ function App() {
   }, []);
 
   useEffect(() => {
+    const onFlags = () => setFlagsVersion((v) => v + 1);
+    window.addEventListener("of_flags_updated", onFlags as EventListener);
+    return () =>
+      window.removeEventListener("of_flags_updated", onFlags as EventListener);
+  }, []);
+
+  useEffect(() => {
     if (!dataHydrated.current) return;
     try {
       localStorage.setItem("oneflow:dataStore", JSON.stringify(dataStore));
@@ -355,7 +366,7 @@ function App() {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="app">
+      <div className="app" data-flags-version={flagsVersion}>
         <header className="app-header">
           <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
             <h1>OneFlow Builder</h1>
@@ -445,6 +456,14 @@ function App() {
             </div>
 
             <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <button
+                className="btn-outlined"
+                onClick={() => setIsFlagsModalOpen(true)}
+                title="Edit Feature Flags"
+              >
+                Feature Flags
+              </button>
+
               <button
                 className="btn-ghost"
                 onClick={() =>
@@ -606,6 +625,11 @@ function App() {
             </aside>
           )}
         </div>
+
+        <FeatureFlagsModal
+          isOpen={isFlagsModalOpen}
+          onClose={() => setIsFlagsModalOpen(false)}
+        />
 
         <ExportModal
           isOpen={isExportModalOpen}

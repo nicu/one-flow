@@ -270,7 +270,8 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         const flags = raw ? JSON.parse(raw) : {};
         const evaluated = evaluateExpressionFromPayload(
           props.visibilityExpression,
-          flags
+          flags,
+          isSelected // enable debug logging when this component is selected
         );
         isVisible = Boolean(evaluated);
       } catch (e) {

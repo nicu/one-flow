@@ -296,6 +296,21 @@ body {
   cursor: default;
 }
 
+/* Outlined button used for Feature Flags */
+.btn-outlined {
+  background: transparent;
+  color: #0f172a;
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-outlined:hover {
+  background: #f8fafc;
+}
+
 .drop-zone-empty {
   padding: 40px 20px;
   text-align: center;
