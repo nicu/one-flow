@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDataProviders } from "../contexts/DataProvidersContext";
+import VisibilityExpressionModal from "./VisibilityExpressionModal";
 import type {
   BuilderComponent,
   ComponentProperties,
@@ -151,6 +152,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   // Ensure hooks order stability: call `useDataProviders` at the top level
   // so we don't conditionally call hooks inside nested render helpers.
   const dp = useDataProviders();
+  const [isVisibilityModalOpen, setIsVisibilityModalOpen] = useState(false);
   if (!component) {
     return (
       <div className="properties-panel">
@@ -238,6 +240,14 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           placeholder="0px"
         />
 
+        <div className="property-field">
+          <label>Background Color</label>
+          <input
+            type="color"
+            value={colorToHex(properties.backgroundColor, "#ffffff")}
+            onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
+          />
+        </div>
         <ResponsiveField
           label="Margin"
           propName="margin"
@@ -248,14 +258,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           placeholder="0px"
         />
 
-        <div className="property-field">
-          <label>Background Color</label>
-          <input
-            type="color"
-            value={colorToHex(properties.backgroundColor, "#ffffff")}
-            onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
-          />
-        </div>
+        {/* Background color moved to type-specific color sections */}
       </div>
     </>
   );
@@ -297,6 +300,22 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
                 type="color"
                 value={colorToHex(properties.color, "#000000")}
                 onChange={(e) => onUpdate({ color: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Background Color</label>
+              <input
+                type="color"
+                value={colorToHex(properties.backgroundColor, "#ffffff")}
+                onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
+              />
+            </div>
+            <div className="property-field">
+              <label>Background Color</label>
+              <input
+                type="color"
+                value={colorToHex(properties.backgroundColor, "#ffffff")}
+                onChange={(e) => onUpdate({ backgroundColor: e.target.value })}
               />
             </div>
             <div className="property-field">
@@ -1543,6 +1562,59 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       <div className="properties-content">
         {renderTypeSpecificProperties()}
         {renderCommonProperties()}
+
+        {/* Visibility: placed directly above Data Binding per request */}
+        <div className="property-group">
+          <h4>Visibility</h4>
+          <div
+            className="property-field"
+            style={{ display: "flex", gap: 8, alignItems: "center" }}
+          >
+            <label style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <input
+                type="checkbox"
+                checked={properties.visible !== false}
+                onChange={(e) => onUpdate({ visible: e.target.checked })}
+              />
+              Visible
+            </label>
+
+            <button
+              onClick={() => setIsVisibilityModalOpen(true)}
+              className="btn-ghost"
+            >
+              Link
+            </button>
+
+            {properties.visibilityExpression && (
+              <div style={{ fontSize: 12, color: "#666" }}>
+                Bound to: <strong>{properties.visibilityExpression}</strong>
+                <button
+                  style={{ marginLeft: 8 }}
+                  onClick={() => onUpdate({ visibilityExpression: undefined })}
+                >
+                  Clear
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <VisibilityExpressionModal
+          isOpen={isVisibilityModalOpen}
+          currentExpression={properties.visibilityExpression}
+          onClose={() => setIsVisibilityModalOpen(false)}
+          onSave={(name) => {
+            onUpdate({ visibilityExpression: name });
+            setIsVisibilityModalOpen(false);
+          }}
+          onDelete={(name) => {
+            if (properties.visibilityExpression === name) {
+              onUpdate({ visibilityExpression: undefined });
+            }
+          }}
+        />
+
         {renderDataBindingProperties()}
 
         {onDelete && (

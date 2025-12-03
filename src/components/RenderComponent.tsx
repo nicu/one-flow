@@ -13,6 +13,7 @@ import BuilderChip from "./builder/BuilderChip";
 import BuilderForm from "./builder/BuilderForm";
 import { buildStyle } from "./builder/utils";
 import { ensureElementStyles } from "../utils/dynamicStyles";
+import { evaluateExpressionFromPayload } from "../utils/evaluator";
 import { useDataContext, DataContext } from "../contexts/DataContext";
 import LTBox from "./builder/LTBox";
 import LTTypography from "./builder/LTTypography";
@@ -258,6 +259,25 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
 
   const renderContent = () => {
     const props = component.properties || ({} as any);
+    // Visibility default: true. If explicitly false, do not render the
+    // component (initial simple behavior; selection/editing via tree
+    // remains possible).
+    // Evaluate visibilityExpression if present; otherwise fall back to static boolean
+    let isVisible = props.visible !== false;
+    if (props.visibilityExpression) {
+      try {
+        const raw = localStorage.getItem("of_flags");
+        const flags = raw ? JSON.parse(raw) : {};
+        const evaluated = evaluateExpressionFromPayload(
+          props.visibilityExpression,
+          flags
+        );
+        isVisible = Boolean(evaluated);
+      } catch (e) {
+        // if evaluation fails, keep default visibility
+      }
+    }
+    if (!isVisible) return null;
     const binding = props.dataBinding;
     const style = buildStyle(props as any, component.type);
     // Ensure per-element CSS rules are generated so we can target them
@@ -653,6 +673,23 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       )}
       {isSelected && (
         <div className="component-label-tag">{component.type}</div>
+      )}
+      {component.properties?.visibilityExpression && isSelected && (
+        <div
+          className="component-visibility-tag"
+          style={{
+            position: "absolute",
+            right: 6,
+            top: 6,
+            background: "#fff",
+            border: "1px dashed #ccc",
+            padding: "4px 6px",
+            fontSize: 11,
+            zIndex: 6,
+          }}
+        >
+          Bound: {component.properties.visibilityExpression}
+        </div>
       )}
       {renderContent()}
     </div>

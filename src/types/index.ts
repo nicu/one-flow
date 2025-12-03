@@ -105,6 +105,14 @@ export interface ComponentProperties {
   borderRadius?: string;
   boxShadow?: string;
 
+  // Visibility: when false the component will not be rendered. Can be
+  // bound to dynamic expressions later. Defaults to `true` when absent.
+  visible?: boolean;
+
+  // Optional reference to a saved expression name (in the expression editor)
+  // that will be evaluated to determine the property's value at runtime.
+  visibilityExpression?: string;
+
   // Validation rules for inputs (optional)
   validations?: Array<any>;
 
