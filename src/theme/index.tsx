@@ -50,7 +50,7 @@ interface ThemeContextValue {
 
 const ThemeContext = createContext<ThemeContextValue>({
   theme,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+   
   setTheme: () => {},
 });
 

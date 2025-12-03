@@ -1,8 +1,8 @@
 import { useState, useCallback } from "react";
 import type {
   BuilderComponent,
-  ComponentType,
   ComponentProperties,
+  AllComponentType,
 } from "../types";
 import { v4 as uuidv4 } from "uuid";
 
@@ -58,7 +58,7 @@ export const useBuilder = () => {
   );
 
   const addComponent = useCallback(
-    (type: ComponentType, parentId?: string, index?: number) => {
+    (type: AllComponentType, parentId?: string | null, index?: number) => {
       const newComponent: BuilderComponent = {
         id: uuidv4(),
         type,
@@ -103,7 +103,7 @@ export const useBuilder = () => {
   );
 
   const moveComponents = useCallback(
-    (ids: string[], parentId?: string, index?: number) => {
+    (ids: string[], parentId?: string | null, index?: number) => {
       if (!ids || ids.length === 0) return;
 
       setComponents((prev) => {
@@ -167,7 +167,7 @@ export const useBuilder = () => {
         // Insert extracted items into parent or root at index
         const insertInto = (
           nodes: BuilderComponent[],
-          parentId?: string
+          parentId?: string | null
         ): BuilderComponent[] => {
           if (!parentId) {
             const next = nodes.slice();
@@ -262,13 +262,20 @@ export const useBuilder = () => {
 };
 
 // Helper functions
-const getDefaultProperties = (type: ComponentType): ComponentProperties => {
-  const defaults: Record<ComponentType, ComponentProperties> = {
+const getDefaultProperties = (
+  type: AllComponentType
+): ComponentProperties => {
+  const defaults: Partial<Record<AllComponentType, ComponentProperties>> = {
     text: {
       text: "Sample Text",
       fontSize: "16px",
       color: "#000000",
       alignment: "left",
+    },
+    box: {
+      padding: "8px",
+      backgroundColor: "#ffffff",
+      minHeight: "40px",
     },
     image: {
       src: "https://via.placeholder.com/300x200",
@@ -346,7 +353,7 @@ const getDefaultProperties = (type: ComponentType): ComponentProperties => {
   return (defaults as any)[type] || ({} as ComponentProperties);
 };
 
-const isLayoutComponent = (type: ComponentType): boolean => {
+const isLayoutComponent = (type: AllComponentType): boolean => {
   // Treat LT container types as layout-capable so they receive
   // children and behave like other layout components.
   return [

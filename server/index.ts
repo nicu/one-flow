@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express from "express";
+import type { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -651,7 +652,7 @@ app.post("/api/assistant/ui/stream", async (req: Request, res: Response) => {
 });
 
 // LLM / Ollama health endpoint — checks base URL and lists available models
-app.get("/api/llm/health", async (req: Request, res: Response) => {
+app.get("/api/llm/health", async (_req: Request, res: Response) => {
   try {
     const url = `${LLM_BASE_URL}/api/models`;
     console.log("[LLM] health check", url);

@@ -157,7 +157,7 @@ export interface BuilderComponent {
 
 export interface DragItem {
   type: string;
-  componentType: ComponentType;
+  componentType: AllComponentType;
   id?: string;
   ids?: string[];
 }

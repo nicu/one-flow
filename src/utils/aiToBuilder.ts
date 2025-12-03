@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import type { ComponentNode } from "../../server/index";
 import type { BuilderComponent, ComponentType } from "../types";
 
 const SUPPORT_TYPES: ComponentType[] = [

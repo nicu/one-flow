@@ -18,27 +18,24 @@ interface TreeProps {
   selectedIds: string[];
   setSelectedIds: (ids: string[]) => void;
   onSelect: (id: string | null) => void;
-  onMoveComponents: (ids: string[], parentId?: string, index?: number) => void;
-  onAddComponent?: (type: any, parentId?: string, index?: number) => void;
+  onMoveComponents: (ids: string[], parentId?: string | null, index?: number) => void;
+  onAddComponent?: (type: any, parentId?: string | null, index?: number) => void;
 }
 
 const TreeItem: React.FC<{
   node: BuilderComponent;
   level?: number;
-  parentId?: string | null;
-  indexWithinParent?: number;
+  // parentId and indexWithinParent are not used inside TreeItem
   selectedIds: string[];
   setSelectedIds: (ids: string[]) => void;
   onSelect: (id: string | null) => void;
-  onMoveComponents: (ids: string[], parentId?: string, index?: number) => void;
-  onAddComponent?: (type: any, parentId?: string, index?: number) => void;
+  onMoveComponents: (ids: string[], parentId?: string | null, index?: number) => void;
+  onAddComponent?: (type: any, parentId?: string | null, index?: number) => void;
   globalExpandKey?: number;
   globalCollapseKey?: number;
 }> = ({
   node,
   level = 0,
-  parentId,
-  indexWithinParent,
   selectedIds,
   setSelectedIds,
   onSelect,
@@ -85,7 +82,7 @@ const TreeItem: React.FC<{
   ].includes(node.type as string);
 
   // Node drop: accept move items (reparent) and new components from palette
-  const [{ isOver: nodeOver }, nodeDrop] = useDrop(
+  const [, nodeDrop] = useDrop(
     () => ({
       accept: ["MOVE_COMPONENT", "COMPONENT"],
       drop: (item: any, monitor) => {
@@ -174,8 +171,6 @@ const TreeItem: React.FC<{
                 key={c.id}
                 node={c}
                 level={level + 1}
-                parentId={node.id}
-                indexWithinParent={idx}
                 selectedIds={selectedIds}
                 setSelectedIds={setSelectedIds}
                 onSelect={onSelect}

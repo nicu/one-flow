@@ -13,7 +13,7 @@ interface Props {
   hoveredId?: string | null;
   onSelect?: (id: string) => void;
   onHover?: (id: string | null) => void;
-  onAddComponent?: (type: any, parentId?: string, index?: number) => void;
+  onAddComponent?: (type: any, parentId?: string | null, index?: number) => void;
 }
 
 // Helpers to get/set nested paths like 'name.first'

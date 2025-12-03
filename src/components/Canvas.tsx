@@ -1,5 +1,5 @@
 import { useDrop } from "react-dnd";
-import type { BuilderComponent, DragItem, ComponentType } from "../types";
+import type { BuilderComponent, DragItem, AllComponentType } from "../types";
 import type { DataStore } from "../store/dataStore";
 import { RenderComponent } from "./RenderComponent";
 import { DataContext } from "../contexts/DataContext";
@@ -10,11 +10,15 @@ interface CanvasProps {
   selectedIds?: string[];
   hoveredId: string | null;
   onAddComponent: (
-    type: ComponentType,
-    parentId?: string,
+    type: AllComponentType,
+    parentId?: string | null,
     index?: number
   ) => void;
-  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
+  onMoveComponents?: (
+    ids: string[],
+    parentId?: string | null,
+    index?: number
+  ) => void;
 
   onSelectComponent: (id: string | null) => void;
   onHoverComponent: (id: string | null) => void;
@@ -39,7 +43,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     drop: (item: DragItem, monitor) => {
       // Debug: log whether another nested target already handled the drop
       try {
-        // eslint-disable-next-line no-console
+         
         console.debug(
           "Canvas drop: didDrop=",
           typeof monitor.didDrop === "function"
@@ -57,7 +61,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         return;
       }
       if (item.componentType) {
-        // eslint-disable-next-line no-console
+         
         console.debug("Canvas: adding component to root:", item.componentType);
         onAddComponent(item.componentType);
       }

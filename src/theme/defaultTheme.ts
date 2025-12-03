@@ -1,4 +1,4 @@
-import { Theme } from "./types";
+import type { Theme } from "./types";
 
 export const defaultTheme: Theme = {
   spacing: (n: number) => `${4 * n}px`,

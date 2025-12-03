@@ -50,18 +50,18 @@ export const LTPropertiesPanel: React.FC<LTProps> = ({
     return {
       xs: "0.5rem",
       sm: "0.75rem",
-      md: theme.typography?.body1?.fontSize || "1rem",
-      lg: theme.typography?.h3?.fontSize || "1.25rem",
-      xl: theme.typography?.h2?.fontSize || "1.5rem",
+      md: (theme as any).typography?.body1?.fontSize || "1rem",
+      lg: (theme as any).typography?.h3?.fontSize || "1.25rem",
+      xl: (theme as any).typography?.h2?.fontSize || "1.5rem",
     } as Record<string, string>;
   }, [theme]);
 
   // Colors: generate palette from primary color
   const palette = useMemo(() => {
     const base =
-      theme.palette?.primary?.main || theme.colors?.primary || "#1976d2";
+      (theme as any).palette?.primary?.main || (theme as any).colors?.primary || "#1976d2";
     // generate 9 shades by adjusting brightness
-    const arr = colorSteps.map((step, idx) => {
+    const arr = colorSteps.map((_, idx) => {
       const amt = Math.round((idx - 4) * 12); // -48 .. +48
       return adjustHex(base, amt);
     });
@@ -119,10 +119,10 @@ export const LTPropertiesPanel: React.FC<LTProps> = ({
 
   // Normalize shadows: theme may provide an array or an object (legacy/defaultTheme uses array,
   // theme/index.tsx defines shadows as an object). Ensure we have an array to map over.
-  const shadowsList: string[] = Array.isArray(theme.shadows)
-    ? (theme.shadows as string[])
-    : theme.shadows
-    ? (Object.values(theme.shadows) as string[])
+  const shadowsList: string[] = Array.isArray((theme as any).shadows)
+    ? ((theme as any).shadows as string[])
+    : (theme as any).shadows
+    ? (Object.values((theme as any).shadows) as string[])
     : [];
 
   if (!component) {

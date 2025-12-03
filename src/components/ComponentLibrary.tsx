@@ -20,10 +20,10 @@ interface ComponentLibraryProps {
   selectedIds?: string[];
   setSelectedIds?: Dispatch<SetStateAction<string[]>>;
   onSelect?: (id: string | null) => void;
-  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
+  onMoveComponents?: (ids: string[], parentId?: string | null, index?: number) => void;
   onAddComponent?: (
     type: AllComponentType,
-    parentId?: string,
+    parentId?: string | null,
     index?: number
   ) => void;
 }

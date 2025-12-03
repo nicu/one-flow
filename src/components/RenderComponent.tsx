@@ -33,10 +33,10 @@ interface RenderComponentProps {
   onHover: (id: string | null) => void;
   onAddComponent: (
     type: AllComponentType,
-    parentId?: string,
+    parentId?: string | null,
     index?: number
   ) => void;
-  onMoveComponents?: (ids: string[], parentId?: string, index?: number) => void;
+  onMoveComponents?: (ids: string[], parentId?: string | null, index?: number) => void;
 }
 
 export const RenderComponent: React.FC<RenderComponentProps> = ({
@@ -73,7 +73,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       ? selectedIds
       : [component.id];
 
-  const [{ isDragging }, drag] = useDrag(
+  const [, drag] = useDrag(
     () => ({
       type: "MOVE_COMPONENT",
       item: { ids: dragIds },
@@ -627,8 +627,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     }
   };
 
-  const hasChildren =
-    (component.children && component.children.length > 0) || false;
+  
 
   return (
     <div
