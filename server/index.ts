@@ -16,6 +16,9 @@ const PORT = Number(process.env.PORT ?? 4040);
 const LLM_BASE_URL = process.env.LLM_BASE_URL || "http://localhost:11434";
 const LLM_MODEL = process.env.LLM_MODEL || "qwen3-coder:30b";
 const LLM_API_KEY = process.env.LLM_API_KEY || ""; // not used by Ollama, but kept for symmetry
+// Unsplash
+const UNSPLASH_ACCESS_KEY = process.env.UNSPLASH_ACCESS_KEY || "";
+const UNSPLASH_SECRET_KEY = process.env.UNSPLASH_SECRET_KEY || "";
 
 // ---------- SYSTEM PROMPT ----------
 const SYSTEM_PROMPT = `You are an AI assistant for OneFlow, a visual UI builder.
@@ -648,6 +651,65 @@ app.post("/api/assistant/ui/stream", async (req: Request, res: Response) => {
       console.error("Failed writing error SSE", writeErr);
     }
     return res.end();
+  }
+});
+
+// ---------- UNSPLASH helper endpoint ----------
+// Returns a random Unsplash image for a given `query` (or `q`) parameter.
+// Example: GET /api/unsplash/random?q=iphone&w=800
+app.get("/api/unsplash/random", async (req: Request, res: Response) => {
+  try {
+    const q = (req.query.q || req.query.query || "random") as string;
+    const width = req.query.w ? String(req.query.w) : undefined;
+
+    if (!UNSPLASH_ACCESS_KEY) {
+      return res
+        .status(500)
+        .json({ error: "UNSPLASH_ACCESS_KEY not configured on server" });
+    }
+
+    const apiUrl = `https://api.unsplash.com/photos/random?query=${encodeURIComponent(
+      q
+    )}`;
+
+    const resp = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Client-ID ${UNSPLASH_ACCESS_KEY}`,
+        "Accept-Version": "v1",
+      },
+    });
+
+    if (!resp.ok) {
+      const text = await resp.text();
+      console.error("[unsplash] HTTP error", resp.status, text);
+      return res.status(resp.status).json({ error: text });
+    }
+
+    const data = await resp.json();
+
+    // Prefer a usable URL (regular/full/raw) and an alt description
+    let imageUrl: string | undefined =
+      data?.urls?.regular || data?.urls?.full || data?.urls?.raw;
+    const alt = data?.alt_description || data?.description || `Unsplash: ${q}`;
+
+    if (!imageUrl) {
+      return res
+        .status(502)
+        .json({ error: "No image URL returned from Unsplash" });
+    }
+
+    // If we received a raw URL and a width was requested, append sizing params
+    if (width && imageUrl.includes("raw")) {
+      imageUrl = `${imageUrl}&w=${encodeURIComponent(
+        width
+      )}&q=80&fm=jpg&fit=crop`;
+    }
+
+    return res.json({ ok: true, url: imageUrl, alt, raw: data });
+  } catch (err) {
+    console.error("[unsplash] unexpected error:", err);
+    return res.status(502).json({ error: String(err) });
   }
 });
 

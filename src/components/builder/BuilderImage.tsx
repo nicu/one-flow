@@ -2,6 +2,7 @@ import React from "react";
 import type { ComponentProperties } from "../../types";
 import { buildStyle } from "./utils";
 import { useTranslation } from "react-i18next";
+import SmartImage from "../SmartImage";
 
 interface Props {
   properties: ComponentProperties;
@@ -26,12 +27,16 @@ export const BuilderImage: React.FC<Props & { componentId?: string }> = ({
     ? t(altKey, properties.alt || "")
     : properties.alt;
   return (
-    <img
+    <SmartImage
       id={className}
       className={className}
       src={properties.src || ""}
       alt={alt || ""}
       style={style}
+      query={properties?.alt || undefined}
+      widthHint={
+        typeof style?.width === "number" ? (style.width as number) : undefined
+      }
     />
   );
 };

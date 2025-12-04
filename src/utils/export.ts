@@ -34,9 +34,17 @@ const renderComponent = (
       }</div>`;
 
     case "image":
+      // Ensure exported images default to objectFit: 'cover' when not specified
+      if (!Object.prototype.hasOwnProperty.call(style, "objectFit")) {
+        style.objectFit = "cover";
+      }
+      const styleStrWithFit =
+        Object.keys(style).length > 0
+          ? ` style={${JSON.stringify(style)}}`
+          : "";
       return `${spaces}<img src="${component.properties.src || ""}" alt="${
         component.properties.alt || ""
-      }"${styleStr} />`;
+      }"${styleStrWithFit} />`;
 
     case "button":
       return `${spaces}<button${styleStr}>${

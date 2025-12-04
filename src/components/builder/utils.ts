@@ -103,6 +103,8 @@ export const buildStyle = (
     if (!style.display) style.display = "block";
     if (!props.width && !style.width) style.width = "100%" as any;
     if (!props.maxWidth) style.maxWidth = "100%";
+    // Default objectFit to 'cover' for images unless explicitly provided
+    if (!style.objectFit) style.objectFit = "cover" as any;
   }
 
   if (props.alignment) {

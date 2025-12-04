@@ -1,5 +1,6 @@
 import React from "react";
 import type { ComponentProperties } from "../../types";
+import SmartImage from "../SmartImage";
 
 const LTImage: React.FC<{ properties?: ComponentProperties }> = ({
   properties,
@@ -14,7 +15,14 @@ const LTImage: React.FC<{ properties?: ComponentProperties }> = ({
     borderRadius: props.borderRadius ?? "8px",
   };
 
-  return <img src={src} alt={alt} style={style} />;
+  return (
+    <SmartImage
+      src={src}
+      alt={alt}
+      style={style}
+      widthHint={typeof props.width === "number" ? props.width : undefined}
+    />
+  );
 };
 
 export default LTImage;
