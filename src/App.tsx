@@ -389,7 +389,7 @@ function App() {
                 className={`viewport-btn ${activeTab === "ui" ? "active" : ""}`}
                 onClick={() => setActiveTab("ui")}
               >
-                🎨 UI
+                UI
               </button>
               <button
                 className={`viewport-btn ${
@@ -397,7 +397,7 @@ function App() {
                 }`}
                 onClick={() => setActiveTab("entities")}
               >
-                🧩 Entities
+                Data
               </button>
             </div>
             {activeTab === "ui" && (
