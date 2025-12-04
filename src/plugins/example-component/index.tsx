@@ -1,7 +1,8 @@
+/* eslint-disable react-refresh/only-export-components */
 import React from "react";
 import type { Plugin } from "../types";
 
-const FancyCardPreview: React.FC<any> = ({
+const FancyCardPreview: React.FC<unknown> = ({
   title = "Card Title",
   showImage = true,
   image,
@@ -57,7 +58,17 @@ const plugin: Plugin = {
       mount(mountPoint) {
         const root = document.createElement("div");
         root.style.padding = "8px";
-        root.innerHTML = `<div style="font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;"><strong>Fancy Card</strong><p style=\"margin:6px 0 0 0;\">This plugin adds a Fancy Card component.</p></div>`;
+        const header = document.createElement("div");
+        header.style.fontFamily =
+          "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
+        const strong = document.createElement("strong");
+        strong.textContent = "Fancy Card";
+        const p = document.createElement("p");
+        p.style.margin = "6px 0 0 0";
+        p.textContent = "This plugin adds a Fancy Card component.";
+        header.appendChild(strong);
+        header.appendChild(p);
+        root.appendChild(header);
         mountPoint.appendChild(root);
         return () => mountPoint.removeChild(root);
       },

@@ -25,15 +25,15 @@ export interface PluginLifecycle {
 export type UnregisterFn = () => void;
 
 export interface Logger {
-  debug(...args: any[]): void;
-  info(...args: any[]): void;
-  warn(...args: any[]): void;
-  error(...args: any[]): void;
+  debug(...args: unknown[]): void;
+  info(...args: unknown[]): void;
+  warn(...args: unknown[]): void;
+  error(...args: unknown[]): void;
 }
 
 export interface AppAPI {
-  getState(): any;
-  dispatch(action: any): void;
+  getState(): unknown;
+  dispatch(action: unknown): void;
 }
 
 export interface UIPanelDescriptor {
@@ -45,24 +45,27 @@ export interface UIPanelDescriptor {
 
 export interface ComponentDescriptor {
   displayName: string;
-  renderPreview?: (props: any) => any;
-  renderEditor?: (props: any, onChange: (p: any) => void) => any;
-  defaultProps?: any;
-  schema?: any;
+  renderPreview?: (props: unknown) => JSX.Element | null;
+  renderEditor?: (
+    props: unknown,
+    onChange: (p: unknown) => void
+  ) => JSX.Element | null;
+  defaultProps?: unknown;
+  schema?: unknown;
 }
 
 export interface DataGenerator {
   displayName: string;
-  generate(schema?: any, options?: any): Promise<any> | any;
+  generate(schema?: unknown, options?: unknown): Promise<unknown> | unknown;
 }
 
 export interface BindingProvider {
   canHandle(expr: string): boolean;
-  evaluate(expr: string, context: any): any | Promise<any>;
+  evaluate(expr: string, context: unknown): unknown | Promise<unknown>;
   subscribe?: (
     expr: string,
-    context: any,
-    cb: (value: any) => void
+    context: unknown,
+    cb: (value: unknown) => void
   ) => UnregisterFn;
 }
 
@@ -96,5 +99,5 @@ export interface PluginContext {
   data: DataGeneratorRegistry;
   bindings: BindingRegistry;
   logger: Logger;
-  config: Record<string, any>;
+  config: Record<string, unknown>;
 }

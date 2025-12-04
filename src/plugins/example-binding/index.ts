@@ -60,7 +60,17 @@ const plugin: Plugin = {
       mount(mountPoint) {
         const root = document.createElement("div");
         root.style.padding = "8px";
-        root.innerHTML = `<div style="font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;"><strong>Binding Provider</strong><p style=\"margin:6px 0 0 0;\">Registers simple path: and const: binding handlers.</p></div>`;
+        const header = document.createElement("div");
+        header.style.fontFamily =
+          "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
+        const strong = document.createElement("strong");
+        strong.textContent = "Binding Provider";
+        const p = document.createElement("p");
+        p.style.margin = "6px 0 0 0";
+        p.textContent = "Registers simple path: and const: binding handlers.";
+        header.appendChild(strong);
+        header.appendChild(p);
+        root.appendChild(header);
         mountPoint.appendChild(root);
         return () => mountPoint.removeChild(root);
       },

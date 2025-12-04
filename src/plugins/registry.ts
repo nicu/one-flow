@@ -24,7 +24,12 @@ class SimpleUIRegistry implements UIRegistry {
       registryEvents.dispatchEvent(
         new CustomEvent("uiChange", { detail: { id, panel } })
       );
-    } catch {}
+    } catch (err) {
+      // non-fatal: EventTarget may be unavailable in some environments
+      // log at debug level so developers can inspect if necessary
+      /* istanbul ignore next */
+      console.debug("uiChange dispatch failed", err);
+    }
     return () => this.panels.delete(id);
   }
   listPanels() {
@@ -46,7 +51,10 @@ class SimpleComponentRegistry implements ComponentRegistry {
       registryEvents.dispatchEvent(
         new CustomEvent("componentChange", { detail: { type, descriptor } })
       );
-    } catch {}
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("componentChange dispatch failed", err);
+    }
     return () => this.components.delete(type);
   }
   getComponent(type: string) {
@@ -62,7 +70,10 @@ class SimpleDataGeneratorRegistry implements DataGeneratorRegistry {
       registryEvents.dispatchEvent(
         new CustomEvent("dataGeneratorChange", { detail: { id, gen } })
       );
-    } catch {}
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("dataGeneratorChange dispatch failed", err);
+    }
     return () => this.gens.delete(id);
   }
   getGenerator(id: string) {
@@ -78,7 +89,10 @@ class SimpleBindingRegistry implements BindingRegistry {
       registryEvents.dispatchEvent(
         new CustomEvent("bindingChange", { detail: { id, provider } })
       );
-    } catch {}
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("bindingChange dispatch failed", err);
+    }
     return () => this.providers.delete(id);
   }
   getProviders() {
@@ -92,7 +106,7 @@ class SimpleBindingRegistry implements BindingRegistry {
 // EventTarget used for registry change notifications (UI/components/data/bindings)
 export const registryEvents = new EventTarget();
 
-export const logger: Logger = console as any;
+export const logger: Logger = console as unknown as Logger;
 
 export const appApi: AppAPI = {
   getState() {
@@ -105,11 +119,13 @@ export const appApi: AppAPI = {
       const components = componentsRaw ? JSON.parse(componentsRaw) : [];
       const dataStore = dataStoreRaw ? JSON.parse(dataStoreRaw) : {};
       return { components, dataStore };
-    } catch (e) {
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("appApi.getState failed", err);
       return {};
     }
   },
-  dispatch(action: any) {
+  dispatch(action: unknown) {
     try {
       if (typeof appDispatchOverride === "function") {
         appDispatchOverride(action);
@@ -118,15 +134,16 @@ export const appApi: AppAPI = {
       // Broadcast action as a DOM event so plugins or the app can listen
       const ev = new CustomEvent("of_action", { detail: action });
       window.dispatchEvent(ev as Event);
-    } catch (e) {
-      // ignore
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("appApi.dispatch failed", err);
     }
   },
 };
 
 // Internal overridable providers
-let appStateProvider: (() => any) | undefined = undefined;
-let appDispatchOverride: ((action: any) => void) | undefined = undefined;
+let appStateProvider: (() => unknown) | undefined = undefined;
+let appDispatchOverride: ((action: unknown) => void) | undefined = undefined;
 
 /**
  * Provide a live state getter and optional dispatch override.
@@ -134,8 +151,8 @@ let appDispatchOverride: ((action: any) => void) | undefined = undefined;
  * - `dispatchOverride` if provided will receive action objects from plugins via `appApi.dispatch`.
  */
 export function setAppStateProvider(
-  stateProvider: () => any,
-  dispatchOverride?: (action: any) => void
+  stateProvider: () => unknown,
+  dispatchOverride?: (action: unknown) => void
 ) {
   appStateProvider = stateProvider;
   appDispatchOverride = dispatchOverride;
@@ -161,21 +178,32 @@ export function makePluginContext(manifest: PluginManifest): PluginContext {
 export class PluginRegistry {
   private lifecycles = new Map<string, PluginLifecycle | void>();
 
-  async loadPluginModule(manifest: PluginManifest, module: any) {
-    const plugin = module?.default ?? module;
-    if (!plugin || typeof plugin.install !== "function") {
+  async loadPluginModule(manifest: PluginManifest, module: unknown) {
+    const modRec = module as Record<string, unknown> | undefined;
+    const pluginCandidate = modRec?.default ?? modRec;
+    // Narrow type: plugin must be an object with an install function
+    if (!pluginCandidate || typeof pluginCandidate !== "object") {
+      logger.warn(`Plugin ${manifest.id} does not export a plugin object.`);
+      return;
+    }
+
+    const pluginObj = pluginCandidate as { install?: unknown };
+    if (typeof pluginObj.install !== "function") {
       logger.warn(
         `Plugin ${manifest.id} does not export an install() function.`
       );
       return;
     }
+
     try {
       const ctx = makePluginContext(manifest);
-      const lifecycle = await plugin.install(ctx);
-      this.lifecycles.set(manifest.id, lifecycle);
+      // call install with proper typing cast
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const lifecycle = await (pluginObj.install as any)(ctx);
+      this.lifecycles.set(manifest.id, lifecycle as PluginLifecycle | void);
       logger.info(`Plugin ${manifest.id} installed`);
     } catch (err) {
-      logger.error(`Failed to install plugin ${manifest.id}:`, err);
+      logger.error(`Failed to install plugin ${manifest.id}:`, err as unknown);
     }
   }
 

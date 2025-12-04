@@ -25,11 +25,11 @@ export async function initPluginSystem() {
 
   for (const [dir, path] of byDir.entries()) {
     try {
-      const load = (modules as Record<string, any>)[path];
+      const load = (modules as Record<string, () => Promise<unknown>>)[path];
       if (!load) continue;
       const mod = await load();
-      const pluginModule = mod?.default ?? mod;
-      const manifest = pluginModule?.manifest ?? { id: dir };
+      const pluginModule = (mod as any)?.default ?? (mod as any);
+      const manifest = (pluginModule?.manifest as any) ?? { id: dir };
       await pluginRegistry.loadPluginModule(manifest, mod);
     } catch (err) {
       console.warn("Failed to load plugin at", path, err);

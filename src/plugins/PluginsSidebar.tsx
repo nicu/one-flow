@@ -11,7 +11,7 @@ export const PluginsSidebar: React.FC<{ position: "left" | "right" }> = ({
   // Re-render when registry emits changes
   useEffect(() => {
     const onChange = () => setVersion((v) => v + 1);
-    const listener = (ev: Event) => onChange();
+    const listener = () => onChange();
     registryEvents.addEventListener("uiChange", listener as EventListener);
     registryEvents.addEventListener(
       "componentChange",
@@ -53,18 +53,35 @@ export const PluginsSidebar: React.FC<{ position: "left" | "right" }> = ({
   );
 };
 
-const PluginPanel: React.FC<{ id: string; panel: any }> = ({ id, panel }) => {
+const PluginPanel: React.FC<{ id: string; panel: unknown }> = ({
+  id,
+  panel,
+}) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const mountPoint = ref.current;
     if (!mountPoint) return;
-    const maybeUnregister = panel.mount(mountPoint, {} as any);
-    return () => {
-      try {
-        if (typeof maybeUnregister === "function") maybeUnregister();
-      } catch {}
-    };
+    // Safely call mount if panel provides a mount function
+    try {
+      const p = panel as {
+        mount?: (mp: HTMLElement, ctx?: unknown) => (() => void) | void;
+      };
+      const maybeUnregister = p.mount
+        ? p.mount(mountPoint, {} as unknown)
+        : undefined;
+      return () => {
+        try {
+          if (typeof maybeUnregister === "function") maybeUnregister();
+        } catch (err) {
+          /* istanbul ignore next */
+          console.debug("plugin panel unmount failed", err);
+        }
+      };
+    } catch (err) {
+      /* istanbul ignore next */
+      console.debug("plugin panel mount failed", err);
+    }
   }, [panel]);
 
   return (
