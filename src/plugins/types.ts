@@ -45,11 +45,8 @@ export interface UIPanelDescriptor {
 
 export interface ComponentDescriptor {
   displayName: string;
-  renderPreview?: (props: unknown) => JSX.Element | null;
-  renderEditor?: (
-    props: unknown,
-    onChange: (p: unknown) => void
-  ) => JSX.Element | null;
+  renderPreview?: (props: unknown) => any | null;
+  renderEditor?: (props: unknown, onChange: (p: unknown) => void) => any | null;
   defaultProps?: unknown;
   schema?: unknown;
 }

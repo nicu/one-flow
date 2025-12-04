@@ -47,16 +47,13 @@ export const PluginsSidebar: React.FC<{ position: "left" | "right" }> = ({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
       {panels.map(({ id, panel }) => (
-        <PluginPanel key={id} id={id} panel={panel} />
+        <PluginPanel key={id} panel={panel} />
       ))}
     </div>
   );
 };
 
-const PluginPanel: React.FC<{ id: string; panel: unknown }> = ({
-  id,
-  panel,
-}) => {
+const PluginPanel: React.FC<{ panel: unknown }> = ({ panel }) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -86,7 +83,9 @@ const PluginPanel: React.FC<{ id: string; panel: unknown }> = ({
 
   return (
     <div style={{ border: "1px solid #eee", borderRadius: 6, padding: 8 }}>
-      <div style={{ fontWeight: 600, marginBottom: 6 }}>{panel.title}</div>
+      <div style={{ fontWeight: 600, marginBottom: 6 }}>
+        {(panel as any).title}
+      </div>
       <div ref={ref} />
     </div>
   );

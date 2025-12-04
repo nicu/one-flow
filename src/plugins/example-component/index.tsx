@@ -1,8 +1,7 @@
-/* eslint-disable react-refresh/only-export-components */
-import React from "react";
 import type { Plugin } from "../types";
+import React from "react";
 
-const FancyCardPreview: React.FC<unknown> = ({
+const FancyCardPreview: React.FC<any> = ({
   title = "Card Title",
   showImage = true,
   image,
@@ -39,28 +38,27 @@ const plugin: Plugin = {
     id: "example.component",
     name: "Example Component Plugin",
     version: "0.0.1",
-    description: "Registers a sample component type `fancy-card`",
+    description: "Registers a sample component type fancy-card",
   },
   install(ctx) {
     ctx.components.registerComponent("fancy-card", {
       displayName: "Fancy Card",
-      renderPreview: (props) => {
-        return <FancyCardPreview {...props} />;
-      },
+      renderPreview: (props: any) => (
+        <FancyCardPreview {...(props as object)} />
+      ),
       defaultProps: { title: "Hello", showImage: false },
       schema: { type: "object", properties: { title: { type: "string" } } },
     });
 
-    // Also register a simple UI panel to demonstrate plugin UI
     const unregister = ctx.ui.registerPanel("example.component.panel", {
       title: "Example Component",
       position: "right",
-      mount(mountPoint) {
+      mount(mountPoint: HTMLElement) {
         const root = document.createElement("div");
         root.style.padding = "8px";
         const header = document.createElement("div");
         header.style.fontFamily =
-          "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial";
+          'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
         const strong = document.createElement("strong");
         strong.textContent = "Fancy Card";
         const p = document.createElement("p");

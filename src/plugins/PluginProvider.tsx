@@ -6,7 +6,7 @@ import {
   dataGeneratorRegistry,
   bindingRegistry,
 } from "./registry";
-import type { PluginContext } from "./types";
+// imported types are not used here
 
 export interface PluginsContextValue {
   pluginRegistry: typeof pluginRegistry;

@@ -10,7 +10,7 @@ const plugin: Plugin = {
   install(ctx) {
     ctx.data.registerGenerator("randomUser", {
       displayName: "Random User",
-      async generate(schema, options) {
+      async generate(_schema, _options) {
         const id = Math.random().toString(36).slice(2);
         // Provide a sample avatar using pravatar (stable per id)
         const avatar = `https://i.pravatar.cc/150?u=${id}`;

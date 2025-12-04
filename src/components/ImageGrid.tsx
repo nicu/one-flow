@@ -62,7 +62,7 @@ const ImageGrid: React.FC<ImageGridProps> = ({ properties = {} }) => {
     ];
   }
 
-  const title = properties.title;
+  const title = (properties as any).title;
   const titleVariant = (properties as any).titleVariant || "h2";
   const itemTitleField = (properties as any).itemTitleField || "title";
   const itemImageField = (properties as any).itemImageField || "image";
