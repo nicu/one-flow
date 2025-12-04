@@ -3,8 +3,10 @@ import { v4 as uuidv4 } from "uuid";
 import type { BuilderComponent } from "./types";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { useBuilder } from "./hooks/useBuilder";
+import { useBuilder, useBuilderActionListener } from "./hooks/useBuilder";
+import { setAppStateProvider } from "./plugins/registry";
 import { ComponentLibrary } from "./components/ComponentLibrary";
+import PluginsSidebar from "./plugins/PluginsSidebar";
 import { Canvas } from "./components/Canvas";
 import { PropertiesPanel } from "./components/PropertiesPanel";
 import LTPropertiesPanel from "./components/LTPropertiesPanel";
@@ -45,6 +47,96 @@ function App() {
     hoveredId,
     setHoveredId,
   } = useBuilder();
+
+  // Wire plugin/app dispatched actions into the builder
+  useBuilderActionListener({
+    components,
+    selectedId,
+    selectedIds,
+    setSelectedIds,
+    addComponent,
+    updateComponent,
+    removeComponent,
+    moveComponents,
+    selectComponent,
+    getSelectedComponent,
+    setComponents,
+    undo,
+    redo,
+    canUndo,
+    canRedo,
+    hoveredId,
+    setHoveredId,
+  } as any);
+
+  // Expose live builder state to plugins via the registry's provider.
+  // This allows `appApi.getState()` to return a live snapshot instead
+  // of reading from localStorage.
+  useEffect(() => {
+    setAppStateProvider(
+      () => ({
+        components,
+        selectedId,
+        selectedIds,
+        hoveredId,
+        // include dataStore by reading localStorage snapshot or state if available
+      }),
+      (action: any) => {
+        // dispatchOverride: handle a subset of actions directly for lower latency
+        try {
+          const type = action?.type;
+          const payload = action?.payload;
+          switch (type) {
+            case "ADD_COMPONENT":
+              addComponent(
+                payload?.componentType,
+                payload?.parentId,
+                payload?.index
+              );
+              break;
+            case "UPDATE_COMPONENT":
+              updateComponent(payload?.id, payload?.properties);
+              break;
+            case "REMOVE_COMPONENT":
+              removeComponent(payload?.id);
+              break;
+            case "SET_COMPONENTS":
+              if (Array.isArray(payload?.components))
+                setComponents(payload.components, true);
+              break;
+            case "SELECT_COMPONENT":
+              selectComponent(payload?.id ?? null);
+              break;
+            case "UNDO":
+              undo();
+              break;
+            case "REDO":
+              redo();
+              break;
+            default:
+              // fallback: emit event so other listeners (if any) receive it
+              window.dispatchEvent(
+                new CustomEvent("of_action", { detail: action })
+              );
+          }
+        } catch (e) {
+          // ignore
+        }
+      }
+    );
+  }, [
+    components,
+    selectedId,
+    selectedIds,
+    hoveredId,
+    addComponent,
+    updateComponent,
+    removeComponent,
+    setComponents,
+    selectComponent,
+    undo,
+    redo,
+  ]);
 
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isFlagsModalOpen, setIsFlagsModalOpen] = useState(false);
@@ -566,6 +658,7 @@ function App() {
                 onMoveComponents={moveComponents}
                 onAddComponent={addComponent as any}
               />
+              <PluginsSidebar position="left" />
             </aside>
           )}
 
@@ -638,6 +731,7 @@ function App() {
                   onBindToEnclosingProvider={bindSelectedToEnclosingProvider}
                 />
               )}
+              <PluginsSidebar position="right" />
             </aside>
           )}
         </div>

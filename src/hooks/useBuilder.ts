@@ -5,6 +5,7 @@ import type {
   AllComponentType,
 } from "../types";
 import { v4 as uuidv4 } from "uuid";
+import { useEffect } from "react";
 
 export const useBuilder = () => {
   const [components, setComponentsState] = useState<BuilderComponent[]>([]);
@@ -261,10 +262,74 @@ export const useBuilder = () => {
   };
 };
 
+// Listen for plugin/app actions dispatched via `appApi.dispatch` which
+// emits a global `CustomEvent('of_action', { detail: action })`.
+// Plugins can dispatch actions to control the builder: add/update/remove
+// components, select items, set the whole component tree, and undo/redo.
+// This hook is used inside `App` so side-effects are safe to run here.
+export const useBuilderActionListener = (
+  actionsRef: ReturnType<typeof useBuilder>
+) => {
+  useEffect(() => {
+    const handler = (ev: Event) => {
+      try {
+        const detail = (ev as CustomEvent).detail || {};
+        const type = detail.type;
+        if (!type) return;
+
+        switch (type) {
+          case "ADD_COMPONENT": {
+            const { componentType, parentId, index } = detail.payload || {};
+            if (componentType)
+              actionsRef.addComponent(componentType, parentId, index);
+            break;
+          }
+          case "UPDATE_COMPONENT": {
+            const { id, properties } = detail.payload || {};
+            if (id && properties) actionsRef.updateComponent(id, properties);
+            break;
+          }
+          case "REMOVE_COMPONENT": {
+            const { id } = detail.payload || {};
+            if (id) actionsRef.removeComponent(id);
+            break;
+          }
+          case "SET_COMPONENTS": {
+            const { components } = detail.payload || {};
+            if (Array.isArray(components))
+              actionsRef.setComponents(components, true);
+            break;
+          }
+          case "SELECT_COMPONENT": {
+            const { id } = detail.payload || {};
+            actionsRef.selectComponent(id ?? null);
+            break;
+          }
+          case "UNDO": {
+            actionsRef.undo();
+            break;
+          }
+          case "REDO": {
+            actionsRef.redo();
+            break;
+          }
+          default:
+            // unknown action, ignore
+            break;
+        }
+      } catch (e) {
+        // ignore
+      }
+    };
+
+    window.addEventListener("of_action", handler as EventListener);
+    return () =>
+      window.removeEventListener("of_action", handler as EventListener);
+  }, [actionsRef]);
+};
+
 // Helper functions
-const getDefaultProperties = (
-  type: AllComponentType
-): ComponentProperties => {
+const getDefaultProperties = (type: AllComponentType): ComponentProperties => {
   const defaults: Partial<Record<AllComponentType, ComponentProperties>> = {
     text: {
       text: "Sample Text",

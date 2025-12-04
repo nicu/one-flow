@@ -23,6 +23,7 @@ import LTCard from "./builder/LTCard";
 import LTImage from "./builder/LTImage";
 import LTDataProvider from "./builder/LTDataProvider";
 import BuilderBox from "./builder/BuilderBox";
+import { componentRegistry } from "../plugins/registry";
 
 interface RenderComponentProps {
   component: BuilderComponent;
@@ -36,7 +37,11 @@ interface RenderComponentProps {
     parentId?: string | null,
     index?: number
   ) => void;
-  onMoveComponents?: (ids: string[], parentId?: string | null, index?: number) => void;
+  onMoveComponents?: (
+    ids: string[],
+    parentId?: string | null,
+    index?: number
+  ) => void;
 }
 
 export const RenderComponent: React.FC<RenderComponentProps> = ({
@@ -309,6 +314,17 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
             boundProps.placeholder = String(value);
             break;
         }
+      }
+    }
+
+    // Check whether a plugin registered a component descriptor for this type.
+    const pluginComp = componentRegistry.getComponent(component.type as string);
+    if (pluginComp && pluginComp.renderPreview) {
+      try {
+        return <>{pluginComp.renderPreview(boundProps)}</>;
+      } catch (e) {
+        // fallback to built-in rendering on error
+        console.error("Plugin component render error", e);
       }
     }
 
@@ -626,8 +642,6 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         return <div style={style}>Unknown Component</div>;
     }
   };
-
-  
 
   return (
     <div
