@@ -1,17 +1,18 @@
 import { pluginRegistry } from "./registry";
 
 export async function initPluginSystem() {
-  // discover plugin entry points under src/plugins/*/index.ts or .tsx
-  // Vite's import.meta.glob returns a map of import functions
-  const modules = import.meta.glob("/src/plugins/*/index.{ts,tsx}");
+  // discover plugin entry points under each subfolder of this folder
+  // Use a relative glob so Vite reliably matches `src/plugins/*/index.ts(x)`
+  // when compiled from the `src/plugins` directory.
+  const modules = import.meta.glob("./*/index.{ts,tsx}");
 
   // Prefer .tsx entry when both .tsx and .ts exist for a plugin folder.
   const byDir = new Map<string, string>();
   for (const path in modules) {
     const m = path as string;
-    // extract plugin dir name
+    // extract plugin dir name from patterns like './plugin-id/index.ts'
     const parts = m.split("/");
-    const dir = parts.length >= 4 ? parts[3] : parts[2] || m;
+    const dir = parts[1] || parts[2] || m;
     const existing = byDir.get(dir);
     if (!existing) {
       byDir.set(dir, m);

@@ -1,4 +1,15 @@
 import React, { useState } from "react";
+import {
+  ArrowUpLeft,
+  ArrowUp,
+  ArrowUpRight,
+  ArrowLeft,
+  Square,
+  ArrowRight,
+  ArrowDownLeft,
+  ArrowDown,
+  ArrowDownRight,
+} from "lucide-react";
 import { useDataProviders } from "../contexts/DataProvidersContext";
 import VisibilityExpressionModal from "./VisibilityExpressionModal";
 import { useTranslation } from "react-i18next";
@@ -1098,6 +1109,215 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
+      case "image-grid":
+        return (
+          <div className="property-group">
+            <h4>Image Grid</h4>
+            <div className="property-field">
+              <label>Title</label>
+              <input
+                type="text"
+                value={(properties as any).title || ""}
+                onChange={(e) =>
+                  onUpdate({ ...(properties as any), title: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Title Variant</label>
+              <select
+                value={(properties as any).titleVariant || "h2"}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    titleVariant: e.target.value,
+                  })
+                }
+              >
+                <option value="h1">h1</option>
+                <option value="h2">h2</option>
+                <option value="h3">h3</option>
+                <option value="h4">h4</option>
+                <option value="h5">h5</option>
+                <option value="h6">h6</option>
+              </select>
+            </div>
+
+            {(() => {
+              // Build merged models list (app dataStore + provider models)
+              const providerModels = Object.values(dp.models || {}).map(
+                (m) => ({
+                  id: m.id,
+                  name: m.name,
+                  fields: Object.keys(m.fields).map((f) => ({
+                    id: f,
+                    name: f,
+                    type: m.fields[f],
+                  })),
+                })
+              );
+              const rawModels = [
+                ...(dataStore?.models || []),
+                ...providerModels,
+              ];
+              const modelMap: Map<string, any> = new Map();
+              for (const m of rawModels) {
+                if (!modelMap.has(m.id)) modelMap.set(m.id, m);
+              }
+              const models = Array.from(modelMap.values());
+
+              const boundCollectionId =
+                (properties.dataBinding &&
+                  properties.dataBinding.collectionId) ||
+                undefined;
+              const boundModel = models.find((m) => m.id === boundCollectionId);
+
+              if (boundModel) {
+                return (
+                  <>
+                    <div className="property-field">
+                      <label>Image Title Field</label>
+                      <select
+                        value={(properties as any).itemTitleField || ""}
+                        onChange={(e) =>
+                          onUpdate({
+                            ...(properties as any),
+                            itemTitleField: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">(select field)</option>
+                        {boundModel.fields.map((f: any) => (
+                          <option key={f.id} value={f.id}>
+                            {f.name} ({f.type})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div className="property-field">
+                      <label>Image Source Field</label>
+                      <select
+                        value={(properties as any).itemImageField || ""}
+                        onChange={(e) =>
+                          onUpdate({
+                            ...(properties as any),
+                            itemImageField: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">(select field)</option>
+                        {boundModel.fields.map((f: any) => (
+                          <option key={f.id} value={f.id}>
+                            {f.name} ({f.type})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </>
+                );
+              }
+
+              // Fallback to free text inputs when no collection is bound
+              return (
+                <>
+                  <div className="property-field">
+                    <label>Image Title Field</label>
+                    <input
+                      type="text"
+                      value={(properties as any).itemTitleField || ""}
+                      onChange={(e) =>
+                        onUpdate({
+                          ...(properties as any),
+                          itemTitleField: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. title"
+                    />
+                  </div>
+
+                  <div className="property-field">
+                    <label>Image Source Field</label>
+                    <input
+                      type="text"
+                      value={(properties as any).itemImageField || ""}
+                      onChange={(e) =>
+                        onUpdate({
+                          ...(properties as any),
+                          itemImageField: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. imageUrl"
+                    />
+                  </div>
+                </>
+              );
+            })()}
+
+            <div className="property-field">
+              <label>Image Title Position</label>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: 6,
+                }}
+              >
+                {(() => {
+                  const iconMap: Record<string, React.ReactNode> = {
+                    "top-left": <ArrowUpLeft size={16} />,
+                    "top-center": <ArrowUp size={16} />,
+                    "top-right": <ArrowUpRight size={16} />,
+                    "center-left": <ArrowLeft size={16} />,
+                    "center-center": <Square size={14} />,
+                    "center-right": <ArrowRight size={16} />,
+                    "bottom-left": <ArrowDownLeft size={16} />,
+                    "bottom-center": <ArrowDown size={16} />,
+                    "bottom-right": <ArrowDownRight size={16} />,
+                  };
+
+                  return [
+                    ["top-left", "top-center", "top-right"],
+                    ["center-left", "center-center", "center-right"],
+                    ["bottom-left", "bottom-center", "bottom-right"],
+                  ].map((row, rIdx) => (
+                    <React.Fragment key={rIdx}>
+                      {row.map((pos) => (
+                        <button
+                          key={pos}
+                          onClick={() =>
+                            onUpdate({
+                              ...(properties as any),
+                              imagePosition: pos,
+                            })
+                          }
+                          className={`pos-btn ${
+                            ((properties as any).imagePosition ||
+                              "center-center") === pos
+                              ? "active"
+                              : ""
+                          }`}
+                          style={{
+                            padding: 8,
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                          aria-label={`Set position ${pos}`}
+                          title={pos}
+                        >
+                          {iconMap[pos]}
+                        </button>
+                      ))}
+                    </React.Fragment>
+                  ));
+                })()}
+              </div>
+            </div>
+          </div>
+        );
+
       case "datagrid":
         return (
           <div className="property-group">
@@ -1272,6 +1492,9 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       type === "row" ||
       type === "column" ||
       type === "tabs";
+    // allow Image Grid to bind to collections as well
+    const canBindToCollectionExtended =
+      canBindToCollection || type === "image-grid";
 
     // For text/input/button/image/tabs, show field binding
     const canBindToField = [
@@ -1290,7 +1513,8 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
     // For forms, allow binding to a model (the whole object)
     const canBindToModel = type === "form";
 
-    if (!canBindToCollection && !canBindToField && !canBindToModel) return null;
+    if (!canBindToCollectionExtended && !canBindToField && !canBindToModel)
+      return null;
 
     return (
       <div className="property-group">
@@ -1314,7 +1538,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           )}
         </div>
 
-        {canBindToCollection && (
+        {canBindToCollectionExtended && (
           <div className="property-field">
             <label>Bind to Collection</label>
             <select

@@ -13,7 +13,8 @@ export type ComponentType =
   | "flex"
   | "grid"
   | "row"
-  | "column";
+  | "column"
+  | "image-grid";
 
 // Added LT-prefixed component types for the new themed component set
 export type LTComponentType =

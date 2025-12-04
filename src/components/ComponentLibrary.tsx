@@ -20,7 +20,11 @@ interface ComponentLibraryProps {
   selectedIds?: string[];
   setSelectedIds?: Dispatch<SetStateAction<string[]>>;
   onSelect?: (id: string | null) => void;
-  onMoveComponents?: (ids: string[], parentId?: string | null, index?: number) => void;
+  onMoveComponents?: (
+    ids: string[],
+    parentId?: string | null,
+    index?: number
+  ) => void;
   onAddComponent?: (
     type: AllComponentType,
     parentId?: string | null,
@@ -198,6 +202,21 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
             <h4>Layout</h4>
             <div className="component-grid">
               {layoutComponents.map((comp) => (
+                <ComponentLibraryItem key={String(comp.type)} {...comp} />
+              ))}
+            </div>
+          </div>
+
+          <div className="component-section">
+            <h4>Components</h4>
+            <div className="component-grid">
+              {[
+                {
+                  type: "image-grid" as AllComponentType,
+                  label: "Image Grid",
+                  icon: <ImageIcon size={20} />,
+                },
+              ].map((comp) => (
                 <ComponentLibraryItem key={String(comp.type)} {...comp} />
               ))}
             </div>

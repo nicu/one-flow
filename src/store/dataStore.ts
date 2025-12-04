@@ -73,6 +73,7 @@ export const initialModels: DataModel[] = [
       { id: "email", name: "Email", type: "string" },
       { id: "phone", name: "Phone", type: "string" },
       { id: "nat", name: "Nat", type: "string" },
+      { id: "avatar", name: "Avatar", type: "string" },
     ],
   },
 ];
@@ -118,6 +119,25 @@ export function generateMockData(): Record<string, any[]> {
       email: "jennie.nichols@example.com",
       phone: "(272) 790-0888",
       nat: "US",
+      avatar: `https://i.pravatar.cc/150?u=user-10`,
+    },
+    {
+      id: "user-2",
+      name: "John Doe",
+      location: "Portland, Oregon",
+      email: "john.doe@example.com",
+      phone: "(503) 555-0123",
+      nat: "US",
+      avatar: `https://i.pravatar.cc/150?u=user-2`,
+    },
+    {
+      id: "user-3",
+      name: "Maria Garcia",
+      location: "Austin, Texas",
+      email: "maria.garcia@example.com",
+      phone: "(512) 555-0456",
+      nat: "US",
+      avatar: `https://i.pravatar.cc/150?u=user-20`,
     },
   ];
 

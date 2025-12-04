@@ -323,8 +323,31 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
       try {
         return <>{pluginComp.renderPreview(boundProps)}</>;
       } catch (e) {
-        // fallback to built-in rendering on error
+        // Surface a helpful placeholder in the canvas so the user can see
+        // that the plugin's preview rendering failed (console will contain
+        // the stack trace). This avoids silently falling through to the
+        // generic "Unknown Component" message and helps debugging.
         console.error("Plugin component render error", e);
+        return (
+          <div style={style}>
+            <div
+              style={{
+                padding: 12,
+                borderRadius: 6,
+                background: "#fee2e2",
+                color: "#7f1d1d",
+              }}
+            >
+              <strong>Plugin render error</strong>
+              <div style={{ fontSize: 12, marginTop: 6 }}>
+                Component: <code>{String(component.type)}</code>
+              </div>
+              <div style={{ fontSize: 12, marginTop: 6 }}>
+                Check the console for details.
+              </div>
+            </div>
+          </div>
+        );
       }
     }
 

@@ -12,10 +12,13 @@ const plugin: Plugin = {
       displayName: "Random User",
       async generate(schema, options) {
         const id = Math.random().toString(36).slice(2);
+        // Provide a sample avatar using pravatar (stable per id)
+        const avatar = `https://i.pravatar.cc/150?u=${id}`;
         return {
           id,
           name: `User ${Math.floor(Math.random() * 1000)}`,
           email: `${id}@example.com`,
+          avatar,
         };
       },
     });
