@@ -71,7 +71,11 @@
         "id": "tabs-row",
         "type": "tabs",
         "properties": {
-          "dataBinding": { "modelId": "hotel", "collectionId": "hotel" },
+          "dataBinding": {
+            "modelId": "hotel",
+            "collectionId": "hotel",
+            "fieldId": "name"
+          },
           "tabField": "available"
         }
       },

@@ -84,6 +84,19 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
 
   const pageSize = properties.pageSize || 5;
 
+  const [paginationModel, setPaginationModel] = React.useState<{
+    page: number;
+    pageSize: number;
+  }>({ page: 0, pageSize });
+
+  // Keep paginationModel in sync when properties.pageSize changes
+  React.useEffect(() => {
+    setPaginationModel((prev) => ({
+      ...prev,
+      pageSize: properties.pageSize || 5,
+    }));
+  }, [properties.pageSize]);
+
   return (
     <div
       id={className}
@@ -97,7 +110,10 @@ export const BuilderDataGrid: React.FC<BuilderDataGridProps> = ({
         getRowId={(row) => row.id}
         density="compact"
         rowHeight={48}
-        initialState={{ pagination: { paginationModel: { pageSize } } }}
+        // Controlled pagination model so the properties.panel 'Page Size' input
+        // updates the grid immediately instead of only setting an initial value.
+        paginationModel={paginationModel}
+        onPaginationModelChange={(m) => setPaginationModel(m)}
         pageSizeOptions={[5, 10, 20, 50]}
         sx={{
           borderRadius: 2,
