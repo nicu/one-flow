@@ -10,7 +10,7 @@ import { PropertiesPanel } from "./components/PropertiesPanel";
 import LTPropertiesPanel from "./components/LTPropertiesPanel";
 import { ExportModal } from "./components/ExportModal";
 import FeatureFlagsModal from "./components/FeatureFlagsModal";
-import { DataPanel } from "./components/DataPanel";
+import EntitiesTab from "./components/EntitiesTab";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
 import { exportToReact, exportToJSON } from "./utils/export";
 import aiToBuilder from "./utils/aiToBuilder";
@@ -50,7 +50,7 @@ function App() {
   const [isFlagsModalOpen, setIsFlagsModalOpen] = useState(false);
   // used to force re-render when flags are updated
   const [flagsVersion, setFlagsVersion] = useState(0);
-  const [activeTab, setActiveTab] = useState<"ui" | "data">("ui");
+  const [activeTab, setActiveTab] = useState<"ui" | "data" | "entities">("ui");
   const [dataStore, setDataStore] = useState<DataStore>(initialDataStore);
 
   const selectedComponent = getSelectedComponent();
@@ -393,11 +393,11 @@ function App() {
               </button>
               <button
                 className={`viewport-btn ${
-                  activeTab === "data" ? "active" : ""
+                  activeTab === "entities" ? "active" : ""
                 }`}
-                onClick={() => setActiveTab("data")}
+                onClick={() => setActiveTab("entities")}
               >
-                🗄️ Data
+                🧩 Entities
               </button>
             </div>
             {activeTab === "ui" && (
@@ -573,7 +573,7 @@ function App() {
             className="main-area"
             style={{
               backgroundColor: "#e5e5e5",
-              padding: activeTab === "data" ? "0" : "40px",
+              padding: activeTab !== "ui" ? "0" : "40px",
               display: "flex",
               justifyContent: "center",
               overflow: "auto",
@@ -606,10 +606,10 @@ function App() {
                 />
               </div>
             ) : (
-              <div style={{ width: "100%", height: "100%" }}>
-                <DataPanel
-                  models={dataStore.models}
-                  relationships={dataStore.relationships}
+              <div style={{ width: "100%", height: "100%", display: "flex" }}>
+                <EntitiesTab
+                  dataStore={dataStore}
+                  setDataStore={setDataStore}
                 />
               </div>
             )}

@@ -18,6 +18,8 @@ export interface DataModel {
   id: string;
   name: string;
   fields: DataField[];
+  // Optional position for graph layout persistence
+  position?: { x: number; y: number };
 }
 
 export interface DataRelationship {
