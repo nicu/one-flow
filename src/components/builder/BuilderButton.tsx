@@ -17,7 +17,14 @@ export const BuilderButton: React.FC<Props & { componentId?: string }> = ({
   const style = buildStyle(properties, "button");
   const className = componentId ? `elem-${componentId}` : undefined;
   const key = componentId ? `${componentId}.buttonText` : undefined;
-  const label = key
+  const isBound = Boolean(
+    properties &&
+      properties.dataBinding &&
+      (properties.dataBinding.fieldId || properties.dataBinding.collectionId)
+  );
+  const label = isBound
+    ? properties.buttonText
+    : key
     ? t(key, properties.buttonText || "")
     : properties.buttonText;
   return (

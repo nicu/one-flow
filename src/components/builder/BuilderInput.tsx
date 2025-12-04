@@ -26,10 +26,19 @@ export const BuilderInput: React.FC<Props> = ({
   const className = componentId ? `elem-${componentId}` : undefined;
   const placeholderKey = componentId ? `${componentId}.placeholder` : undefined;
   const labelKey = componentId ? `${componentId}.label` : undefined;
-  const placeholder = placeholderKey
+  const isBound = Boolean(
+    properties &&
+      properties.dataBinding &&
+      (properties.dataBinding.fieldId || properties.dataBinding.collectionId)
+  );
+  const placeholder = isBound
+    ? properties.placeholder
+    : placeholderKey
     ? t(placeholderKey, properties.placeholder || "")
     : properties.placeholder;
-  const labelText = labelKey
+  const labelText = isBound
+    ? properties.label
+    : labelKey
     ? t(labelKey, properties.label || "")
     : properties.label;
 

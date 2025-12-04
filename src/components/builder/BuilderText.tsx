@@ -15,7 +15,16 @@ export const BuilderText: React.FC<Props & { componentId?: string }> = ({
   const style = buildStyle(properties, "text");
   const className = componentId ? `elem-${componentId}` : undefined;
   const key = componentId ? `${componentId}.text` : undefined;
-  const content = key ? t(key, properties.text || "") : properties.text;
+  const isBound = Boolean(
+    properties &&
+      properties.dataBinding &&
+      (properties.dataBinding.fieldId || properties.dataBinding.collectionId)
+  );
+  const content = isBound
+    ? properties.text
+    : key
+    ? t(key, properties.text || "")
+    : properties.text;
   return (
     <div id={className} className={className} style={style}>
       {content || "Text"}

@@ -15,7 +15,16 @@ export const BuilderImage: React.FC<Props & { componentId?: string }> = ({
   const style = buildStyle(properties, "image");
   const className = componentId ? `elem-${componentId}` : undefined;
   const altKey = componentId ? `${componentId}.alt` : undefined;
-  const alt = altKey ? t(altKey, properties.alt || "") : properties.alt;
+  const isBound = Boolean(
+    properties &&
+      properties.dataBinding &&
+      (properties.dataBinding.fieldId || properties.dataBinding.collectionId)
+  );
+  const alt = isBound
+    ? properties.alt
+    : altKey
+    ? t(altKey, properties.alt || "")
+    : properties.alt;
   return (
     <img
       id={className}
