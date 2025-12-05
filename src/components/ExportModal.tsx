@@ -5,6 +5,7 @@ interface ExportModalProps {
   onClose: () => void;
   reactCode: string;
   jsonCode: string;
+  htmlCode?: string;
 }
 
 export const ExportModal: React.FC<ExportModalProps> = ({
@@ -12,8 +13,11 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   onClose,
   reactCode,
   jsonCode,
+  htmlCode,
 }) => {
-  const [activeTab, setActiveTab] = useState<"react" | "json">("react");
+  const [activeTab, setActiveTab] = useState<"react" | "json" | "html">(
+    "react"
+  );
 
   if (!isOpen) return null;
 
@@ -39,6 +43,12 @@ export const ExportModal: React.FC<ExportModalProps> = ({
             React Component
           </button>
           <button
+            className={activeTab === "html" ? "active" : ""}
+            onClick={() => setActiveTab("html")}
+          >
+            HTML
+          </button>
+          <button
             className={activeTab === "json" ? "active" : ""}
             onClick={() => setActiveTab("json")}
           >
@@ -48,7 +58,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
         <div className="modal-body">
           <pre>
-            <code>{activeTab === "react" ? reactCode : jsonCode}</code>
+            <code>
+              {activeTab === "react"
+                ? reactCode
+                : activeTab === "html"
+                ? htmlCode || ""
+                : jsonCode}
+            </code>
           </pre>
         </div>
 
@@ -56,7 +72,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({
           <button
             className="copy-button"
             onClick={() =>
-              copyToClipboard(activeTab === "react" ? reactCode : jsonCode)
+              copyToClipboard(
+                activeTab === "react"
+                  ? reactCode
+                  : activeTab === "html"
+                  ? htmlCode || ""
+                  : jsonCode
+              )
             }
           >
             Copy to Clipboard

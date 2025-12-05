@@ -14,7 +14,7 @@ import { ExportModal } from "./components/ExportModal";
 import FeatureFlagsModal from "./components/FeatureFlagsModal";
 import EntitiesTab from "./components/EntitiesTab";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
-import { exportToReact, exportToJSON } from "./utils/export";
+import { exportToReact, exportToJSON, exportToHTML } from "./utils/export";
 import aiToBuilder from "./utils/aiToBuilder";
 import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";
@@ -746,6 +746,7 @@ function App() {
           onClose={() => setIsExportModalOpen(false)}
           reactCode={exportToReact(components)}
           jsonCode={exportToJSON(components)}
+          htmlCode={exportToHTML ? exportToHTML(components) : undefined}
         />
 
         {/* AI Assistant floating panel */}

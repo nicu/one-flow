@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useId } from "react";
 import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 import type { ComponentProperties } from "../types";
 import { useDataContext } from "../contexts/DataContext";
 
@@ -22,6 +23,8 @@ const positionMap: Record<string, { justify: string; align: string }> = {
 
 const ImageGrid: React.FC<ImageGridProps> = ({ properties = {} }) => {
   const dataContext = useDataContext();
+
+  const id = useId();
 
   // Determine items: prefer DataContext (when rendering bound collections),
   // otherwise fall back to explicit `items` prop if present.
@@ -83,16 +86,13 @@ const ImageGrid: React.FC<ImageGridProps> = ({ properties = {} }) => {
   };
 
   return (
-    <div
-      id={`image-grid-${String(Math.random()).slice(2)}`}
-      style={{ padding: properties.padding || "0" }}
-    >
+    <Box id={`image-grid-${id}`} sx={{ padding: properties.padding || "0" }}>
       {title && (
-        <Typography variant={titleVariant as any} style={{ marginBottom: 8 }}>
+        <Typography variant={titleVariant as any} sx={{ mb: 1 }}>
           {title}
         </Typography>
       )}
-      <div style={gridStyle}>
+      <Box sx={{ ...gridStyle }}>
         {items.map((it: any, idx: number) => {
           const imgSrc = it && itemImageField ? it[itemImageField] || "" : "";
           const imgTitle = it && itemTitleField ? it[itemTitleField] || "" : "";
@@ -100,21 +100,22 @@ const ImageGrid: React.FC<ImageGridProps> = ({ properties = {} }) => {
             positionMap[imagePosition] || positionMap["center-center"];
 
           return (
-            <div
+            <Box
               key={it?.id || idx}
-              style={{
+              sx={{
                 position: "relative",
                 overflow: "hidden",
-                borderRadius: properties.borderRadius || 8,
+                borderRadius: properties.borderRadius || 1,
                 boxShadow: properties.boxShadow || "none",
                 minHeight: 120,
               }}
             >
               {imgSrc ? (
-                <img
+                <Box
+                  component="img"
                   src={imgSrc}
                   alt={imgTitle}
-                  style={{
+                  sx={{
                     width: "100%",
                     height: 180,
                     objectFit: properties.objectFit || "cover",
@@ -122,41 +123,42 @@ const ImageGrid: React.FC<ImageGridProps> = ({ properties = {} }) => {
                   }}
                 />
               ) : (
-                <div style={{ background: "#f3f4f6", height: 180 }} />
+                <Box sx={{ background: "#f3f4f6", height: 180 }} />
               )}
 
               {imgTitle?.length > 0 && (
-                <div
-                  style={{
+                <Box
+                  sx={{
                     position: "absolute",
                     inset: 0,
                     display: "flex",
                     justifyContent: pos.justify,
                     alignItems: pos.align,
-                    padding: 8,
+                    p: 1,
                     pointerEvents: "none",
                   }}
                 >
-                  <div
-                    style={{
+                  <Box
+                    sx={{
                       background: "rgba(0,0,0,0.5)",
                       color: "#fff",
-                      padding: "6px 8px",
-                      borderRadius: 6,
+                      px: 1,
+                      py: 0.5,
+                      borderRadius: 1,
                       pointerEvents: "auto",
                     }}
                   >
-                    <div style={{ fontSize: 14, fontWeight: 600 }}>
+                    <Typography sx={{ fontSize: 14, fontWeight: 600 }}>
                       {imgTitle}
-                    </div>
-                  </div>
-                </div>
+                    </Typography>
+                  </Box>
+                </Box>
               )}
-            </div>
+            </Box>
           );
         })}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
