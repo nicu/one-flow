@@ -96,8 +96,13 @@ export const exportToHTML = (components: BuilderComponent[]): string => {
       }
       case "image-grid": {
         // Merge registered defaults with stored properties so export matches preview
-        const registered = componentRegistry.getComponent(String(component.type));
-        const props = { ...(registered?.defaultProps || {}), ...(component.properties || {}) } as any;
+        const registered = componentRegistry.getComponent(
+          String(component.type)
+        );
+        const props = {
+          ...(registered?.defaultProps || {}),
+          ...(component.properties || {}),
+        } as any;
         const cols = (() => {
           const g = props.gridColumns;
           if (!g) return 3;
@@ -134,7 +139,9 @@ export const exportToHTML = (components: BuilderComponent[]): string => {
                 },
               ];
 
-        const title = props.title ? `<div class="of-image-grid-title">${props.title}</div>` : "";
+        const title = props.title
+          ? `<div class="of-image-grid-title">${props.title}</div>`
+          : "";
 
         const itemsHtml = items
           .map((it: any) => {
@@ -165,10 +172,10 @@ export const exportToHTML = (components: BuilderComponent[]): string => {
                 center: "center",
                 bottom: "flex-end",
               };
-              return `justify-content:${justifyMap[h] || "center"};align-items:${alignMap[v] || "center"}`;
+              return `justify-content:${
+                justifyMap[h] || "center"
+              };align-items:${alignMap[v] || "center"}`;
             })();
-
-            const overlayStyle = `position:absolute;inset:0;display:flex;${overlayJustify};padding:8px;pointer-events:none`;
 
             return `<div class="of-image-item" style="border-radius:${br};min-height:120px"><img class="of-image-img" src="${imgSrc}" alt="${imgTitle}" style="height:${imgH};object-fit:${objFit};"/>${
               imgTitle
@@ -179,7 +186,10 @@ export const exportToHTML = (components: BuilderComponent[]): string => {
           .join("");
 
         const gridStyleAttr = Object.entries(gridStyle)
-          .map(([k, v]) => `${k.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}:${v}`)
+          .map(
+            ([k, v]) =>
+              `${k.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}:${v}`
+          )
           .join(";");
 
         return `<div class="of-image-grid" style="${gridStyleAttr}">${title}${itemsHtml}</div>`;
