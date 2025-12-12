@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -90,6 +90,9 @@ export const VisibilityExpressionModal: React.FC<
     setToastOpen(false);
   };
 
+  // Ref to avoid cycles when syncing payload <-> nodes/edges
+  const syncingPayloadRef = useRef(false);
+
   // Reload flags when the modal opens or when an external update occurs
   useEffect(() => {
     if (!isOpen) return;
@@ -126,6 +129,13 @@ export const VisibilityExpressionModal: React.FC<
 
   // When payload changes (for example after calling Load), parse it and update nodes/edges immediately
   useEffect(() => {
+    // If this payload change was triggered by our own nodes/edges -> payload
+    // synchronization, skip applying it back to avoid a feedback loop.
+    if (syncingPayloadRef.current) {
+      syncingPayloadRef.current = false;
+      return;
+    }
+
     try {
       const parsed = payload ? JSON.parse(payload) : { nodes: [], edges: [] };
       if (parsed.nodes) setNodes(parsed.nodes);
@@ -149,7 +159,12 @@ export const VisibilityExpressionModal: React.FC<
   useEffect(() => {
     try {
       const next = JSON.stringify({ nodes, edges });
-      if (next !== payload) setPayload(next);
+      if (next !== payload) {
+        // mark that we're updating payload from nodes/edges so the payload
+        // effect does not re-apply the same state and cause a loop
+        syncingPayloadRef.current = true;
+        setPayload(next);
+      }
     } catch {
       // ignore serialization errors
     }
@@ -256,7 +271,6 @@ export const VisibilityExpressionModal: React.FC<
         const next = nds.map((n) =>
           n.id === id ? { ...n, data: { ...n.data, ...patch } } : n
         );
-        setPayload(JSON.stringify({ nodes: next, edges }));
         return next;
       });
     },
@@ -493,7 +507,6 @@ export const VisibilityExpressionModal: React.FC<
             const nextEdges = eds.filter(
               (ee) => ee.source !== nid && ee.target !== nid
             );
-            setPayload(JSON.stringify({ nodes: nextNodes, edges: nextEdges }));
             return nextEdges;
           });
           return nextNodes;
@@ -593,7 +606,6 @@ export const VisibilityExpressionModal: React.FC<
     base.type = nodeType;
     setNodes((s: any[]) => {
       const next = s.concat(base);
-      setPayload(JSON.stringify({ nodes: next, edges }));
       return next;
     });
   };
