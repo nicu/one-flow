@@ -1,0 +1,8 @@
+{
+  "name": "OneFlow Exporter",
+  "id": "oneflow-exporter",
+  "api": "1.0.0",
+  "editorType": ["figma", "buzz"],
+  "main": "code.js",
+  "ui": "ui.html"
+}

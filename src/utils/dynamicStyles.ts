@@ -32,6 +32,12 @@ export function ensureElementStyles(id: string, props: Props) {
   const styleEl = ensureStyleElement();
 
   const className = `elem-${id}`;
+  // Escape class selector so IDs with characters like ':' are valid in CSS selectors
+  const safeClassName =
+    typeof (globalThis as any).CSS !== "undefined" &&
+    (globalThis as any).CSS.escape
+      ? (globalThis as any).CSS.escape(className)
+      : className.replace(/([^a-zA-Z0-9_-])/g, "\\$1");
 
   // Build base declarations and breakpoint-specific ones
   const base: Record<string, string> = {};
@@ -137,7 +143,7 @@ export function ensureElementStyles(id: string, props: Props) {
   }
 
   if (Object.keys(base).length > 0) {
-    css += `.${className} {\n`;
+    css += `.${safeClassName} {\n`;
     for (const k of Object.keys(base)) {
       const prop = toCssProp(k);
       css += `  ${prop}: ${base[k]} !important;\n`;
@@ -151,7 +157,7 @@ export function ensureElementStyles(id: string, props: Props) {
     if (!decls) continue;
     const has = Object.keys(decls).some((k) => decls[k] !== "");
     if (!has) continue;
-    css += `[data-viewport="${bpName}"] .${className} {\n`;
+    css += `[data-viewport="${bpName}"] .${safeClassName} {\n`;
     for (const k of Object.keys(decls)) {
       if (!decls[k]) continue;
       const prop = toCssProp(k);
