@@ -3,6 +3,12 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Serve built assets with relative paths so GitHub Pages (docs/) works
+  // regardless of repository name. `base: './'` makes asset URLs relative.
+  base: "./",
+  build: {
+    outDir: "docs",
+  },
   plugins: [react()],
   server: {
     proxy: {
