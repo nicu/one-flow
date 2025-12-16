@@ -14,7 +14,7 @@ import { ExportModal } from "./components/ExportModal";
 import FeatureFlagsModal from "./components/FeatureFlagsModal";
 import EntitiesTab from "./components/EntitiesTab";
 import { AIAssistantPanel } from "./components/AIAssistantPanel";
-import { exportToReact, exportToJSON, exportToHTML } from "./utils/export";
+import { exportToReact, exportToHTML } from "./utils/export";
 import aiToBuilder from "./utils/aiToBuilder";
 import landingPage from "./examples/landingPage.json";
 import airbnbPage from "./examples/airbnbPage.json";

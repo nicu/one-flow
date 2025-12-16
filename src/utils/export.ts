@@ -47,7 +47,12 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
       const top = parsePx(copy.properties.top);
       const width = parsePx(copy.properties.width);
       const height = parsePx(copy.properties.height);
-      if (pos === "absolute" || (left != null && top != null) || (width != null || height != null)) {
+      if (
+        pos === "absolute" ||
+        (left != null && top != null) ||
+        width != null ||
+        height != null
+      ) {
         // add a lightweight `absolute` hint object consumed by the Figma importer
         // keep numbers only when parseable
         (copy as any).absolute = {};
@@ -93,14 +98,19 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
   const layoutNode = (node: BuilderComponent, isRoot = false) => {
     // recurse children first
     const children = node.children || [];
-    children.forEach(layoutNode);
+    children.forEach((ch) => layoutNode(ch));
 
     const props = node.properties || ({} as ComponentProperties);
-    const pad = (props.padding && String(props.padding).split(" ").map((s) => parsePx(s) || 0)) || [];
-    const paddingTop = pad.length === 1 ? (pad[0] || 0) : (pad[0] || 0);
-    const paddingRight = pad.length === 2 ? (pad[1] || 0) : (pad[1] || 0);
-    const paddingBottom = pad.length === 4 ? (pad[2] || 0) : (pad[2] || 0);
-    const paddingLeft = pad.length === 4 ? (pad[3] || 0) : (pad[3] || 0);
+    const pad =
+      (props.padding &&
+        String(props.padding)
+          .split(" ")
+          .map((s) => parsePx(s) || 0)) ||
+      [];
+    const paddingTop = pad.length === 1 ? pad[0] || 0 : pad[0] || 0;
+    const paddingRight = pad.length === 2 ? pad[1] || 0 : pad[1] || 0;
+    const paddingBottom = pad.length === 4 ? pad[2] || 0 : pad[2] || 0;
+    const paddingLeft = pad.length === 4 ? pad[3] || 0 : pad[3] || 0;
 
     const gap = parseGap(props.gap);
 
@@ -112,7 +122,11 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
     let height: number | undefined = explicitH != null ? explicitH : undefined;
 
     // treat percentage widths on root as a desktop width
-    if (isRoot && typeof props.width === "string" && props.width.trim().endsWith("%")) {
+    if (
+      isRoot &&
+      typeof props.width === "string" &&
+      props.width.trim().endsWith("%")
+    ) {
       width = 1200;
     }
 
@@ -125,7 +139,9 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
         break;
       }
       case "image": {
-        const estH = parsePx(props.height) || ((props as any).absolute && (props as any).absolute.height);
+        const estH =
+          parsePx(props.height) ||
+          ((props as any).absolute && (props as any).absolute.height);
         if (height == null && estH != null) height = estH;
         if (height == null) height = 120;
         if (width == null) width = parsePx(props.width) || 200;
@@ -134,27 +150,53 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
       case "flex":
       case "column": {
         // vertical stacking
-        const childWidths = children.map((ch) => (ch as any).absolute?.width).filter(Boolean) as number[];
-        const childHeights = children.map((ch) => (ch as any).absolute?.height || 0) as number[];
-        const totalHeight = childHeights.reduce((s, v) => s + v, 0) + Math.max(0, children.length - 1) * gap;
-        const maxChildWidth = childWidths.length ? Math.max(...childWidths) : undefined;
+        const childWidths = children
+          .map((ch) => (ch as any).absolute?.width)
+          .filter(Boolean) as number[];
+        const childHeights = children.map(
+          (ch) => (ch as any).absolute?.height || 0
+        ) as number[];
+        const totalHeight =
+          childHeights.reduce((s, v) => s + v, 0) +
+          Math.max(0, children.length - 1) * gap;
+        const maxChildWidth = childWidths.length
+          ? Math.max(...childWidths)
+          : undefined;
         if (height == null) height = totalHeight + paddingTop + paddingBottom;
-        if (width == null) width = maxChildWidth != null ? maxChildWidth + paddingLeft + paddingRight : undefined;
+        if (width == null)
+          width =
+            maxChildWidth != null
+              ? maxChildWidth + paddingLeft + paddingRight
+              : undefined;
         break;
       }
       case "row": {
-        const childWidths = children.map((ch) => (ch as any).absolute?.width || 0) as number[];
-        const childHeights = children.map((ch) => (ch as any).absolute?.height).filter(Boolean) as number[];
-        const totalWidth = childWidths.reduce((s, v) => s + v, 0) + Math.max(0, children.length - 1) * gap;
-        const maxChildHeight = childHeights.length ? Math.max(...childHeights) : undefined;
+        const childWidths = children.map(
+          (ch) => (ch as any).absolute?.width || 0
+        ) as number[];
+        const childHeights = children
+          .map((ch) => (ch as any).absolute?.height)
+          .filter(Boolean) as number[];
+        const totalWidth =
+          childWidths.reduce((s, v) => s + v, 0) +
+          Math.max(0, children.length - 1) * gap;
+        const maxChildHeight = childHeights.length
+          ? Math.max(...childHeights)
+          : undefined;
         if (width == null) width = totalWidth + paddingLeft + paddingRight;
-        if (height == null) height = maxChildHeight != null ? maxChildHeight + paddingTop + paddingBottom : undefined;
+        if (height == null)
+          height =
+            maxChildHeight != null
+              ? maxChildHeight + paddingTop + paddingBottom
+              : undefined;
         break;
       }
       case "grid": {
         const cols = (props.gridColumns && Number(props.gridColumns)) || 3;
         const minCol = parsePx(props.minColumnWidth) || 120;
-        const childHeights = children.map((ch) => (ch as any).absolute?.height || 120) as number[];
+        const childHeights = children.map(
+          (ch) => (ch as any).absolute?.height || 120
+        ) as number[];
         const rows = Math.ceil(children.length / cols) || 1;
         const rowHeights: number[] = [];
         for (let r = 0; r < rows; r++) {
@@ -162,16 +204,24 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
           const rowMax = Math.max(...childHeights.slice(start, start + cols));
           rowHeights.push(rowMax || 120);
         }
-        const totalHeight = rowHeights.reduce((s, v) => s + v, 0) + Math.max(0, rows - 1) * gap;
-        if (width == null) width = cols * minCol + paddingLeft + paddingRight + (cols - 1) * gap;
+        const totalHeight =
+          rowHeights.reduce((s, v) => s + v, 0) + Math.max(0, rows - 1) * gap;
+        if (width == null)
+          width = cols * minCol + paddingLeft + paddingRight + (cols - 1) * gap;
         if (height == null) height = totalHeight + paddingTop + paddingBottom;
         break;
       }
       default: {
-        const childWidths = children.map((ch) => (ch as any).absolute?.width).filter(Boolean) as number[];
-        const childHeights = children.map((ch) => (ch as any).absolute?.height || 0) as number[];
-        if (height == null && childHeights.length) height = Math.max(...childHeights) + paddingTop + paddingBottom;
-        if (width == null && childWidths.length) width = Math.max(...childWidths) + paddingLeft + paddingRight;
+        const childWidths = children
+          .map((ch) => (ch as any).absolute?.width)
+          .filter(Boolean) as number[];
+        const childHeights = children.map(
+          (ch) => (ch as any).absolute?.height || 0
+        ) as number[];
+        if (height == null && childHeights.length)
+          height = Math.max(...childHeights) + paddingTop + paddingBottom;
+        if (width == null && childWidths.length)
+          width = Math.max(...childWidths) + paddingLeft + paddingRight;
         break;
       }
     }
@@ -182,8 +232,10 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
 
     // attach absolute if not present
     (node as any).absolute = (node as any).absolute || {};
-    if ((node as any).absolute.x == null) (node as any).absolute.x = (node as any).absolute.x || 0;
-    if ((node as any).absolute.y == null) (node as any).absolute.y = (node as any).absolute.y || 0;
+    if ((node as any).absolute.x == null)
+      (node as any).absolute.x = (node as any).absolute.x || 0;
+    if ((node as any).absolute.y == null)
+      (node as any).absolute.y = (node as any).absolute.y || 0;
     (node as any).absolute.width = Math.ceil(width);
     (node as any).absolute.height = Math.ceil(height);
   };
@@ -197,8 +249,12 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
     if (typeof document !== "undefined") {
       const rootEl = document.querySelector(".canvas") as HTMLElement | null;
       const rootRect = rootEl ? rootEl.getBoundingClientRect() : null;
-      const pageW = rootEl ? (rootEl.scrollWidth || (rootRect ? rootRect.width : undefined)) : undefined;
-      const pageH = rootEl ? (rootEl.scrollHeight || (rootRect ? rootRect.height : undefined)) : undefined;
+      const pageW = rootEl
+        ? rootEl.scrollWidth || (rootRect ? rootRect.width : undefined)
+        : undefined;
+      const pageH = rootEl
+        ? rootEl.scrollHeight || (rootRect ? rootRect.height : undefined)
+        : undefined;
 
       // If we measured a full page size, prefer it for top-level nodes
       if (pageW != null || pageH != null) {
@@ -214,16 +270,22 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
 
       const measureNode = (node: BuilderComponent) => {
         const elId = `elem-${node.id}`;
-        const el: Element | null = document.getElementById(elId) || document.querySelector(`.${elId}`);
+        const el: Element | null =
+          document.getElementById(elId) || document.querySelector(`.${elId}`);
         if (el && rootRect) {
           const r = (el as HTMLElement).getBoundingClientRect();
           (node as any).absolute = (node as any).absolute || {};
-          (node as any).absolute.x = Math.round(r.left - rootRect.left + scrollLeft);
-          (node as any).absolute.y = Math.round(r.top - rootRect.top + scrollTop);
+          (node as any).absolute.x = Math.round(
+            r.left - rootRect.left + scrollLeft
+          );
+          (node as any).absolute.y = Math.round(
+            r.top - rootRect.top + scrollTop
+          );
           (node as any).absolute.width = Math.round(r.width);
           (node as any).absolute.height = Math.round(r.height);
         }
-        if (node.children && node.children.length) node.children.forEach(measureNode);
+        if (node.children && node.children.length)
+          node.children.forEach(measureNode);
       };
 
       out.forEach((n) => measureNode(n));
@@ -242,7 +304,8 @@ export const exportToJSON = (components: BuilderComponent[]): string => {
       if (abs.x != null) node.properties.left = `${abs.x}px`;
       if (abs.y != null) node.properties.top = `${abs.y}px`;
     }
-    if (node.children && node.children.length) node.children.forEach(writeBackProperties);
+    if (node.children && node.children.length)
+      node.children.forEach(writeBackProperties);
   };
 
   out.forEach((n) => writeBackProperties(n));

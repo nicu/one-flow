@@ -413,13 +413,20 @@ figma.ui.onmessage = async (msg) => {
   }
   if (msg.type === "import") {
     try {
-      figma.ui.postMessage({ type: "progress", message: "Import handler invoked" });
-      var payload = typeof msg.data === "string" ? msg.data : JSON.stringify(msg.data);
+      figma.ui.postMessage({
+        type: "progress",
+        message: "Import handler invoked",
+      });
+      var payload =
+        typeof msg.data === "string" ? msg.data : JSON.stringify(msg.data);
       var components;
       try {
         components = JSON.parse(payload);
       } catch (pe) {
-        figma.ui.postMessage({ type: "error", message: "JSON parse error: " + String(pe) });
+        figma.ui.postMessage({
+          type: "error",
+          message: "JSON parse error: " + String(pe),
+        });
         return;
       }
 
@@ -437,15 +444,31 @@ figma.ui.onmessage = async (msg) => {
           if (n.children) walk(n.children);
         }
         walk(components);
-        figma.ui.postMessage({ type: "progress", message: "Parsed JSON — nodes:" + counts.total + " text:" + counts.text + " image:" + counts.image });
+        figma.ui.postMessage({
+          type: "progress",
+          message:
+            "Parsed JSON — nodes:" +
+            counts.total +
+            " text:" +
+            counts.text +
+            " image:" +
+            counts.image,
+        });
       } catch (e) {
-        figma.ui.postMessage({ type: "debug", message: "counting_failed: " + String(e) });
+        figma.ui.postMessage({
+          type: "debug",
+          message: "counting_failed: " + String(e),
+        });
       }
 
       // preload common fonts (Inter) used by Figma so we can set text safely
       try {
-        try { await figma.loadFontAsync({ family: "Inter", style: "Regular" }); } catch (fe) {}
-        try { await figma.loadFontAsync({ family: "Inter", style: "Bold" }); } catch (fe) {}
+        try {
+          await figma.loadFontAsync({ family: "Inter", style: "Regular" });
+        } catch (fe) {}
+        try {
+          await figma.loadFontAsync({ family: "Inter", style: "Bold" });
+        } catch (fe) {}
       } catch (fe2) {
         // ignore
       }
@@ -468,10 +491,31 @@ figma.ui.onmessage = async (msg) => {
           try {
             var abs = comp && comp.absolute;
             if (abs) {
-              if (typeof abs.x === "number") try { node.x = abs.x; } catch (e) {}
-              if (typeof abs.y === "number") try { node.y = abs.y; } catch (e) {}
-              if (typeof abs.width === "number" && typeof node.resize === "function") try { node.resize(abs.width, node.height || abs.height || node.width || 100); } catch (e) {}
-              if (typeof abs.height === "number" && typeof node.resize === "function") try { node.resize(node.width || abs.width || 100, abs.height); } catch (e) {}
+              if (typeof abs.x === "number")
+                try {
+                  node.x = abs.x;
+                } catch (e) {}
+              if (typeof abs.y === "number")
+                try {
+                  node.y = abs.y;
+                } catch (e) {}
+              if (
+                typeof abs.width === "number" &&
+                typeof node.resize === "function"
+              )
+                try {
+                  node.resize(
+                    abs.width,
+                    node.height || abs.height || node.width || 100
+                  );
+                } catch (e) {}
+              if (
+                typeof abs.height === "number" &&
+                typeof node.resize === "function"
+              )
+                try {
+                  node.resize(node.width || abs.width || 100, abs.height);
+                } catch (e) {}
             }
           } catch (e) {}
         }
@@ -479,18 +523,27 @@ figma.ui.onmessage = async (msg) => {
         if (type === "text") {
           var t = figma.createText();
           try {
-            t.characters = comp.properties && comp.properties.text ? String(comp.properties.text) : "";
+            t.characters =
+              comp.properties && comp.properties.text
+                ? String(comp.properties.text)
+                : "";
           } catch (e2) {
             t.characters = "";
           }
           var fs = parsePx(comp.properties && comp.properties.fontSize);
-          if (fs) try { t.fontSize = fs; } catch (e3) {}
+          if (fs)
+            try {
+              t.fontSize = fs;
+            } catch (e3) {}
           applyAbsoluteHints(t, comp);
           return t;
         }
         if (type === "image") {
           var rect = figma.createRectangle();
-          var src = comp.properties && comp.properties.src ? String(comp.properties.src) : "";
+          var src =
+            comp.properties && comp.properties.src
+              ? String(comp.properties.src)
+              : "";
           // try data URL first
           var appliedImage = false;
           if (src && src.indexOf("data:") === 0) {
@@ -498,11 +551,16 @@ figma.ui.onmessage = async (msg) => {
               var b = dataUrlToUint8(src);
               if (b) {
                 var img = figma.createImage(b);
-                rect.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash: img.hash }];
+                rect.fills = [
+                  { type: "IMAGE", scaleMode: "FILL", imageHash: img.hash },
+                ];
                 appliedImage = true;
               }
             } catch (eImg) {}
-          } else if (src && (src.indexOf("http://") === 0 || src.indexOf("https://") === 0)) {
+          } else if (
+            src &&
+            (src.indexOf("http://") === 0 || src.indexOf("https://") === 0)
+          ) {
             try {
               // fetch remote image and convert to bytes
               const resp = await fetch(src);
@@ -510,28 +568,47 @@ figma.ui.onmessage = async (msg) => {
               const bytes = new Uint8Array(buf);
               try {
                 var img2 = figma.createImage(bytes);
-                rect.fills = [{ type: "IMAGE", scaleMode: "FILL", imageHash: img2.hash }];
+                rect.fills = [
+                  { type: "IMAGE", scaleMode: "FILL", imageHash: img2.hash },
+                ];
                 appliedImage = true;
               } catch (eImg2) {}
             } catch (eFetch) {}
           }
           var w = parsePx(comp.properties && comp.properties.width);
           var h = parsePx(comp.properties && comp.properties.height);
-          if (w && h) try { rect.resize(w,h); } catch (e4) {}
+          if (w && h)
+            try {
+              rect.resize(w, h);
+            } catch (e4) {}
           // corner radius
           try {
             var br = comp.properties && comp.properties.borderRadius;
             if (br) {
               var px = parsePx(br);
-              if (px) try { rect.cornerRadius = px; } catch (e) {}
+              if (px)
+                try {
+                  rect.cornerRadius = px;
+                } catch (e) {}
             }
           } catch (e) {}
           // fallback background color if image wasn't applied
           try {
-            if (!appliedImage && comp.properties && comp.properties.backgroundColor) {
+            if (
+              !appliedImage &&
+              comp.properties &&
+              comp.properties.backgroundColor
+            ) {
               var cb = comp.properties.backgroundColor;
               var c = parseColorString(cb);
-              if (c) rect.fills = [{ type: "SOLID", color: { r: c.r, g: c.g, b: c.b }, opacity: c.a }];
+              if (c)
+                rect.fills = [
+                  {
+                    type: "SOLID",
+                    color: { r: c.r, g: c.g, b: c.b },
+                    opacity: c.a,
+                  },
+                ];
             }
           } catch (e) {}
           applyAbsoluteHints(rect, comp);
@@ -543,21 +620,39 @@ figma.ui.onmessage = async (msg) => {
             if (comp.properties && comp.properties.backgroundColor) {
               var cb2 = comp.properties.backgroundColor;
               var c2 = parseColorString(cb2);
-              if (c2) r.fills = [{ type: "SOLID", color: { r: c2.r, g: c2.g, b: c2.b }, opacity: c2.a }];
+              if (c2)
+                r.fills = [
+                  {
+                    type: "SOLID",
+                    color: { r: c2.r, g: c2.g, b: c2.b },
+                    opacity: c2.a,
+                  },
+                ];
             }
           } catch (e) {}
           var br = comp.properties && comp.properties.borderRadius;
           if (br) {
             var px = parsePx(br);
-            if (px) try { r.cornerRadius = px; } catch (e5) {}
+            if (px)
+              try {
+                r.cornerRadius = px;
+              } catch (e5) {}
           }
           var ww = parsePx(comp.properties && comp.properties.width);
           var hh = parsePx(comp.properties && comp.properties.height);
-          if (ww && hh) try { r.resize(ww, hh); } catch (e6) {}
+          if (ww && hh)
+            try {
+              r.resize(ww, hh);
+            } catch (e6) {}
           applyAbsoluteHints(r, comp);
           return r;
         }
-        if (type === "row" || type === "column" || type === "flex" || type === "grid") {
+        if (
+          type === "row" ||
+          type === "column" ||
+          type === "flex" ||
+          type === "grid"
+        ) {
           var f = figma.createFrame();
           if (type === "row") f.layoutMode = "HORIZONTAL";
           else if (type === "column") f.layoutMode = "VERTICAL";
@@ -568,7 +663,14 @@ figma.ui.onmessage = async (msg) => {
             if (comp.properties && comp.properties.backgroundColor) {
               var cb3 = comp.properties.backgroundColor;
               var c3 = parseColorString(cb3);
-              if (c3) f.fills = [{ type: "SOLID", color: { r: c3.r, g: c3.g, b: c3.b }, opacity: c3.a }];
+              if (c3)
+                f.fills = [
+                  {
+                    type: "SOLID",
+                    color: { r: c3.r, g: c3.g, b: c3.b },
+                    opacity: c3.a,
+                  },
+                ];
             } else {
               f.fills = [];
             }
@@ -588,49 +690,146 @@ figma.ui.onmessage = async (msg) => {
               if (childHasAbs) continue;
               try {
                 if (type === "row") {
-                  try { created.x = cursorX; } catch (e) {}
-                  try { created.y = 0; } catch (e) {}
-                  var cw = (childComp && childComp.absolute && childComp.absolute.width) || parsePx(childComp && childComp.properties && childComp.properties.width) || created.width || 100;
-                  var chh = (childComp && childComp.absolute && childComp.absolute.height) || parsePx(childComp && childComp.properties && childComp.properties.height) || created.height || 40;
+                  try {
+                    created.x = cursorX;
+                  } catch (e) {}
+                  try {
+                    created.y = 0;
+                  } catch (e) {}
+                  var cw =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.width) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.width
+                    ) ||
+                    created.width ||
+                    100;
+                  var chh =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.height) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.height
+                    ) ||
+                    created.height ||
+                    40;
                   cursorX += (cw || 100) + gapVal;
                   if (chh && chh > maxRowHeight) maxRowHeight = chh;
                 } else if (type === "column") {
-                  try { created.x = 0; } catch (e) {}
-                  try { created.y = cursorY; } catch (e) {}
-                  var chw = (childComp && childComp.absolute && childComp.absolute.width) || parsePx(childComp && childComp.properties && childComp.properties.width) || created.width || 100;
-                  var chh2 = (childComp && childComp.absolute && childComp.absolute.height) || parsePx(childComp && childComp.properties && childComp.properties.height) || created.height || 40;
+                  try {
+                    created.x = 0;
+                  } catch (e) {}
+                  try {
+                    created.y = cursorY;
+                  } catch (e) {}
+                  var chw =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.width) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.width
+                    ) ||
+                    created.width ||
+                    100;
+                  var chh2 =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.height) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.height
+                    ) ||
+                    created.height ||
+                    40;
                   cursorY += (chh2 || 40) + gapVal;
                   if (chw && chw > maxColWidth) maxColWidth = chw;
                 } else {
-                  try { created.x = 0; } catch (e) {}
-                  try { created.y = cursorY; } catch (e) {}
-                  var chh3 = (childComp && childComp.absolute && childComp.absolute.height) || parsePx(childComp && childComp.properties && childComp.properties.height) || created.height || 40;
+                  try {
+                    created.x = 0;
+                  } catch (e) {}
+                  try {
+                    created.y = cursorY;
+                  } catch (e) {}
+                  var chh3 =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.height) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.height
+                    ) ||
+                    created.height ||
+                    40;
                   cursorY += (chh3 || 40) + gapVal;
-                  var chw2 = (childComp && childComp.absolute && childComp.absolute.width) || parsePx(childComp && childComp.properties && childComp.properties.width) || created.width || 100;
+                  var chw2 =
+                    (childComp &&
+                      childComp.absolute &&
+                      childComp.absolute.width) ||
+                    parsePx(
+                      childComp &&
+                        childComp.properties &&
+                        childComp.properties.width
+                    ) ||
+                    created.width ||
+                    100;
                   if (chw2 && chw2 > maxColWidth) maxColWidth = chw2;
                 }
               } catch (e) {}
             } catch (ce) {
-              figma.ui.postMessage({ type: "debug", message: "createNodeSimple child failed: " + String(ce) });
+              figma.ui.postMessage({
+                type: "debug",
+                message: "createNodeSimple child failed: " + String(ce),
+              });
             }
           }
           try {
             var fw = parsePx(comp.properties && comp.properties.width);
             var fh = parsePx(comp.properties && comp.properties.height);
             if (fw || fh) {
-              try { f.resize(fw || Math.max(cursorX - gapVal, 100), fh || Math.max(cursorY - gapVal, 100)); } catch (e) {}
+              try {
+                f.resize(
+                  fw || Math.max(cursorX - gapVal, 100),
+                  fh || Math.max(cursorY - gapVal, 100)
+                );
+              } catch (e) {}
             } else {
               if (type === "row") {
-                try { f.resize(Math.max(cursorX - gapVal, 100), Math.max(maxRowHeight, 40)); } catch (e) {}
+                try {
+                  f.resize(
+                    Math.max(cursorX - gapVal, 100),
+                    Math.max(maxRowHeight, 40)
+                  );
+                } catch (e) {}
               } else {
-                try { f.resize(Math.max(maxColWidth, 100), Math.max(cursorY - gapVal, 40)); } catch (e) {}
+                try {
+                  f.resize(
+                    Math.max(maxColWidth, 100),
+                    Math.max(cursorY - gapVal, 40)
+                  );
+                } catch (e) {}
               }
             }
           } catch (e) {}
           return f;
         }
         var t2 = figma.createText();
-        try { t2.characters = comp.properties && comp.properties.text ? String(comp.properties.text) : String(comp.type || ""); } catch (e7) { t2.characters = ""; }
+        try {
+          t2.characters =
+            comp.properties && comp.properties.text
+              ? String(comp.properties.text)
+              : String(comp.type || "");
+        } catch (e7) {
+          t2.characters = "";
+        }
         return t2;
       }
 
@@ -645,17 +844,48 @@ figma.ui.onmessage = async (msg) => {
             try {
               var abs = components[idx] && components[idx].absolute;
               if (abs) {
-                if (typeof abs.x === "number") try { node.x = abs.x; } catch (e) {}
-                if (typeof abs.y === "number") try { node.y = abs.y; } catch (e) {}
-                if (typeof abs.width === "number" && typeof node.resize === "function") try { node.resize(abs.width, abs.height || node.height || 100); } catch (e) {}
-                if (typeof abs.height === "number" && typeof node.resize === "function") try { node.resize(node.width || abs.width || 100, abs.height); } catch (e) {}
+                if (typeof abs.x === "number")
+                  try {
+                    node.x = abs.x;
+                  } catch (e) {}
+                if (typeof abs.y === "number")
+                  try {
+                    node.y = abs.y;
+                  } catch (e) {}
+                if (
+                  typeof abs.width === "number" &&
+                  typeof node.resize === "function"
+                )
+                  try {
+                    node.resize(abs.width, abs.height || node.height || 100);
+                  } catch (e) {}
+                if (
+                  typeof abs.height === "number" &&
+                  typeof node.resize === "function"
+                )
+                  try {
+                    node.resize(node.width || abs.width || 100, abs.height);
+                  } catch (e) {}
               }
             } catch (ePos) {}
-            try { figma.currentPage.appendChild(node); } catch (eApp) { figma.ui.postMessage({ type: "debug", message: "append child failed: " + String(eApp) }); }
+            try {
+              figma.currentPage.appendChild(node);
+            } catch (eApp) {
+              figma.ui.postMessage({
+                type: "debug",
+                message: "append child failed: " + String(eApp),
+              });
+            }
             createdNodes.push(node);
-            figma.ui.postMessage({ type: "progress", message: "Created " + (idx+1) + "/" + components.length });
+            figma.ui.postMessage({
+              type: "progress",
+              message: "Created " + (idx + 1) + "/" + components.length,
+            });
           } catch (err2) {
-            figma.ui.postMessage({ type: "debug", message: "create failed idx " + idx + ": " + String(err2) });
+            figma.ui.postMessage({
+              type: "debug",
+              message: "create failed idx " + idx + ": " + String(err2),
+            });
           }
         }
       } else if (typeof components === "object") {
@@ -666,22 +896,46 @@ figma.ui.onmessage = async (msg) => {
             var wrapper = figma.createFrame();
             wrapper.name = "Imported from OneFlow";
             wrapper.fills = [];
-            try { wrapper.appendChild(nodeRoot); } catch (e) {}
-            try { figma.currentPage.appendChild(wrapper); createdNodes.push(wrapper); } catch (e) { figma.ui.postMessage({ type: "debug", message: "append wrapper failed: " + String(e) }); }
+            try {
+              wrapper.appendChild(nodeRoot);
+            } catch (e) {}
+            try {
+              figma.currentPage.appendChild(wrapper);
+              createdNodes.push(wrapper);
+            } catch (e) {
+              figma.ui.postMessage({
+                type: "debug",
+                message: "append wrapper failed: " + String(e),
+              });
+            }
           }
         } catch (err3) {
-          figma.ui.postMessage({ type: "debug", message: "create failed root: " + String(err3) });
+          figma.ui.postMessage({
+            type: "debug",
+            message: "create failed root: " + String(err3),
+          });
         }
       }
       try {
         if (createdNodes.length) {
-          try { figma.currentPage.selection = createdNodes; } catch (selErr) {}
-          try { figma.viewport.scrollAndZoomIntoView(createdNodes); } catch (vzErr) {}
+          try {
+            figma.currentPage.selection = createdNodes;
+          } catch (selErr) {}
+          try {
+            figma.viewport.scrollAndZoomIntoView(createdNodes);
+          } catch (vzErr) {}
         }
       } catch (e9) {
-        figma.ui.postMessage({ type: "debug", message: "append failed: " + String(e9) });
+        figma.ui.postMessage({
+          type: "debug",
+          message: "append failed: " + String(e9),
+        });
       }
-      figma.ui.postMessage({ type: "import-complete", id: root.id, data: "Import complete" });
+      figma.ui.postMessage({
+        type: "import-complete",
+        id: root.id,
+        data: "Import complete",
+      });
     } catch (e) {
       figma.ui.postMessage({ type: "error", message: String(e) });
     }

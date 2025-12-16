@@ -686,9 +686,9 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
         }
       }}
       id={`elem-${component.id}`}
-      className={`elem-${component.id} rendered-component ${isSelected ? "selected" : ""} ${
-        isHovered ? "hovered" : ""
-      } ${isOver ? "drop-over" : ""}`}
+      className={`elem-${component.id} rendered-component ${
+        isSelected ? "selected" : ""
+      } ${isHovered ? "hovered" : ""} ${isOver ? "drop-over" : ""}`}
       style={{ position: "relative" }}
       onClick={handleClick}
       onMouseOver={handleMouseOver}
