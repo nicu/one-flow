@@ -188,16 +188,39 @@ body {
   outline: none;
 }
 
-.rendered-component.hovered {
-  outline: 2px solid #0066ff;
-  outline-offset: -2px; /* Inner outline */
-  z-index: 10; /* Ensure hover is visible */
+.rendered-component.hovered,
+.rendered-component.selected,
+.rendered-component.drop-over {
+  position: relative; /* ensure pseudo-element is positioned correctly */
 }
 
-.rendered-component.selected {
-  outline: 2px solid #0066ff;
-  outline-offset: -2px;
-  z-index: 20; /* Selected on top of hover */
+/* Draw the hover/selection visual using an overlay so it doesn't
+   inherit the component's own border-radius. This keeps the blue
+   selection ring independent from the inner element styling. */
+.rendered-component.hovered::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #0066ff;
+  border-radius: 2px; /* fixed small radius for selection visual */
+  pointer-events: none;
+  z-index: 11;
+}
+
+.rendered-component.selected::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px solid #0066ff;
+  border-radius: 2px;
+  pointer-events: none;
+  z-index: 21;
 }
 
 .component-label-tag {
@@ -216,9 +239,17 @@ body {
   z-index: 30;
 }
 
-.rendered-component.drop-over {
-  background: #e8f0fe;
-  outline: 2px dashed #0066ff;
+.rendered-component.drop-over::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  border: 2px dashed #0066ff;
+  border-radius: 4px;
+  pointer-events: none;
+  z-index: 12;
 }
 
 /* Viewport Controls */
