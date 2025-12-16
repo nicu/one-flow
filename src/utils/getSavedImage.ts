@@ -8,12 +8,17 @@ export function getSavedImage(index: number, fallbackSize = 150): string {
     return `https://i.pravatar.cc/${fallbackSize}?u=${index}`;
   }
   const name = imgs[index % imgs.length];
-  return `/img/${name}`;
+  // Respect Vite's `base` (import.meta.env.BASE_URL) so images load correctly
+  // when the app is served from a subpath (GitHub Pages). `BASE_URL` will
+  // be `./` in relative mode or `/one-flow/` when configured explicitly.
+  const base = import.meta.env.BASE_URL || "/";
+  return `${base}img/${name}`.replace(/([^:]?)\/\//g, "$1/");
 }
 
 export function getRandomSavedImage(fallbackSize = 150): string {
   if (!imgs || imgs.length === 0)
     return `https://i.pravatar.cc/${fallbackSize}`;
   const idx = Math.floor(Math.random() * imgs.length);
-  return `/img/${imgs[idx]}`;
+  const base = import.meta.env.BASE_URL || "/";
+  return `${base}img/${imgs[idx]}`.replace(/([^:]?)\/\//g, "$1/");
 }
