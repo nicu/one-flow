@@ -14,7 +14,8 @@ export type ComponentType =
   | "grid"
   | "row"
   | "column"
-  | "image-grid";
+  | "image-grid"
+  | "lazy-user-list";
 
 // Added LT-prefixed component types for the new themed component set
 export type LTComponentType =

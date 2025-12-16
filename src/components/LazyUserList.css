@@ -1,0 +1,135 @@
+/* Recreated animations per spec:
+   - none/default: no animation
+   - fade in/out: only when selected
+   - slide left/right: translate 24px, no fade/scale
+   - scale in/out: scale 0.5 -> 1 and 1 -> 1.5, no fade
+*/
+
+/* GPU hints for smoothness */
+.of-item-enter.of-anim-scale-in,
+/* Minimal animations: 'none' or 'debug' only
+   - 'none': no classes applied -> no animation
+   - 'debug': background color smoothly transitions to red on enter
+*/
+
+:root {
+  --enter-duration: 3000ms;
+  --exit-duration: 3000ms;
+}
+
+/* Neutral base */
+.of-item-enter,
+.of-item-exit {
+  opacity: 1;
+  transform: none;
+}
+
+/* Debug animation: background -> red */
+.of-anim-debug.of-item-enter {
+  background-color: transparent;
+}
+.of-anim-debug.of-item-enter-active {
+  background-color: rgb(255, 0, 0) !important;
+  transition: background-color var(--enter-duration) ease;
+}
+.of-anim-debug.of-item-exit {
+  background-color: rgb(255, 0, 0) !important;
+}
+.of-anim-debug.of-item-exit-active {
+  background-color: transparent !important;
+  transition: background-color var(--exit-duration) ease;
+}
+
+.of-item-removed {
+  display: none !important;
+}
+
+/* Fade (enter only) */
+.of-anim-fade.of-item-enter,
+.of-anim-fade.of-image-enter {
+  opacity: 0;
+}
+.of-anim-fade.of-item-enter-active,
+.of-anim-fade.of-image-enter-active {
+  opacity: 1;
+  transition: opacity var(--enter-duration) ease;
+}
+
+/* Slide left */
+.of-anim-slide-left.of-item-enter,
+.of-anim-slide-left.of-image-enter {
+  transform: translateX(-24px);
+}
+.of-anim-slide-left.of-item-enter-active,
+.of-anim-slide-left.of-image-enter-active {
+  transform: none;
+  transition: transform var(--enter-duration) ease;
+}
+.of-anim-slide-left.of-item-exit,
+.of-anim-slide-left.of-image-exit {
+  transform: none;
+}
+.of-anim-slide-left.of-item-exit-active,
+.of-anim-slide-left.of-image-exit-active {
+  transform: translateX(-24px);
+  transition: transform var(--exit-duration) ease;
+}
+
+/* Slide right */
+.of-anim-slide-right.of-item-enter,
+.of-anim-slide-right.of-image-enter {
+  transform: translateX(24px);
+}
+.of-anim-slide-right.of-item-enter-active,
+.of-anim-slide-right.of-image-enter-active {
+  transform: none;
+  transition: transform var(--enter-duration) ease;
+}
+.of-anim-slide-right.of-item-exit,
+.of-anim-slide-right.of-image-exit {
+  transform: none;
+}
+.of-anim-slide-right.of-item-exit-active,
+.of-anim-slide-right.of-image-exit-active {
+  transform: translateX(24px);
+  transition: transform var(--exit-duration) ease;
+}
+
+/* Scale in/out */
+.of-anim-scale-in.of-item-enter,
+.of-anim-scale-in.of-image-enter {
+  transform: scale(0.8);
+}
+.of-anim-scale-in.of-item-enter-active,
+.of-anim-scale-in.of-image-enter-active {
+  transform: scale(1);
+  transition: transform var(--enter-duration) ease;
+}
+.of-anim-scale-in.of-item-exit,
+.of-anim-scale-in.of-image-exit {
+  transform: scale(1);
+}
+.of-anim-scale-in.of-item-exit-active,
+.of-anim-scale-in.of-image-exit-active {
+  transform: scale(1.2);
+  transition: transform var(--exit-duration) ease;
+}
+
+.of-anim-scale-out.of-item-enter,
+.of-anim-scale-out.of-image-enter {
+  transform: scale(1.2);
+}
+.of-anim-scale-out.of-item-enter-active,
+.of-anim-scale-out.of-image-enter-active {
+  transform: scale(1);
+  transition: transform var(--enter-duration) ease;
+}
+.of-anim-scale-out.of-item-exit,
+.of-anim-scale-out.of-image-exit {
+  transform: scale(1);
+}
+.of-anim-scale-out.of-item-exit-active,
+.of-anim-scale-out.of-image-exit-active {
+  transform: scale(0.8);
+  transition: transform var(--exit-duration) ease;
+}

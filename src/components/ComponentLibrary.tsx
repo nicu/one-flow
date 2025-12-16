@@ -216,6 +216,11 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
                   label: "Image Grid",
                   icon: <ImageIcon size={20} />,
                 },
+                {
+                  type: "lazy-user-list" as AllComponentType,
+                  label: "Lazy User List",
+                  icon: <ImageIcon size={20} />,
+                },
               ].map((comp) => (
                 <ComponentLibraryItem key={String(comp.type)} {...comp} />
               ))}

@@ -1,4 +1,5 @@
 import { useDrop } from "react-dnd";
+import { useMemo } from "react";
 import type { BuilderComponent, DragItem, AllComponentType } from "../types";
 import type { DataStore } from "../store/dataStore";
 import { RenderComponent } from "./RenderComponent";
@@ -43,7 +44,6 @@ export const Canvas: React.FC<CanvasProps> = ({
     drop: (item: DragItem, monitor) => {
       // Debug: log whether another nested target already handled the drop
       try {
-         
         console.debug(
           "Canvas drop: didDrop=",
           typeof monitor.didDrop === "function"
@@ -61,7 +61,6 @@ export const Canvas: React.FC<CanvasProps> = ({
         return;
       }
       if (item.componentType) {
-         
         console.debug("Canvas: adding component to root:", item.componentType);
         onAddComponent(item.componentType);
       }
@@ -123,8 +122,12 @@ export const Canvas: React.FC<CanvasProps> = ({
 
   // Wrap with DataContext if dataStore is provided
   if (dataStore) {
+    const contextValue = useMemo(
+      () => ({ dataStore, setDataStore }),
+      [dataStore, setDataStore]
+    );
     return (
-      <DataContext.Provider value={{ dataStore, setDataStore }}>
+      <DataContext.Provider value={contextValue}>
         {content}
       </DataContext.Provider>
     );

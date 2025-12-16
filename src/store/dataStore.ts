@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { getSavedImage } from "../utils/getSavedImage";
 
 export type DataFieldType =
   | "string"
@@ -95,7 +96,7 @@ export function generateMockData(): Record<string, any[]> {
     description: faker.lorem.sentence(),
     price: faker.number.int({ min: 50, max: 500 }),
     rating: faker.number.float({ min: 3, max: 5, fractionDigits: 1 }),
-    image: faker.image.url({ width: 640, height: 360 }),
+    image: getSavedImage(i, 640),
     location: faker.location.city(),
     available: faker.datatype.boolean(),
   }));
@@ -119,7 +120,7 @@ export function generateMockData(): Record<string, any[]> {
       email: "jennie.nichols@example.com",
       phone: "(272) 790-0888",
       nat: "US",
-      avatar: `https://i.pravatar.cc/150?u=user-10`,
+      avatar: getSavedImage(10, 150),
     },
     {
       id: "user-2",
@@ -128,7 +129,7 @@ export function generateMockData(): Record<string, any[]> {
       email: "john.doe@example.com",
       phone: "(503) 555-0123",
       nat: "US",
-      avatar: `https://i.pravatar.cc/150?u=user-2`,
+      avatar: getSavedImage(2, 150),
     },
     {
       id: "user-3",
@@ -137,7 +138,7 @@ export function generateMockData(): Record<string, any[]> {
       email: "maria.garcia@example.com",
       phone: "(512) 555-0456",
       nat: "US",
-      avatar: `https://i.pravatar.cc/150?u=user-20`,
+      avatar: getSavedImage(20, 150),
     },
   ];
 

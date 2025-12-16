@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { DataContext } from "../../contexts/DataContext";
 import { useDataProviders } from "../../contexts/DataProvidersContext";
 import type { ComponentProperties } from "../../types";
@@ -38,8 +38,11 @@ const LTDataProvider: React.FC<{
     data,
   };
 
-  const contextValue: any = { dataStore };
-  if (providerId) contextValue.currentModelId = providerId;
+  const contextValue: any = useMemo(() => {
+    const v: any = { dataStore };
+    if (providerId) v.currentModelId = providerId;
+    return v;
+  }, [dataStore, providerId]);
 
   return (
     <DataContext.Provider value={contextValue}>

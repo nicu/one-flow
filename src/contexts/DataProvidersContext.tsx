@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import { getSavedImage } from "../utils/getSavedImage";
 
 export type DataModel = {
   id: string;
@@ -34,7 +35,7 @@ const sampleModels: DataModel[] = [
         firstName: "Alex",
         lastName: "Johnson",
         email: "alex@example.com",
-        avatar: "https://i.pravatar.cc/80?img=15",
+        avatar: getSavedImage(15, 80),
         bio: "Product designer",
       },
       {
@@ -42,7 +43,7 @@ const sampleModels: DataModel[] = [
         firstName: "Mariana",
         lastName: "Ionescu",
         email: "mariana@example.com",
-        avatar: "https://i.pravatar.cc/80?img=12",
+        avatar: getSavedImage(12, 80),
         bio: "Frontend engineer",
       },
       {
@@ -50,7 +51,7 @@ const sampleModels: DataModel[] = [
         firstName: "Sam",
         lastName: "Patel",
         email: "sam@example.com",
-        avatar: "https://i.pravatar.cc/80?img=3",
+        avatar: getSavedImage(3, 80),
         bio: "Data scientist",
       },
     ],
@@ -74,7 +75,7 @@ const sampleModels: DataModel[] = [
         city: "Bucharest",
         rating: 4.5,
         price: 120,
-        image: "https://picsum.photos/seed/h1/300/200",
+        image: getSavedImage(101, 300),
       },
       {
         id: "h2",
@@ -82,7 +83,7 @@ const sampleModels: DataModel[] = [
         city: "Constanta",
         rating: 4.2,
         price: 95,
-        image: "https://picsum.photos/seed/h2/300/200",
+        image: getSavedImage(102, 300),
       },
       {
         id: "h3",
@@ -90,7 +91,7 @@ const sampleModels: DataModel[] = [
         city: "Brasov",
         rating: 4.8,
         price: 160,
-        image: "https://picsum.photos/seed/h3/300/200",
+        image: getSavedImage(103, 300),
       },
     ],
   },
@@ -111,7 +112,7 @@ const sampleModels: DataModel[] = [
         id: "prd1",
         title: "Wireless Headphones",
         price: 89.99,
-        image: "https://picsum.photos/seed/prd1/200/200",
+        image: getSavedImage(201, 200),
         description: "Noise-cancelling",
         inStock: true,
       },
@@ -119,7 +120,7 @@ const sampleModels: DataModel[] = [
         id: "prd2",
         title: "Espresso Machine",
         price: 249.99,
-        image: "https://picsum.photos/seed/prd2/200/200",
+        image: getSavedImage(202, 200),
         description: "Barista-level coffee",
         inStock: false,
       },
@@ -127,7 +128,7 @@ const sampleModels: DataModel[] = [
         id: "prd3",
         title: "Yoga Mat",
         price: 29.99,
-        image: "https://picsum.photos/seed/prd3/200/200",
+        image: getSavedImage(203, 200),
         description: "Eco-friendly",
         inStock: true,
       },

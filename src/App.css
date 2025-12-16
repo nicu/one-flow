@@ -50,7 +50,6 @@ body {
 }
 
 .export-button:hover {
-  transform: translateY(-2px);
   box-shadow: 0 10px 30px rgba(15, 23, 42, 0.12);
 }
 
@@ -204,10 +203,14 @@ body {
   left: -2px;
   right: -2px;
   bottom: -2px;
-  border: 2px solid #0066ff;
-  border-radius: 2px; /* fixed small radius for selection visual */
+  /* make hover less prominent than explicit selection so quick
+     scroll/mouse-pass doesn't look like a real selection */
+  border: 1px solid rgba(0, 102, 255, 0.28);
+  border-radius: 3px;
   pointer-events: none;
   z-index: 11;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+  box-shadow: 0 1px 6px rgba(0, 102, 255, 0.04);
 }
 
 .rendered-component.selected::after {

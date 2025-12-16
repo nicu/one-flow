@@ -1318,6 +1318,149 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         );
 
+      case "lazy-user-list":
+        return (
+          <div className="property-group">
+            <h4>Lazy User List</h4>
+            <div className="property-field">
+              <label>Title</label>
+              <input
+                type="text"
+                value={(properties as any).title || ""}
+                onChange={(e) =>
+                  onUpdate({ ...(properties as any), title: e.target.value })
+                }
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Count</label>
+              <input
+                type="number"
+                value={(properties as any).count ?? 12}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    count: parseInt(e.target.value, 10) || 0,
+                  })
+                }
+                min={1}
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Animation</label>
+              <select
+                value={(properties as any).animation || "none"}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    animation: e.target.value,
+                  })
+                }
+              >
+                <option value="none">None</option>
+                <option value="debug">Debug</option>
+                <option value="fade">Fade (in)</option>
+                <option value="slide-left">Slide Left</option>
+                <option value="slide-right">Slide Right</option>
+                <option value="scale-in">Scale In</option>
+                <option value="scale-out">Scale Out</option>
+              </select>
+            </div>
+
+            <div className="property-field">
+              <label>Enter Duration (ms)</label>
+              <input
+                type="number"
+                value={(properties as any).enterDuration ?? 400}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    enterDuration: parseInt(e.target.value, 10) || 0,
+                  })
+                }
+                min={0}
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Intersection Threshold (0-1)</label>
+              <input
+                type="number"
+                step={0.05}
+                min={0}
+                max={1}
+                value={(properties as any).intersectionThreshold ?? 0.1}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    intersectionThreshold: parseFloat(e.target.value) || 0,
+                  })
+                }
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Intersection Root Margin</label>
+              <input
+                type="text"
+                value={(properties as any).intersectionRootMargin || "200px"}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    intersectionRootMargin: e.target.value,
+                  })
+                }
+                placeholder="200px"
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Exit Duration (ms)</label>
+              <input
+                type="number"
+                value={(properties as any).exitDuration ?? 300}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    exitDuration: parseInt(e.target.value, 10) || 0,
+                  })
+                }
+                min={0}
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Item Class Name</label>
+              <input
+                type="text"
+                value={(properties as any).itemClassName || ""}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    itemClassName: e.target.value,
+                  })
+                }
+              />
+            </div>
+
+            <div className="property-field">
+              <label>Image Class Name</label>
+              <input
+                type="text"
+                value={(properties as any).imageClassName || ""}
+                onChange={(e) =>
+                  onUpdate({
+                    ...(properties as any),
+                    imageClassName: e.target.value,
+                  })
+                }
+              />
+            </div>
+          </div>
+        );
+
       case "datagrid":
         return (
           <div className="property-group">
@@ -1494,7 +1637,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
       type === "tabs";
     // allow Image Grid to bind to collections as well
     const canBindToCollectionExtended =
-      canBindToCollection || type === "image-grid";
+      canBindToCollection || type === "image-grid" || type === "lazy-user-list";
 
     // For text/input/button/image/tabs, show field binding
     const canBindToField = [
