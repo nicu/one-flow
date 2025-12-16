@@ -1,0 +1,353 @@
+[
+  {
+    "id": "083fe99f-1599-491c-a06d-350bef4be022",
+    "type": "flex",
+    "properties": {
+      "padding": "[object Object]",
+      "backgroundColor": "rgba(0,0,0,0.7)",
+      "width": "100%",
+      "height": "100px",
+      "justifyContent": "space-between",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "2571d289-013c-4b0f-9acb-475092e8d990",
+        "type": "text",
+        "properties": {
+          "text": "NETFLIX",
+          "color": "#e50914",
+          "fontSize": "[object Object]",
+          "fontWeight": "700"
+        }
+      },
+      {
+        "id": "9789ce3d-baf0-47e2-a3e1-d80d0de2d8ff",
+        "type": "flex",
+        "properties": {
+          "gap": "[object Object]"
+        },
+        "children": [
+          {
+            "id": "ee56baa2-9f14-495e-b7a8-a72ea137ff6a",
+            "type": "button",
+            "properties": {
+              "buttonText": "Home",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "b28a6f0d-15f2-4495-bbee-2843d86bdd18",
+            "type": "button",
+            "properties": {
+              "buttonText": "TV Shows",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "674e2289-7640-42a5-b74f-132f53e6677f",
+            "type": "button",
+            "properties": {
+              "buttonText": "Movies",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "eab43c10-32da-45da-b323-ec2bf22498b3",
+            "type": "button",
+            "properties": {
+              "buttonText": "New & Popular",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "7df1f238-dcbc-4fa2-b2ec-9075dbd95d6c",
+            "type": "button",
+            "properties": {
+              "buttonText": "My List",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "e251b032-92a0-453e-8b77-299bd6c9cfef",
+        "type": "flex",
+        "properties": {
+          "gap": "[object Object]"
+        },
+        "children": [
+          {
+            "id": "330d9494-00f1-48b1-ba04-1c8cd4b27bb4",
+            "type": "button",
+            "properties": {
+              "buttonText": "Search",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "94a80871-6f01-49a2-a72b-ea8da5ef03d6",
+            "type": "button",
+            "properties": {
+              "buttonText": "Notifications",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "a9823e0b-7434-4a71-82ac-f947cb127422",
+            "type": "button",
+            "properties": {
+              "buttonText": "Profile",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "da58d4cb-19ac-4cf5-ae3b-3944e4f40432",
+    "type": "flex",
+    "properties": {
+      "width": "100%",
+      "height": "calc(100vh - 100px)"
+    },
+    "children": [
+      {
+        "id": "f243068b-1064-4337-bcfa-d5a62de880fb",
+        "type": "image",
+        "properties": {
+          "alt": "Netflix Hero Background",
+          "src": "https://source.unsplash.com/random/1920x1080?netflix",
+          "width": "100%",
+          "height": "100%"
+        }
+      },
+      {
+        "id": "032c9bc5-add9-43f3-b339-c8f8c6a3526d",
+        "type": "flex",
+        "properties": {
+          "padding": "[object Object]",
+          "width": "100%",
+          "height": "100%",
+          "flexDirection": {
+            "desktop": "column",
+            "tablet": "column",
+            "mobile": "column"
+          },
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "71a1971d-89e3-416c-bcf9-4327572cbb7f",
+            "type": "text",
+            "properties": {
+              "text": "Stranger Things",
+              "fontSize": "[object Object]",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "af9a70b8-62b3-44e8-91ba-b2d8df877353",
+            "type": "text",
+            "properties": {
+              "text": "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "3f13c4bd-36e9-4b09-b2e3-eefcf75fa0fd",
+            "type": "flex",
+            "properties": {
+              "gap": "[object Object]"
+            },
+            "children": [
+              {
+                "id": "bf95102c-7770-4921-8e49-626b99fe2686",
+                "type": "button",
+                "properties": {
+                  "buttonText": "▶ Play",
+                  "buttonColor": "#ffffff",
+                  "buttonTextColor": "#000000",
+                  "padding": "[object Object]",
+                  "backgroundColor": "#ffffff",
+                  "borderRadius": "4px",
+                  "color": "#000000",
+                  "fontSize": "[object Object]",
+                  "fontWeight": "700"
+                }
+              },
+              {
+                "id": "f0ee74af-03c3-4318-af72-e0ff59f71e3e",
+                "type": "button",
+                "properties": {
+                  "buttonText": "ℹ More Info",
+                  "buttonColor": "rgba(109, 109, 110, 0.7)",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "[object Object]",
+                  "backgroundColor": "rgba(109, 109, 110, 0.7)",
+                  "borderRadius": "4px",
+                  "color": "#ffffff",
+                  "fontSize": "[object Object]",
+                  "fontWeight": "400"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "308f9021-3ea1-4ebf-ac32-7f6a83d086c6",
+    "type": "flex",
+    "properties": {
+      "padding": "[object Object]",
+      "width": "100%",
+      "gap": "[object Object]",
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "0e9ef8be-19b4-491f-9834-0b2e66945469",
+        "type": "flex",
+        "properties": {
+          "width": "100%",
+          "justifyContent": "space-between",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "abbee011-5a67-4232-813a-03cc20a51cc8",
+            "type": "text",
+            "properties": {
+              "text": "Popular on Netflix",
+              "fontSize": "[object Object]",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "b0c4dc86-dd08-4395-a4ef-5c42d712ae3d",
+            "type": "button",
+            "properties": {
+              "buttonText": "View All",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "backgroundColor": "transparent",
+              "color": "#ffffff",
+              "fontSize": "[object Object]",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "4cc73633-3fc8-421f-b98b-239de9304c0a",
+        "type": "flex",
+        "properties": {
+          "width": "100%",
+          "gap": "[object Object]"
+        },
+        "children": [
+          {
+            "id": "b296353c-b253-493b-93ea-00d239ffcebc",
+            "type": "image",
+            "properties": {
+              "alt": "Movie 1",
+              "src": "https://source.unsplash.com/random/300x450?movie1",
+              "width": "[object Object]",
+              "height": "[object Object]",
+              "borderRadius": "4px"
+            }
+          },
+          {
+            "id": "604d77c5-7858-48ad-8751-bdde25232f3f",
+            "type": "image",
+            "properties": {
+              "alt": "Movie 2",
+              "src": "https://source.unsplash.com/random/300x450?movie2",
+              "width": "[object Object]",
+              "height": "[object Object]",
+              "borderRadius": "4px"
+            }
+          },
+          {
+            "id": "9da456e1-7532-43e2-8473-fdb4b9788222",
+            "type": "image",
+            "properties": {
+              "alt": "Movie 3",
+              "src": "https://source.unsplash.com/random/300x450?movie3",
+              "width": "[object Object]",
+              "height": "[object Object]",
+              "borderRadius": "4px"
+            }
+          },
+          {
+            "id": "e178503a-d916-4e0f-aac5-690f76da78b8",
+            "type": "image",
+            "properties": {
+              "alt": "Movie 4",
+              "src": "https://source.unsplash.com/random/300x450?movie4",
+              "width": "[object Object]",
+              "height": "[object Object]",
+              "borderRadius": "4px"
+            }
+          },
+          {
+            "id": "566c2f4a-5400-4c1a-b835-353404333ded",
+            "type": "image",
+            "properties": {
+              "alt": "Movie 5",
+              "src": "https://source.unsplash.com/random/300x450?movie5",
+              "width": "[object Object]",
+              "height": "[object Object]",
+              "borderRadius": "4px"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

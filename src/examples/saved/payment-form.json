@@ -1,0 +1,373 @@
+[
+  {
+    "id": "61472e89-ad7e-4bf1-b61d-38c62647fc69",
+    "type": "form",
+    "properties": {
+      "padding": "24px",
+      "backgroundColor": "#ffffff",
+      "width": "100%",
+      "borderRadius": "8px",
+      "boxShadow": "0 4px 12px rgba(0,0,0,0.08)"
+    },
+    "children": [
+      {
+        "id": "7b7ff429-a373-4adb-8e72-a8a1abd9e9d5",
+        "type": "text",
+        "properties": {
+          "text": "Payment Information",
+          "fontSize": "[object Object]",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "9d06becc-ba22-444b-b02e-d0196bb6d277",
+        "type": "column",
+        "properties": {},
+        "children": [
+          {
+            "id": "a8ccfbad-faab-400e-aaf4-cb2d1441b5a5",
+            "type": "row",
+            "properties": {
+              "gap": "10px"
+            },
+            "children": [
+              {
+                "id": "a315df25-2f30-4973-b2cc-1b72b36df831",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "2eabea8f-e5fe-489d-b292-d82d75185dff",
+                    "type": "text",
+                    "properties": {
+                      "text": "Card Number",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "be9cd200-8680-4e66-9af4-981b3e4e0d9b",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "1234 5678 9012 3456",
+                      "inputType": "text",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "5fda54f3-a54e-4d86-8a2b-87a84cfe8120",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "74844479-5d3f-4ef1-aeca-768008ae7788",
+                    "type": "text",
+                    "properties": {
+                      "text": "Cardholder Name",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "18c7cfb2-a85d-4b80-98c7-07b5aee804c6",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "John Doe",
+                      "inputType": "text",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "5bfcfe24-1f96-4945-b559-9aaaf7f32be1",
+            "type": "row",
+            "properties": {
+              "gap": "10px"
+            },
+            "children": [
+              {
+                "id": "6c1fc374-5b92-493a-b887-09699f8d9f2e",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "df3d0968-0ae6-4de9-b4da-3339415a6cb6",
+                    "type": "text",
+                    "properties": {
+                      "text": "Expiration Date",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "15a4b5dc-773f-45f7-ad64-117b78c5c562",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "MM/YY",
+                      "inputType": "text",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "cff555e2-cbda-442b-af4e-4989708c9a96",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "9827829a-5460-44d5-b00e-6919d652e816",
+                    "type": "text",
+                    "properties": {
+                      "text": "CVV",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "58f4b948-3bc4-4a82-a19d-d698c8c816e5",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "123",
+                      "inputType": "password",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "63349eb5-24d4-4fbc-bc73-343f4bce9f25",
+            "type": "column",
+            "properties": {
+              "gap": "10px"
+            },
+            "children": [
+              {
+                "id": "31788240-cd34-4ba4-a9db-2565fe01c071",
+                "type": "text",
+                "properties": {
+                  "text": "Billing Address",
+                  "fontSize": "14px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              },
+              {
+                "id": "08d84654-3bc2-455a-b4c3-f995c1e989dc",
+                "type": "input",
+                "properties": {
+                  "placeholder": "123 Main Street",
+                  "inputType": "text",
+                  "padding": "12px",
+                  "width": "100%",
+                  "borderRadius": "6px",
+                  "fontSize": "16px"
+                }
+              }
+            ]
+          },
+          {
+            "id": "431df069-086e-4b18-9c6f-4ddf294b7cc1",
+            "type": "row",
+            "properties": {
+              "gap": "10px"
+            },
+            "children": [
+              {
+                "id": "4aa009f6-1786-4eed-a8db-c233f55b2cc2",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "7fa85e59-28b9-44fd-a9bd-eeff1a1eccc0",
+                    "type": "text",
+                    "properties": {
+                      "text": "City",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "173531c5-dcc8-4e7e-ad12-13ac810b6404",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "New York",
+                      "inputType": "text",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "1f65981f-cd18-4a89-8490-992e9b1cd5bf",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "b29e53fb-2cdd-47a5-89c4-ce28e0d516a1",
+                    "type": "text",
+                    "properties": {
+                      "text": "ZIP Code",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "63dc2bfc-efe2-40e7-bb96-f4f153555325",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "10001",
+                      "inputType": "text",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "f277f38e-9c38-41e6-a290-e084c612ada2",
+            "type": "row",
+            "properties": {
+              "gap": "10px"
+            },
+            "children": [
+              {
+                "id": "17656817-3f61-4a9a-b3ee-163a676183d6",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "3bad9ef9-bb4c-4e00-876d-6955c5b49ce9",
+                    "type": "text",
+                    "properties": {
+                      "text": "Country",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "b009df01-7a9f-4cc6-813a-2557500bbf23",
+                    "type": "dropdown",
+                    "properties": {
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "c798c7c4-7c6a-45a7-bb73-2772a9b39e62",
+                "type": "column",
+                "properties": {},
+                "children": [
+                  {
+                    "id": "7256af53-003a-4323-8e32-8214cbf05e0e",
+                    "type": "text",
+                    "properties": {
+                      "text": "Phone",
+                      "fontSize": "14px",
+                      "color": "#111827",
+                      "fontWeight": 600
+                    }
+                  },
+                  {
+                    "id": "f82bf93c-7d2d-4e1d-9634-67bf22091265",
+                    "type": "input",
+                    "properties": {
+                      "placeholder": "(123) 456-7890",
+                      "inputType": "tel",
+                      "padding": "12px",
+                      "width": "100%",
+                      "borderRadius": "6px",
+                      "fontSize": "16px"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "f5a679f2-e04b-421f-ae3d-77b7db6fad8f",
+            "type": "column",
+            "properties": {},
+            "children": [
+              {
+                "id": "f3f27502-39ec-44d6-9328-0a22cbd7d158",
+                "type": "text",
+                "properties": {
+                  "text": "Email Address",
+                  "fontSize": "14px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              },
+              {
+                "id": "ccd2c15d-98c1-470e-9a0e-64c28b5a6c30",
+                "type": "input",
+                "properties": {
+                  "placeholder": "john.doe@example.com",
+                  "inputType": "email",
+                  "padding": "12px",
+                  "width": "100%",
+                  "borderRadius": "6px",
+                  "fontSize": "16px"
+                }
+              }
+            ]
+          },
+          {
+            "id": "0e7eeb67-cba5-45bf-9c70-a931a75d7a09",
+            "type": "button",
+            "properties": {
+              "buttonText": "Complete Payment",
+              "buttonColor": "#3b82f6",
+              "buttonTextColor": "white",
+              "padding": "16px",
+              "backgroundColor": "#3b82f6",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "white",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

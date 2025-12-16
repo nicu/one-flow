@@ -745,7 +745,7 @@ function App() {
           isOpen={isExportModalOpen}
           onClose={() => setIsExportModalOpen(false)}
           reactCode={exportToReact(components)}
-          jsonCode={exportToJSON(components)}
+          components={components}
           htmlCode={exportToHTML ? exportToHTML(components) : undefined}
         />
 

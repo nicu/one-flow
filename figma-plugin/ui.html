@@ -20,6 +20,14 @@
   <body>
     <div>
       <button id="export">Export Selection as OneFlow JSON</button>
+      <div style="margin-top:12px">
+        <div style="margin-bottom:6px">Import OneFlow JSON into this Figma file:</div>
+        <textarea id="importData" rows="14" style="width:100%;height:320px;box-sizing:border-box;font-family:monospace;font-size:12px" placeholder="Paste OneFlow JSON here"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button id="import">Import into Figma</button>
+          <button id="clear">Clear</button>
+        </div>
+      </div>
       <div id="status"></div>
       <div id="out"></div>
     </div>
@@ -33,6 +41,22 @@
         parent.postMessage({ pluginMessage: { type: "export" } }, "*");
       };
 
+      const importBtn = document.getElementById("import");
+      const clearBtn = document.getElementById("clear");
+      const importArea = document.getElementById("importData");
+
+      importBtn.onclick = () => {
+        const v = importArea.value || "";
+        if (!v.trim()) {
+          status.textContent = "Please paste OneFlow JSON to import.";
+          return;
+        }
+        status.textContent = "Importing...";
+        parent.postMessage({ pluginMessage: { type: "import", data: v } }, "*");
+      };
+
+      clearBtn.onclick = () => { importArea.value = ""; status.textContent = ""; out.innerHTML = ""; };
+
       onmessage = (evt) => {
         const msg = evt.data && evt.data.pluginMessage;
         if (!msg) return;
@@ -43,8 +67,23 @@
           const url = URL.createObjectURL(blob);
           out.innerHTML = `<a href="${url}" download="oneflow-export.json">Download JSON</a>`;
         }
+        if (msg.type === "import-complete") {
+          status.textContent = "Import complete";
+          const d = document.createElement('div');
+          d.textContent = msg.data || 'Imported';
+          out.appendChild(d);
+        }
         if (msg.type === "error") {
           status.textContent = "Error: " + (msg.message || "");
+        }
+        if (msg.type === "progress") {
+          status.textContent = msg.message || "Working...";
+        }
+        if (msg.type === "debug") {
+          // append debug to out for visibility
+          const d = document.createElement('div');
+          d.textContent = msg.message || '';
+          out.appendChild(d);
         }
       };
     </script>

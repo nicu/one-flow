@@ -1,10 +1,12 @@
 import { useState } from "react";
+import { exportToJSON } from "../utils/export";
+import type { BuilderComponent } from "../types";
 
 interface ExportModalProps {
   isOpen: boolean;
   onClose: () => void;
   reactCode: string;
-  jsonCode: string;
+  components: BuilderComponent[];
   htmlCode?: string;
 }
 
@@ -12,7 +14,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
   isOpen,
   onClose,
   reactCode,
-  jsonCode,
+  components,
   htmlCode,
 }) => {
   const [activeTab, setActiveTab] = useState<"react" | "json" | "html">(
@@ -23,6 +25,18 @@ export const ExportModal: React.FC<ExportModalProps> = ({
 
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
+  };
+
+  const downloadJSON = (filename: string, text: string) => {
+    const blob = new Blob([text], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -63,7 +77,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                 ? reactCode
                 : activeTab === "html"
                 ? htmlCode || ""
-                : jsonCode}
+                : exportToJSON(components)}
             </code>
           </pre>
         </div>
@@ -77,11 +91,23 @@ export const ExportModal: React.FC<ExportModalProps> = ({
                   ? reactCode
                   : activeTab === "html"
                   ? htmlCode || ""
-                  : jsonCode
+                  : exportToJSON(components)
               )
             }
           >
             Copy to Clipboard
+          </button>
+          <button
+            className="copy-button"
+            onClick={() => {
+              // compute fresh JSON at click time so DOM measurements run
+              const json = exportToJSON(components);
+              copyToClipboard(json);
+              downloadJSON("oneflow-for-figma.json", json);
+            }}
+            style={{ marginLeft: "8px" }}
+          >
+            Export for Figma
           </button>
         </div>
       </div>

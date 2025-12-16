@@ -1,0 +1,352 @@
+{
+  "type": "flex",
+  "props": {
+    "style": {
+      "flexDirection": "column",
+      "width": "100%",
+      "backgroundColor": "#ffffff",
+      "color": "#111827"
+    }
+  },
+  "children": [
+    {
+      "type": "flex",
+      "props": {
+        "style": {
+          "flexDirection": "row",
+          "justifyContent": "space-between",
+          "alignItems": "center",
+          "padding": "16px 24px",
+          "width": "100%",
+          "borderBottom": "1px solid #e5e5e5"
+        }
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "content": "Apple",
+            "fontSize": "20px",
+            "fontWeight": 600
+          }
+        },
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "row",
+              "gap": "24px"
+            }
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "content": "Store",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Mac",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "iPad",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "iPhone",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Watch",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "AirPods",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "TV & Home",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Entertainment",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Accessories",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Support",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            }
+          ]
+        },
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "row",
+              "gap": "16px"
+            }
+          },
+          "children": [
+            {
+              "type": "text",
+              "props": {
+                "content": "Search",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Cart",
+                "fontSize": "14px",
+                "fontWeight": 400
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "flex",
+      "props": {
+        "style": {
+          "flexDirection": "column",
+          "alignItems": "center",
+          "justifyContent": "center",
+          "width": "100%",
+          "padding": "80px 24px",
+          "textAlign": "center"
+        }
+      },
+      "children": [
+        {
+          "type": "text",
+          "props": {
+            "content": "iPhone 15 Pro",
+            "fontSize": "48px",
+            "fontWeight": 600,
+            "marginBottom": "8px"
+          }
+        },
+        {
+          "type": "text",
+          "props": {
+            "content": "Titanium. So strong. So light. So Pro.",
+            "fontSize": "24px",
+            "fontWeight": 400,
+            "marginBottom": "24px"
+          }
+        },
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "row",
+              "gap": "16px",
+              "marginBottom": "40px"
+            }
+          },
+          "children": [
+            {
+              "type": "button",
+              "props": {
+                "content": "Learn more",
+                "style": {
+                  "padding": "8px 16px",
+                  "backgroundColor": "#2563eb",
+                  "color": "#ffffff",
+                  "borderRadius": "6px",
+                  "border": "none"
+                }
+              }
+            },
+            {
+              "type": "button",
+              "props": {
+                "content": "Buy",
+                "style": {
+                  "padding": "8px 16px",
+                  "backgroundColor": "#ffffff",
+                  "color": "#111827",
+                  "borderRadius": "6px",
+                  "border": "1px solid #d1d5db"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "type": "image",
+          "props": {
+            "src": "https://source.unsplash.com/random/800x600?iphone",
+            "alt": "iPhone 15 Pro",
+            "style": {
+              "width": "800px",
+              "height": "400px",
+              "objectFit": "cover",
+              "borderRadius": "8px"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "type": "flex",
+      "props": {
+        "style": {
+          "flexDirection": "row",
+          "justifyContent": "space-around",
+          "alignItems": "center",
+          "width": "100%",
+          "padding": "40px 24px",
+          "backgroundColor": "#f3f4f6"
+        }
+      },
+      "children": [
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "column",
+              "alignItems": "center",
+              "gap": "16px"
+            }
+          },
+          "children": [
+            {
+              "type": "image",
+              "props": {
+                "src": "https://source.unsplash.com/random/300x300?macbook",
+                "alt": "MacBook",
+                "style": {
+                  "width": "200px",
+                  "height": "200px",
+                  "objectFit": "cover",
+                  "borderRadius": "8px"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "MacBook Pro",
+                "fontSize": "20px",
+                "fontWeight": 600
+              }
+            }
+          ]
+        },
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "column",
+              "alignItems": "center",
+              "gap": "16px"
+            }
+          },
+          "children": [
+            {
+              "type": "image",
+              "props": {
+                "src": "https://source.unsplash.com/random/300x300?ipad",
+                "alt": "iPad",
+                "style": {
+                  "width": "200px",
+                  "height": "200px",
+                  "objectFit": "cover",
+                  "borderRadius": "8px"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "iPad Pro",
+                "fontSize": "20px",
+                "fontWeight": 600
+              }
+            }
+          ]
+        },
+        {
+          "type": "flex",
+          "props": {
+            "style": {
+              "flexDirection": "column",
+              "alignItems": "center",
+              "gap": "16px"
+            }
+          },
+          "children": [
+            {
+              "type": "image",
+              "props": {
+                "src": "https://source.unsplash.com/random/300x300?watch",
+                "alt": "Apple Watch",
+                "style": {
+                  "width": "200px",
+                  "height": "200px",
+                  "objectFit": "cover",
+                  "borderRadius": "8px"
+                }
+              }
+            },
+            {
+              "type": "text",
+              "props": {
+                "content": "Apple Watch",
+                "fontSize": "20px",
+                "fontWeight": 600
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

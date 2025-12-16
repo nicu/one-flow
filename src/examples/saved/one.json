@@ -1,0 +1,524 @@
+[
+  {
+    "id": "8d0b523c-4e28-4822-91b1-7fe2aa0a4fbc",
+    "type": "flex",
+    "properties": {
+      "padding": "0",
+      "margin": "0",
+      "backgroundColor": "#ffffff",
+      "width": "100%",
+      "flexDirection": {
+        "mobile": "column",
+        "tablet": "row",
+        "desktop": "row"
+      }
+    },
+    "children": [
+      {
+        "id": "ef070381-8a48-4945-b719-8111fe04443c",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "width": "[object Object]",
+          "gap": "16px"
+        },
+        "children": [
+          {
+            "id": "7766f63e-cfee-487f-97cd-79eb32a9f759",
+            "type": "text",
+            "properties": {
+              "text": "Join Our Exclusive Members Club",
+              "color": "#111827",
+              "fontSize": "[object Object]",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "a73f9924-9d88-4fe6-be39-45b4e76063ed",
+            "type": "text",
+            "properties": {
+              "text": "Access premium content, early releases, and exclusive member benefits.",
+              "color": "#6b7280",
+              "fontSize": "[object Object]"
+            }
+          },
+          {
+            "id": "3337b391-a0cb-422c-a39d-9bac9493d43a",
+            "type": "button",
+            "properties": {
+              "buttonText": "Become a Member",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "12px 24px",
+              "backgroundColor": "#2563eb",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#ffffff",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c892770e-1f47-4bf4-82c4-9bdf84bfd775",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "width": "[object Object]",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "25050087-4a6d-411f-86a9-cbf849edddef",
+            "type": "image",
+            "properties": {
+              "alt": "Membership benefits illustration",
+              "src": "https://source.unsplash.com/random/600x400?membership",
+              "width": "100%",
+              "height": "300px",
+              "borderRadius": "8px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "1eaa4833-d765-4a87-b4e2-83fc02553bee",
+    "type": "flex",
+    "properties": {
+      "padding": "48px 24px",
+      "margin": "0",
+      "backgroundColor": "#f9fafb",
+      "width": "100%",
+      "flexDirection": {
+        "mobile": "column",
+        "tablet": "row",
+        "desktop": "row"
+      }
+    },
+    "children": [
+      {
+        "id": "c6cf5e81-0f23-42b1-bb1b-06d11061f1ed",
+        "type": "column",
+        "properties": {
+          "padding": "16px",
+          "width": "[object Object]",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "id": "c6b14d70-ef20-4af8-a342-371ef8a6dec4",
+            "type": "text",
+            "properties": {
+              "text": "Exclusive Content",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "88feccd5-c970-4f71-b5fd-70d968b21b54",
+            "type": "text",
+            "properties": {
+              "text": "Access premium articles, videos, and resources only available to members.",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          }
+        ]
+      },
+      {
+        "id": "096d7da5-568a-498b-b757-b8f28474c6e1",
+        "type": "column",
+        "properties": {
+          "padding": "16px",
+          "width": "[object Object]",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "id": "5a85684f-a701-4fde-92d5-1abbae89d921",
+            "type": "text",
+            "properties": {
+              "text": "Early Access",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "e58c25cd-fc59-43ce-b906-27c47d37331e",
+            "type": "text",
+            "properties": {
+              "text": "Get first access to new products, events, and exclusive offers.",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          }
+        ]
+      },
+      {
+        "id": "6aab7f12-42bd-4c7c-8c07-5ab77ccbe3e3",
+        "type": "column",
+        "properties": {
+          "padding": "16px",
+          "width": "[object Object]",
+          "gap": "12px"
+        },
+        "children": [
+          {
+            "id": "6245993c-790a-444a-808f-11b4bc1e1917",
+            "type": "text",
+            "properties": {
+              "text": "Community Access",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "11e0cb18-227e-4ef3-bedd-da36ed79069e",
+            "type": "text",
+            "properties": {
+              "text": "Connect with like-minded members in our private community.",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "47bc1642-34d5-4b19-9d9a-705b4d7c86f8",
+    "type": "flex",
+    "properties": {
+      "padding": "48px 24px",
+      "margin": "0",
+      "backgroundColor": "#ffffff",
+      "width": "100%",
+      "flexDirection": {
+        "mobile": "column",
+        "tablet": "row",
+        "desktop": "row"
+      }
+    },
+    "children": [
+      {
+        "id": "6195b375-06a8-4602-9aa9-106b80cdcb37",
+        "type": "column",
+        "properties": {
+          "padding": "16px",
+          "width": "[object Object]",
+          "gap": "16px"
+        },
+        "children": [
+          {
+            "id": "4af04ecd-2516-405e-a5bb-b1dd2d6a50e2",
+            "type": "text",
+            "properties": {
+              "text": "Membership Tiers",
+              "color": "#111827",
+              "fontSize": "[object Object]",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "9269c330-2884-484d-84cb-cded33b57513",
+            "type": "text",
+            "properties": {
+              "text": "Choose the perfect membership level for your needs.",
+              "color": "#6b7280",
+              "fontSize": "18px"
+            }
+          }
+        ]
+      },
+      {
+        "id": "8c941242-168f-4f4d-a1f6-580ca0a02274",
+        "type": "column",
+        "properties": {
+          "padding": "16px",
+          "width": "[object Object]",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "92e17ee6-9495-4183-b816-b4d9650cc720",
+            "type": "button",
+            "properties": {
+              "buttonText": "View All Tiers",
+              "buttonColor": "#ffffff",
+              "buttonTextColor": "#2563eb",
+              "padding": "12px 24px",
+              "backgroundColor": "#ffffff",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#2563eb",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "8e78f111-e11f-4439-9574-c3676ad3c9ea",
+    "type": "grid",
+    "properties": {
+      "padding": "24px",
+      "width": "100%",
+      "gap": "24px"
+    },
+    "children": [
+      {
+        "id": "36fb3269-82f9-40e2-9265-40415798a6e8",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "backgroundColor": "#f9fafb",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "460bcf4e-b205-4056-bc9f-dbdea3632c2f",
+            "type": "text",
+            "properties": {
+              "text": "Basic Member",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "9f2ae1e2-fc2f-4e70-a033-f6871ff81f4b",
+            "type": "text",
+            "properties": {
+              "text": "$9.99/month",
+              "color": "#111827",
+              "fontSize": "24px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "2df99266-23cb-4ecc-86ea-007e19d745b1",
+            "type": "text",
+            "properties": {
+              "text": "• Access to premium content\n• Basic community access\n• Monthly newsletter",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "f50c9bee-43c0-4ddf-b2f6-66fd9fc8ae6d",
+            "type": "button",
+            "properties": {
+              "buttonText": "Select Plan",
+              "buttonColor": "#ffffff",
+              "buttonTextColor": "#2563eb",
+              "padding": "12px 24px",
+              "backgroundColor": "#ffffff",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#2563eb",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      },
+      {
+        "id": "05eb5218-0a1a-4fc1-8480-e48dcd6eca38",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "backgroundColor": "#f9fafb",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "c490176b-6038-4f6c-9762-9c44f7d8faf7",
+            "type": "text",
+            "properties": {
+              "text": "Premium Member",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "34e3a567-c41f-45b4-85ad-733feddd9912",
+            "type": "text",
+            "properties": {
+              "text": "$19.99/month",
+              "color": "#111827",
+              "fontSize": "24px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "bad7bcd7-97d7-4db1-843c-547d83eb837b",
+            "type": "text",
+            "properties": {
+              "text": "• All Basic Member benefits\n• Early access to products\n• Priority community support\n• Exclusive events",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "74e9d12a-980c-4fd7-bfcd-636213357a67",
+            "type": "button",
+            "properties": {
+              "buttonText": "Select Plan",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "12px 24px",
+              "backgroundColor": "#2563eb",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#ffffff",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      },
+      {
+        "id": "5483b74d-3b8d-4bc0-bcc9-f970d79472d4",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "backgroundColor": "#f9fafb",
+          "borderRadius": "8px"
+        },
+        "children": [
+          {
+            "id": "be9cd197-3f70-47b5-92ac-8739a669633a",
+            "type": "text",
+            "properties": {
+              "text": "VIP Member",
+              "color": "#111827",
+              "fontSize": "20px",
+              "fontWeight": "600"
+            }
+          },
+          {
+            "id": "e6236a01-4044-40ac-bff6-e90ba4aedd48",
+            "type": "text",
+            "properties": {
+              "text": "$49.99/month",
+              "color": "#111827",
+              "fontSize": "24px",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "87b0c59a-01f4-440b-9fef-94c79f441ef6",
+            "type": "text",
+            "properties": {
+              "text": "• All Premium Member benefits\n• Personalized content recommendations\n• Exclusive one-on-one sessions\n• Annual membership discount",
+              "color": "#6b7280",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "d5968113-738d-4cab-b5b4-4f3bb04e47d5",
+            "type": "button",
+            "properties": {
+              "buttonText": "Select Plan",
+              "buttonColor": "#ffffff",
+              "buttonTextColor": "#2563eb",
+              "padding": "12px 24px",
+              "backgroundColor": "#ffffff",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#2563eb",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "b0c3c3bd-ec51-4503-9615-3302e828efa8",
+    "type": "flex",
+    "properties": {
+      "padding": "48px 24px",
+      "margin": "0",
+      "backgroundColor": "#f9fafb",
+      "width": "100%",
+      "flexDirection": {
+        "mobile": "column",
+        "tablet": "row",
+        "desktop": "row"
+      }
+    },
+    "children": [
+      {
+        "id": "f295bfa5-7305-447c-8c82-29b81396833a",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "width": "[object Object]",
+          "gap": "16px"
+        },
+        "children": [
+          {
+            "id": "a85c5a60-cfff-4339-abf8-2c03f3b86c74",
+            "type": "text",
+            "properties": {
+              "text": "Frequently Asked Questions",
+              "color": "#111827",
+              "fontSize": "[object Object]",
+              "fontWeight": "700"
+            }
+          },
+          {
+            "id": "b9533e55-902e-4927-b84f-166ad0e4a6d7",
+            "type": "text",
+            "properties": {
+              "text": "Find answers to common questions about our membership program.",
+              "color": "#6b7280",
+              "fontSize": "18px"
+            }
+          }
+        ]
+      },
+      {
+        "id": "c41bf4c6-a039-4286-933f-7b61e60e0459",
+        "type": "column",
+        "properties": {
+          "padding": "24px",
+          "width": "[object Object]",
+          "justifyContent": "center",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "b2c7ef17-6a3a-480f-bf0e-5ddb852ee850",
+            "type": "button",
+            "properties": {
+              "buttonText": "View FAQ",
+              "buttonColor": "#ffffff",
+              "buttonTextColor": "#2563eb",
+              "padding": "12px 24px",
+              "backgroundColor": "#ffffff",
+              "width": "100%",
+              "borderRadius": "6px",
+              "color": "#2563eb",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

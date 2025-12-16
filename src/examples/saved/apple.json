@@ -1,0 +1,494 @@
+[
+  {
+    "id": "f358c2d1-c4f1-4c6d-9adc-e26cc3ff9327",
+    "type": "flex",
+    "properties": {
+      "padding": "0 40px",
+      "backgroundColor": "rgba(0,0,0,0.8)",
+      "width": "100%",
+      "height": "80px",
+      "justifyContent": "space-between",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "8e2e101f-9f47-4f67-8921-773bcba1eb12",
+        "type": "text",
+        "properties": {
+          "text": "Apple",
+          "fontSize": "20px",
+          "fontWeight": 600
+        }
+      },
+      {
+        "id": "ebb0927e-e895-4be2-912f-a47d5010756c",
+        "type": "flex",
+        "properties": {
+          "gap": "32px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "54f6ceb7-ed0f-482a-acc4-a088087859cf",
+            "type": "text",
+            "properties": {
+              "text": "Store",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "d89d206a-b069-44d1-bce0-86b661544598",
+            "type": "text",
+            "properties": {
+              "text": "Mac",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "b762c509-c680-4a77-a504-adcc1fdf6a51",
+            "type": "text",
+            "properties": {
+              "text": "iPad",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "d69ff287-68d5-4f59-92be-096037891730",
+            "type": "text",
+            "properties": {
+              "text": "iPhone",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "d8457d86-a36d-4f5b-9e6b-7ffbb08b3584",
+            "type": "text",
+            "properties": {
+              "text": "Watch",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "ab007d1d-7661-430c-a0cc-e08d6a3eeb5c",
+            "type": "text",
+            "properties": {
+              "text": "AirPods",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "c79aef05-2f46-47de-80ce-a68acab04c0b",
+            "type": "text",
+            "properties": {
+              "text": "TV & Home",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "b36436ca-9c57-42f0-a839-e8a99c301620",
+            "type": "text",
+            "properties": {
+              "text": "Entertainment",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "1055bf09-5894-4747-899f-12f7b7567f89",
+            "type": "text",
+            "properties": {
+              "text": "Accessories",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "b309b930-f403-4d00-9f01-ee6ef2262c32",
+            "type": "text",
+            "properties": {
+              "text": "Support",
+              "fontSize": "14px",
+              "fontWeight": 400
+            }
+          }
+        ]
+      },
+      {
+        "id": "17050519-cbc2-41af-9fbb-b01afc39459c",
+        "type": "flex",
+        "properties": {
+          "gap": "16px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "86db1fb6-f6b5-4230-a58f-21386adb5ec3",
+            "type": "button",
+            "properties": {
+              "buttonText": "Button",
+              "buttonColor": "transparent",
+              "backgroundColor": "transparent",
+              "width": "24px",
+              "height": "24px"
+            }
+          },
+          {
+            "id": "1db2b59f-4d6b-4a9c-8637-fa8385f88494",
+            "type": "button",
+            "properties": {
+              "buttonText": "Button",
+              "buttonColor": "transparent",
+              "backgroundColor": "transparent",
+              "width": "24px",
+              "height": "24px"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "2062c43d-aad2-4af0-9278-d01a466c2a64",
+    "type": "flex",
+    "properties": {
+      "width": "100%",
+      "height": "calc(100vh - 80px)",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "7d75f2b4-74b2-460e-845a-674b356aebce",
+        "type": "text",
+        "properties": {
+          "text": "iPhone 15 Pro",
+          "fontSize": "64px",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "fdd413fb-bfa0-4f14-a9b3-64bb0ea1f32c",
+        "type": "text",
+        "properties": {
+          "text": "Titanium. So strong. So light. So Pro.",
+          "fontSize": "24px",
+          "fontWeight": 400
+        }
+      },
+      {
+        "id": "8d26618b-ae8d-46eb-be96-01bd88c26567",
+        "type": "flex",
+        "properties": {
+          "gap": "24px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "a80074b5-9678-4189-a64c-e4c8f5d51286",
+            "type": "button",
+            "properties": {
+              "buttonText": "Learn more",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "transparent",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "24078b2c-d41f-4a49-9e18-68ffe06b4bc7",
+            "type": "button",
+            "properties": {
+              "buttonText": "Buy",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "#2563eb",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "de9b49de-8395-4702-818c-63d8a062fea1",
+        "type": "image",
+        "properties": {
+          "alt": "iPhone 15 Pro",
+          "src": "https://source.unsplash.com/random/800x600?iphone",
+          "width": "400px",
+          "height": "400px",
+          "borderRadius": "20px"
+        }
+      }
+    ]
+  },
+  {
+    "id": "01655424-a504-4668-934a-4f14049af474",
+    "type": "flex",
+    "properties": {
+      "padding": "80px 40px",
+      "backgroundColor": "#ffffff",
+      "width": "100%",
+      "height": "100vh",
+      "color": "#000000",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "cca2fe79-ba93-4ad2-883c-c63f7e26bac4",
+        "type": "text",
+        "properties": {
+          "text": "MacBook Air",
+          "fontSize": "48px",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "1370b506-7b52-41ab-bc45-f09f9a6e9ca9",
+        "type": "text",
+        "properties": {
+          "text": "Supercharged by M2",
+          "fontSize": "24px",
+          "fontWeight": 400
+        }
+      },
+      {
+        "id": "8f36c1e4-41de-480c-a2a7-5d9adb7fef08",
+        "type": "flex",
+        "properties": {
+          "gap": "24px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "72198a58-5284-4928-bf78-4bd187c05b7b",
+            "type": "button",
+            "properties": {
+              "buttonText": "Learn more",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#000000",
+              "padding": "8px 16px",
+              "backgroundColor": "transparent",
+              "borderRadius": "30px",
+              "color": "#000000",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "b43d699f-f4e7-41a5-9360-0c45fd80d954",
+            "type": "button",
+            "properties": {
+              "buttonText": "Buy",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "#2563eb",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "7535059a-9563-4eee-9ee0-58832afd5049",
+        "type": "image",
+        "properties": {
+          "alt": "MacBook Air",
+          "src": "https://source.unsplash.com/random/800x600?macbook",
+          "width": "500px",
+          "height": "300px",
+          "borderRadius": "20px"
+        }
+      }
+    ]
+  },
+  {
+    "id": "3d197938-2b89-42c7-89d8-66fcd220d514",
+    "type": "flex",
+    "properties": {
+      "padding": "80px 40px",
+      "backgroundColor": "#000000",
+      "width": "100%",
+      "height": "100vh",
+      "color": "#ffffff",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "1265b42d-ea75-4b87-8041-a2167039d161",
+        "type": "text",
+        "properties": {
+          "text": "Apple Watch Series 9",
+          "fontSize": "48px",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "a851736f-77e5-4ecd-961a-9a8eadf08a70",
+        "type": "text",
+        "properties": {
+          "text": "Smarter. Brighter. Mightier.",
+          "fontSize": "24px",
+          "fontWeight": 400
+        }
+      },
+      {
+        "id": "38a2e6f2-bfdc-47bb-a0d0-441399f350d3",
+        "type": "flex",
+        "properties": {
+          "gap": "24px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "b4fb0d72-24b2-40e3-851c-1f84d01eec97",
+            "type": "button",
+            "properties": {
+              "buttonText": "Learn more",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "transparent",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "4edfa6b4-b8ea-4538-8cf9-37d82a10a7d2",
+            "type": "button",
+            "properties": {
+              "buttonText": "Buy",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "#2563eb",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "0a5f3165-e5fb-4ae2-9d71-a32b30e882e0",
+        "type": "image",
+        "properties": {
+          "alt": "Apple Watch Series 9",
+          "src": "https://source.unsplash.com/random/800x600?watch",
+          "width": "400px",
+          "height": "400px",
+          "borderRadius": "20px"
+        }
+      }
+    ]
+  },
+  {
+    "id": "bcfa9fb9-b62f-486d-b7bf-7ce836df4e9a",
+    "type": "flex",
+    "properties": {
+      "padding": "80px 40px",
+      "backgroundColor": "#ffffff",
+      "width": "100%",
+      "height": "100vh",
+      "color": "#000000",
+      "flexDirection": "column",
+      "justifyContent": "center",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "c8e160e7-1331-4dfc-b58f-ae7fab504712",
+        "type": "text",
+        "properties": {
+          "text": "iPad Pro",
+          "fontSize": "48px",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "7418d1d0-62e0-48a5-ab40-3ee487a76524",
+        "type": "text",
+        "properties": {
+          "text": "Supercharged by M2",
+          "fontSize": "24px",
+          "fontWeight": 400
+        }
+      },
+      {
+        "id": "f48414af-cdca-4b73-bbcb-6bf13ccbea37",
+        "type": "flex",
+        "properties": {
+          "gap": "24px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "2a90e126-3435-47f9-88ca-7ea626188b8e",
+            "type": "button",
+            "properties": {
+              "buttonText": "Learn more",
+              "buttonColor": "transparent",
+              "buttonTextColor": "#000000",
+              "padding": "8px 16px",
+              "backgroundColor": "transparent",
+              "borderRadius": "30px",
+              "color": "#000000",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          },
+          {
+            "id": "65bd301f-ce27-44f1-95a1-116937a0a051",
+            "type": "button",
+            "properties": {
+              "buttonText": "Buy",
+              "buttonColor": "#2563eb",
+              "buttonTextColor": "#ffffff",
+              "padding": "8px 16px",
+              "backgroundColor": "#2563eb",
+              "borderRadius": "30px",
+              "color": "#ffffff",
+              "fontSize": "14px",
+              "fontWeight": "400"
+            }
+          }
+        ]
+      },
+      {
+        "id": "9a454c0a-d330-45b7-b82c-bd15df0d39d9",
+        "type": "image",
+        "properties": {
+          "alt": "iPad Pro",
+          "src": "https://source.unsplash.com/random/800x600?ipad",
+          "width": "500px",
+          "height": "300px",
+          "borderRadius": "20px"
+        }
+      }
+    ]
+  }
+]

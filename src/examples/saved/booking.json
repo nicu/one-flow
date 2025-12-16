@@ -1,0 +1,517 @@
+[
+  {
+    "id": "81191caa-fb39-4b8d-9d5c-37785a33d6ae",
+    "type": "flex",
+    "properties": {
+      "padding": "16px 24px",
+      "backgroundColor": "#ffffff",
+      "flexDirection": "row",
+      "justifyContent": "space-between",
+      "alignItems": "center"
+    },
+    "children": [
+      {
+        "id": "2f259d48-9a1d-44a7-9863-eecf91e659bb",
+        "type": "text",
+        "properties": {
+          "text": "booking.com",
+          "fontSize": "24px",
+          "color": "#003580",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "4b6e84b3-e728-4074-afe7-45a019f03f03",
+        "type": "flex",
+        "properties": {
+          "gap": "16px",
+          "flexDirection": "row",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "40e1a936-7cd7-45e2-acdb-8877849bbd53",
+            "type": "text",
+            "properties": {
+              "text": "Sign in",
+              "fontSize": "14px",
+              "color": "#003580",
+              "fontWeight": 400
+            }
+          },
+          {
+            "id": "a4010bbc-3f97-48a8-be5b-8984b80bdaca",
+            "type": "text",
+            "properties": {
+              "text": "Register",
+              "fontSize": "14px",
+              "color": "#003580",
+              "fontWeight": 400
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c5f4e096-ddca-452f-99f7-605229a2f110",
+    "type": "flex",
+    "properties": {
+      "padding": "24px",
+      "gap": "24px",
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "29a9fb7a-7de2-4e55-a58f-ec5a6cfcc34e",
+        "type": "text",
+        "properties": {
+          "text": "Search for hotels, apartments, and more",
+          "fontSize": "24px",
+          "color": "#111827",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "3b71533f-f425-4cea-897e-6ca7cc440218",
+        "type": "flex",
+        "properties": {
+          "gap": "12px",
+          "flexDirection": "row",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "e4b566d8-02fa-492a-8a98-54b83419d3ab",
+            "type": "input",
+            "properties": {
+              "placeholder": "Where are you going?",
+              "inputType": "text",
+              "padding": "12px 16px",
+              "borderRadius": "4px",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "39ea959e-7535-435b-b8f2-e7c785efa7f8",
+            "type": "input",
+            "properties": {
+              "placeholder": "Check-in",
+              "inputType": "text",
+              "padding": "12px 16px",
+              "width": "120px",
+              "borderRadius": "4px",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "5d451014-691c-4d6a-a478-cb13cbb3b5f0",
+            "type": "input",
+            "properties": {
+              "placeholder": "Check-out",
+              "inputType": "text",
+              "padding": "12px 16px",
+              "width": "120px",
+              "borderRadius": "4px",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "0f52ba78-9dfd-4ee7-890c-ae0ba389e85f",
+            "type": "input",
+            "properties": {
+              "placeholder": "Guests",
+              "inputType": "text",
+              "padding": "12px 16px",
+              "width": "120px",
+              "borderRadius": "4px",
+              "fontSize": "16px"
+            }
+          },
+          {
+            "id": "10885f0c-720a-49cc-9d45-1c0f6e00197a",
+            "type": "button",
+            "properties": {
+              "buttonText": "Search",
+              "buttonColor": "#003580",
+              "buttonTextColor": "#ffffff",
+              "padding": "12px 24px",
+              "backgroundColor": "#003580",
+              "borderRadius": "4px",
+              "color": "#ffffff",
+              "fontSize": "16px",
+              "fontWeight": "600"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "a85f32db-ace8-4cc7-adaa-f47a6724798a",
+    "type": "flex",
+    "properties": {
+      "padding": "24px",
+      "gap": "16px",
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "9597878b-d6c1-4566-a03f-f07647376458",
+        "type": "text",
+        "properties": {
+          "text": "Popular destinations",
+          "fontSize": "20px",
+          "color": "#111827",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "075abba6-d1d5-408e-854c-ca1e4452a0bd",
+        "type": "grid",
+        "properties": {
+          "gap": "16px"
+        },
+        "children": [
+          {
+            "id": "3b1a0723-bc47-4113-88b7-1c4503535fd3",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "6fdcf8e7-ad04-4ddb-875d-fd7b4a239d55",
+                "type": "image",
+                "properties": {
+                  "alt": "Paris",
+                  "src": "https://source.unsplash.com/random/300x200?paris",
+                  "width": "100%",
+                  "height": "150px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "6922e048-9e2f-4d35-a806-48559a845e7e",
+                "type": "text",
+                "properties": {
+                  "text": "Paris",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          },
+          {
+            "id": "325eea60-2852-445f-b093-738a13650319",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "b8b05bd5-d3e7-433a-a185-58fc9dd41878",
+                "type": "image",
+                "properties": {
+                  "alt": "London",
+                  "src": "https://source.unsplash.com/random/300x200?london",
+                  "width": "100%",
+                  "height": "150px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "b99b3fd4-4966-4be7-97f9-de6f07060614",
+                "type": "text",
+                "properties": {
+                  "text": "London",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          },
+          {
+            "id": "3937c4f4-26d0-4d5f-ac16-a039f4de5ce2",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "8a018508-56eb-44ac-a98d-84dae3c75461",
+                "type": "image",
+                "properties": {
+                  "alt": "New York",
+                  "src": "https://source.unsplash.com/random/300x200?new+york",
+                  "width": "100%",
+                  "height": "150px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "c6896299-e0d9-4cad-8beb-0044c5b31e8e",
+                "type": "text",
+                "properties": {
+                  "text": "New York",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          },
+          {
+            "id": "860efe6a-5b38-409b-9f7c-ee1a718e7ee7",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "37168932-fe26-4d36-8a47-cfce8f7ee43a",
+                "type": "image",
+                "properties": {
+                  "alt": "Tokyo",
+                  "src": "https://source.unsplash.com/random/300x200?tokyo",
+                  "width": "100%",
+                  "height": "150px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "35ca4cab-5868-43b4-af42-071bbc3d1a43",
+                "type": "text",
+                "properties": {
+                  "text": "Tokyo",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "034fb30c-bb6f-423d-b914-7429e126e0d0",
+    "type": "flex",
+    "properties": {
+      "padding": "24px",
+      "gap": "16px",
+      "flexDirection": "column"
+    },
+    "children": [
+      {
+        "id": "200883f0-37b6-4474-86a5-01d3b2971175",
+        "type": "text",
+        "properties": {
+          "text": "Featured hotels",
+          "fontSize": "20px",
+          "color": "#111827",
+          "fontWeight": 700
+        }
+      },
+      {
+        "id": "1cb9840b-a0b7-43e4-94b3-ec6d70f8be72",
+        "type": "grid",
+        "properties": {
+          "gap": "24px"
+        },
+        "children": [
+          {
+            "id": "453e5db0-dd9c-4859-94a1-fa9ea6fe96e3",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "75dc02e1-a9d2-43bc-8da3-eb53876c6979",
+                "type": "image",
+                "properties": {
+                  "alt": "Luxury Hotel",
+                  "src": "https://source.unsplash.com/random/300x200?hotel",
+                  "width": "100%",
+                  "height": "200px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "1a3a722f-d240-41bd-b4e3-f9c4aeaee305",
+                "type": "text",
+                "properties": {
+                  "text": "Grand Luxury Hotel",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              },
+              {
+                "id": "b8bebb46-ec0a-4345-93b5-233e71a382cc",
+                "type": "text",
+                "properties": {
+                  "text": "Paris, France",
+                  "fontSize": "14px",
+                  "color": "#6b7280",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "58872add-4156-45df-81b0-00f54d95455c",
+                "type": "text",
+                "properties": {
+                  "text": "★★★★★",
+                  "fontSize": "14px",
+                  "color": "#111827",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "2d4bf9c3-8e53-46ad-9af0-80737f9374e1",
+                "type": "text",
+                "properties": {
+                  "text": "$250 per night",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          },
+          {
+            "id": "f45800ce-a48e-4b03-8bf8-5748df9299bd",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "9e858b86-e541-4c42-991b-824ed5135302",
+                "type": "image",
+                "properties": {
+                  "alt": "City Hotel",
+                  "src": "https://source.unsplash.com/random/300x200?hotel",
+                  "width": "100%",
+                  "height": "200px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "970c2e89-6a5b-436d-bd77-48f7ad2e6a93",
+                "type": "text",
+                "properties": {
+                  "text": "City Central Hotel",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              },
+              {
+                "id": "c69fe5d2-33a9-4421-8725-35c078bc21b3",
+                "type": "text",
+                "properties": {
+                  "text": "London, UK",
+                  "fontSize": "14px",
+                  "color": "#6b7280",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "ec51e0f0-38bd-41aa-9535-d4ddb9172b7d",
+                "type": "text",
+                "properties": {
+                  "text": "★★★★",
+                  "fontSize": "14px",
+                  "color": "#111827",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "46da4083-a33f-4278-b963-718e959554c9",
+                "type": "text",
+                "properties": {
+                  "text": "$180 per night",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          },
+          {
+            "id": "e633c690-9d34-4330-83a0-f439d8b9d3dd",
+            "type": "flex",
+            "properties": {
+              "gap": "8px",
+              "flexDirection": "column"
+            },
+            "children": [
+              {
+                "id": "03b735c3-938c-4bfe-8fce-8138dee58bc4",
+                "type": "image",
+                "properties": {
+                  "alt": "Beach Resort",
+                  "src": "https://source.unsplash.com/random/300x200?hotel",
+                  "width": "100%",
+                  "height": "200px",
+                  "borderRadius": "8px"
+                }
+              },
+              {
+                "id": "c922bd31-1618-4874-a68f-bb42018361b3",
+                "type": "text",
+                "properties": {
+                  "text": "Oceanview Beach Resort",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              },
+              {
+                "id": "5fef7dad-3fa8-456e-988a-5b0be1a28948",
+                "type": "text",
+                "properties": {
+                  "text": "New York, USA",
+                  "fontSize": "14px",
+                  "color": "#6b7280",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "fa4a963f-1fef-46bd-82e5-6bc977065568",
+                "type": "text",
+                "properties": {
+                  "text": "★★★★★",
+                  "fontSize": "14px",
+                  "color": "#111827",
+                  "fontWeight": 400
+                }
+              },
+              {
+                "id": "0100a003-2794-44b6-9d82-6dcd7ea26827",
+                "type": "text",
+                "properties": {
+                  "text": "$320 per night",
+                  "fontSize": "16px",
+                  "color": "#111827",
+                  "fontWeight": 600
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
