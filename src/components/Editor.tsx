@@ -108,7 +108,9 @@ export default function Editor() {
       // but only if this animation corresponds to the timeline's longest duration
       anim.onfinish = () => {
         if (!repeat) {
-          const currentMax = Math.max(...layersRef.current.map((l) => l.duration ?? 1000));
+          const currentMax = Math.max(
+            ...layersRef.current.map((l) => l.duration ?? 1000)
+          );
           if (layerDuration >= currentMax) {
             playingRef.current = false;
             if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -256,7 +258,9 @@ export default function Editor() {
     const layerDuration = layer.duration ?? 1000;
     anim.onfinish = () => {
       if (!repeat) {
-        const currentMax = Math.max(...layersRef.current.map((l) => l.duration ?? 1000));
+        const currentMax = Math.max(
+          ...layersRef.current.map((l) => l.duration ?? 1000)
+        );
         if (layerDuration >= currentMax) {
           playingRef.current = false;
           if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -316,7 +320,9 @@ export default function Editor() {
     const layerDuration = d;
     anim.onfinish = () => {
       if (!repeat) {
-        const currentMax = Math.max(...layersRef.current.map((l) => l.duration ?? 1000));
+        const currentMax = Math.max(
+          ...layersRef.current.map((l) => l.duration ?? 1000)
+        );
         if (layerDuration >= currentMax) {
           playingRef.current = false;
           if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -434,32 +440,42 @@ export default function Editor() {
         <div className="stage">
           <div className="card" id="stage-card">
             <img
-              ref={(el) => { refs.current["image"] = el }}
+              ref={(el) => {
+                refs.current["image"] = el;
+              }}
               id="layer-image"
               src={getSavedImage(1, 150)}
               alt="product"
             />
             <div className="meta">
               <h2
-                ref={(el) => { refs.current["title"] = el }}
+                ref={(el) => {
+                  refs.current["title"] = el;
+                }}
                 style={{ margin: 0 }}
               >
                 Product Title
               </h2>
               <div
-                ref={(el) => { refs.current["subtitle"] = el }}
+                ref={(el) => {
+                  refs.current["subtitle"] = el;
+                }}
                 style={{ color: "var(--muted)" }}
               >
                 Subtitle goes here
               </div>
               <div
-                ref={(el) => { refs.current["rating"] = el }}
+                ref={(el) => {
+                  refs.current["rating"] = el;
+                }}
                 style={{ color: "var(--muted)" }}
               >
                 ★★★★☆
               </div>
               <p
-                ref={(el) => { refs.current["desc"] = el }}
+                ref={(el) => {
+                  refs.current["desc"] = el;
+                }}
                 style={{ marginTop: 6, color: "var(--muted)", maxWidth: 320 }}
               >
                 A short description of the product to show how description layer

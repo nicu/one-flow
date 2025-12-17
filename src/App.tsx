@@ -25,6 +25,7 @@ import { initialDataStore, type DataStore } from "./store/dataStore";
 import "./App.css";
 import "./i18n";
 import LanguageSelector from "./components/LanguageSelector";
+import SitemapView from "./components/SitemapView";
 import { seedTranslationsFromComponents } from "./utils/i18nUtils";
 
 function App() {
@@ -142,7 +143,7 @@ function App() {
   const [isFlagsModalOpen, setIsFlagsModalOpen] = useState(false);
   // used to force re-render when flags are updated
   const [flagsVersion, setFlagsVersion] = useState(0);
-  const [activeTab, setActiveTab] = useState<"ui" | "data" | "entities">("ui");
+  const [activeTab, setActiveTab] = useState<"ui" | "entities" | "sitemap">("ui");
   const [dataStore, setDataStore] = useState<DataStore>(initialDataStore);
 
   const selectedComponent = getSelectedComponent();
@@ -491,6 +492,15 @@ function App() {
               >
                 Data
               </button>
+              <button
+                className={`viewport-btn ${
+                  activeTab === "sitemap" ? "active" : ""
+                }`}
+                onClick={() => setActiveTab("sitemap")}
+                title="Sitemap"
+              >
+                Sitemap
+              </button>
             </div>
             {activeTab === "ui" && (
               <div className="viewport-controls">
@@ -697,6 +707,10 @@ function App() {
                   dataStore={dataStore}
                   setDataStore={setDataStore}
                 />
+              </div>
+              ) : activeTab === "sitemap" ? (
+              <div style={{ width: "100%", height: "100%", display: "flex" }}>
+                <SitemapView />
               </div>
             ) : (
               <div style={{ width: "100%", height: "100%", display: "flex" }}>
