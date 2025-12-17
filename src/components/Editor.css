@@ -1,0 +1,153 @@
+.ae-editor {
+  display: flex;
+  height: 100vh;
+}
+.ae-editor .sidebar {
+  width: 320px;
+  background: var(--panel);
+  padding: 12px;
+  border-right: 1px solid rgba(255, 255, 255, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+.ae-editor .canvas {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.ae-editor .stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ae-editor .card {
+  width: 520px;
+  height: 200px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.02),
+    rgba(255, 255, 255, 0.01)
+  );
+  display: flex;
+  padding: 16px;
+  gap: 16px;
+  border-radius: 8px;
+  align-items: center;
+}
+.ae-editor .card img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.ae-editor .card .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.ae-editor .layers {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ae-editor .layer {
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.ae-editor .controls {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.ae-editor .button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.ae-editor .button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+}
+.ae-editor .timeline {
+  height: 96px;
+  background: rgba(0, 0, 0, 0.2);
+  margin-top: 12px;
+  padding: 8px;
+  border-radius: 6px;
+}
+.ae-editor .scrub {
+  width: 100%;
+}
+.ae-editor .layer.selected {
+  outline: 2px solid rgba(59, 130, 246, 0.18);
+}
+
+.card img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.card .meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.layers {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.layer {
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.controls {
+  margin-top: auto;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--muted);
+  cursor: pointer;
+}
+.button.primary {
+  background: var(--accent);
+  color: white;
+  border-color: transparent;
+}
+.timeline {
+  height: 96px;
+  background: rgba(0, 0, 0, 0.2);
+  margin-top: 12px;
+  padding: 8px;
+  border-radius: 6px;
+}
+.scrub {
+  width: 100%;
+}
+.layer.selected {
+  outline: 2px solid rgba(59, 130, 246, 0.18);
+}

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Dialog, DialogTitle, DialogContent } from "@mui/material";
 import {
   ArrowUpLeft,
   ArrowUp,
@@ -14,6 +15,7 @@ import { useDataProviders } from "../contexts/DataProvidersContext";
 import VisibilityExpressionModal from "./VisibilityExpressionModal";
 import { useTranslation } from "react-i18next";
 import { setTranslationForKey } from "../utils/i18nUtils";
+import Editor from "./Editor";
 import type {
   BuilderComponent,
   ComponentProperties,
@@ -169,6 +171,7 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
   // so we don't conditionally call hooks inside nested render helpers.
   const dp = useDataProviders();
   const [isVisibilityModalOpen, setIsVisibilityModalOpen] = useState(false);
+  const [editorOpen, setEditorOpen] = useState(false);
   const { t, i18n } = useTranslation();
   if (!component) {
     return (
@@ -1385,6 +1388,18 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
             </div>
 
             <div className="property-field">
+              <label>Editor</label>
+              <div>
+                <button
+                  className="btn-primary"
+                  onClick={() => setEditorOpen(true)}
+                >
+                  Open Editor
+                </button>
+              </div>
+            </div>
+
+            <div className="property-field">
               <label>Intersection Threshold (0-1)</label>
               <input
                 type="number"
@@ -2085,6 +2100,18 @@ export const PropertiesPanel: React.FC<PropertiesPanelProps> = ({
           </div>
         )}
       </div>
+      <Dialog
+        open={editorOpen}
+        onClose={() => setEditorOpen(false)}
+        fullWidth
+        maxWidth="md"
+      >
+        <DialogTitle>Editor</DialogTitle>
+        <DialogContent dividers style={{ height: "70vh" }}>
+          {/* Lazy load Editor UI inside dialog */}
+          <Editor />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
