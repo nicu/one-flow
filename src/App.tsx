@@ -143,7 +143,9 @@ function App() {
   const [isFlagsModalOpen, setIsFlagsModalOpen] = useState(false);
   // used to force re-render when flags are updated
   const [flagsVersion, setFlagsVersion] = useState(0);
-  const [activeTab, setActiveTab] = useState<"ui" | "entities" | "sitemap">("ui");
+  const [activeTab, setActiveTab] = useState<"ui" | "entities" | "sitemap">(
+    "ui"
+  );
   const [dataStore, setDataStore] = useState<DataStore>(initialDataStore);
 
   const selectedComponent = getSelectedComponent();
@@ -708,7 +710,7 @@ function App() {
                   setDataStore={setDataStore}
                 />
               </div>
-              ) : activeTab === "sitemap" ? (
+            ) : activeTab === "sitemap" ? (
               <div style={{ width: "100%", height: "100%", display: "flex" }}>
                 <SitemapView />
               </div>
