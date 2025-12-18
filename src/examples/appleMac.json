@@ -1,0 +1,749 @@
+[
+  {
+    "id": "header",
+    "type": "row",
+    "properties": {
+      "padding": "12px 48px",
+      "backgroundColor": "rgba(255, 255, 255, 0.8)",
+      "backdropFilter": "blur(20px)",
+      "alignItems": "center",
+      "justifyContent": "space-between",
+      "position": "sticky",
+      "top": "0",
+      "zIndex": "100",
+      "borderBottom": "1px solid rgba(0, 0, 0, 0.1)"
+    },
+    "children": [
+      {
+        "id": "apple-logo",
+        "type": "text",
+        "properties": {
+          "text": "Apple",
+          "fontSize": "24px",
+          "fontWeight": "400"
+        }
+      },
+      {
+        "id": "nav",
+        "type": "row",
+        "properties": {
+          "gap": "32px",
+          "alignItems": "center"
+        },
+        "children": [
+          {
+            "id": "nav-mac",
+            "type": "text",
+            "properties": {
+              "text": "Mac",
+              "fontSize": "12px",
+              "fontWeight": "400",
+              "color": "#1d1d1f"
+            }
+          },
+          {
+            "id": "nav-macbook-air",
+            "type": "text",
+            "properties": {
+              "text": "MacBook Air",
+              "fontSize": "12px",
+              "fontWeight": "400",
+              "color": "#1d1d1f"
+            }
+          },
+          {
+            "id": "nav-macbook-pro",
+            "type": "text",
+            "properties": {
+              "text": "MacBook Pro",
+              "fontSize": "12px",
+              "fontWeight": "400",
+              "color": "#1d1d1f"
+            }
+          },
+          {
+            "id": "nav-imac",
+            "type": "text",
+            "properties": {
+              "text": "iMac",
+              "fontSize": "12px",
+              "fontWeight": "400",
+              "color": "#1d1d1f"
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hero-section",
+    "type": "ScrollReveal",
+    "properties": {
+      "padding": "80px 48px 120px 48px",
+      "backgroundColor": "#000000",
+      "animationType": "slideUp",
+      "duration": 1000,
+      "threshold": 0.3
+    },
+    "children": [
+      {
+        "id": "hero-content",
+        "type": "column",
+        "properties": {
+          "gap": "24px",
+          "alignItems": "center",
+          "textAlign": "center"
+        },
+        "children": [
+          {
+            "id": "hero-title",
+            "type": "text",
+            "properties": {
+              "text": "MacBook Pro",
+              "fontSize": "56px",
+              "fontWeight": "600",
+              "color": "#ffffff",
+              "letterSpacing": "-0.5px"
+            }
+          },
+          {
+            "id": "hero-subtitle",
+            "type": "text",
+            "properties": {
+              "text": "Mind-blowing. Head-turning.",
+              "fontSize": "28px",
+              "fontWeight": "400",
+              "color": "#f5f5f7",
+              "lineHeight": "1.2"
+            }
+          },
+          {
+            "id": "hero-description",
+            "type": "text",
+            "properties": {
+              "text": "The most powerful MacBook Pro ever is here. With the blazing-fast M3 Pro or M3 Max chip — and it's a game-changer for professionals.",
+              "fontSize": "21px",
+              "fontWeight": "400",
+              "color": "#a1a1a6",
+              "maxWidth": "700px",
+              "lineHeight": "1.4"
+            }
+          },
+          {
+            "id": "hero-cta",
+            "type": "row",
+            "properties": {
+              "gap": "24px",
+              "marginTop": "16px"
+            },
+            "children": [
+              {
+                "id": "cta-learn",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Learn more",
+                  "buttonColor": "#0066cc",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "12px 24px",
+                  "borderRadius": "980px",
+                  "fontSize": "17px"
+                }
+              },
+              {
+                "id": "cta-buy",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Buy",
+                  "buttonColor": "transparent",
+                  "buttonTextColor": "#2997ff",
+                  "padding": "12px 24px",
+                  "borderRadius": "980px",
+                  "border": "1px solid #2997ff",
+                  "fontSize": "17px"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "performance-section",
+    "type": "ScrollReveal",
+    "properties": {
+      "padding": "100px 48px",
+      "backgroundColor": "#fbfbfd",
+      "animationType": "slideUp",
+      "duration": 1000,
+      "delay": 100,
+      "threshold": 0.2
+    },
+    "children": [
+      {
+        "id": "performance-content",
+        "type": "column",
+        "properties": {
+          "gap": "48px",
+          "maxWidth": "980px",
+          "margin": "0 auto"
+        },
+        "children": [
+          {
+            "id": "performance-header",
+            "type": "column",
+            "properties": {
+              "gap": "16px",
+              "textAlign": "center"
+            },
+            "children": [
+              {
+                "id": "performance-title",
+                "type": "text",
+                "properties": {
+                  "text": "Performance that goes Pro.",
+                  "fontSize": "48px",
+                  "fontWeight": "600",
+                  "color": "#1d1d1f",
+                  "letterSpacing": "-0.5px"
+                }
+              },
+              {
+                "id": "performance-subtitle",
+                "type": "text",
+                "properties": {
+                  "text": "M3 Pro and M3 Max chips deliver phenomenal performance whether running on battery or plugged in.",
+                  "fontSize": "24px",
+                  "fontWeight": "400",
+                  "color": "#6e6e73",
+                  "lineHeight": "1.4"
+                }
+              }
+            ]
+          },
+          {
+            "id": "performance-stats",
+            "type": "row",
+            "properties": {
+              "gap": "32px",
+              "justifyContent": "space-around",
+              "flexWrap": "wrap"
+            },
+            "children": [
+              {
+                "id": "stat-1",
+                "type": "column",
+                "properties": {
+                  "gap": "12px",
+                  "alignItems": "center",
+                  "textAlign": "center"
+                },
+                "children": [
+                  {
+                    "id": "stat-1-number",
+                    "type": "text",
+                    "properties": {
+                      "text": "22",
+                      "fontSize": "64px",
+                      "fontWeight": "600",
+                      "color": "#1d1d1f"
+                    }
+                  },
+                  {
+                    "id": "stat-1-label",
+                    "type": "text",
+                    "properties": {
+                      "text": "Hours of battery life",
+                      "fontSize": "17px",
+                      "fontWeight": "400",
+                      "color": "#6e6e73"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "stat-2",
+                "type": "column",
+                "properties": {
+                  "gap": "12px",
+                  "alignItems": "center",
+                  "textAlign": "center"
+                },
+                "children": [
+                  {
+                    "id": "stat-2-number",
+                    "type": "text",
+                    "properties": {
+                      "text": "8x",
+                      "fontSize": "64px",
+                      "fontWeight": "600",
+                      "color": "#1d1d1f"
+                    }
+                  },
+                  {
+                    "id": "stat-2-label",
+                    "type": "text",
+                    "properties": {
+                      "text": "Faster than M1",
+                      "fontSize": "17px",
+                      "fontWeight": "400",
+                      "color": "#6e6e73"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "stat-3",
+                "type": "column",
+                "properties": {
+                  "gap": "12px",
+                  "alignItems": "center",
+                  "textAlign": "center"
+                },
+                "children": [
+                  {
+                    "id": "stat-3-number",
+                    "type": "text",
+                    "properties": {
+                      "text": "128GB",
+                      "fontSize": "64px",
+                      "fontWeight": "600",
+                      "color": "#1d1d1f"
+                    }
+                  },
+                  {
+                    "id": "stat-3-label",
+                    "type": "text",
+                    "properties": {
+                      "text": "Unified memory",
+                      "fontSize": "17px",
+                      "fontWeight": "400",
+                      "color": "#6e6e73"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "display-section",
+    "type": "ScrollReveal",
+    "properties": {
+      "padding": "100px 48px",
+      "backgroundColor": "#000000",
+      "animationType": "slideUp",
+      "duration": 1000,
+      "threshold": 0.2
+    },
+    "children": [
+      {
+        "id": "display-content",
+        "type": "column",
+        "properties": {
+          "gap": "48px",
+          "maxWidth": "980px",
+          "margin": "0 auto"
+        },
+        "children": [
+          {
+            "id": "display-header",
+            "type": "column",
+            "properties": {
+              "gap": "16px",
+              "textAlign": "center"
+            },
+            "children": [
+              {
+                "id": "display-title",
+                "type": "text",
+                "properties": {
+                  "text": "Brilliant display. Spectacular vision.",
+                  "fontSize": "48px",
+                  "fontWeight": "600",
+                  "color": "#ffffff",
+                  "letterSpacing": "-0.5px"
+                }
+              },
+              {
+                "id": "display-subtitle",
+                "type": "text",
+                "properties": {
+                  "text": "The Liquid Retina XDR display delivers extreme dynamic range and a stunning contrast ratio of 1,000,000:1.",
+                  "fontSize": "24px",
+                  "fontWeight": "400",
+                  "color": "#a1a1a6",
+                  "lineHeight": "1.4"
+                }
+              }
+            ]
+          },
+          {
+            "id": "display-features",
+            "type": "row",
+            "properties": {
+              "gap": "48px",
+              "justifyContent": "space-around",
+              "flexWrap": "wrap",
+              "marginTop": "32px"
+            },
+            "children": [
+              {
+                "id": "feature-1",
+                "type": "column",
+                "properties": {
+                  "gap": "12px",
+                  "maxWidth": "280px"
+                },
+                "children": [
+                  {
+                    "id": "feature-1-title",
+                    "type": "text",
+                    "properties": {
+                      "text": "1600 nits",
+                      "fontSize": "32px",
+                      "fontWeight": "600",
+                      "color": "#ffffff"
+                    }
+                  },
+                  {
+                    "id": "feature-1-desc",
+                    "type": "text",
+                    "properties": {
+                      "text": "Peak brightness for HDR content so pro workflows and streaming look incredible",
+                      "fontSize": "17px",
+                      "fontWeight": "400",
+                      "color": "#a1a1a6",
+                      "lineHeight": "1.5"
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "feature-2",
+                "type": "column",
+                "properties": {
+                  "gap": "12px",
+                  "maxWidth": "280px"
+                },
+                "children": [
+                  {
+                    "id": "feature-2-title",
+                    "type": "text",
+                    "properties": {
+                      "text": "ProMotion",
+                      "fontSize": "32px",
+                      "fontWeight": "600",
+                      "color": "#ffffff"
+                    }
+                  },
+                  {
+                    "id": "feature-2-desc",
+                    "type": "text",
+                    "properties": {
+                      "text": "Adaptive refresh rates up to 120Hz for fluid scrolling and responsive gameplay",
+                      "fontSize": "17px",
+                      "fontWeight": "400",
+                      "color": "#a1a1a6",
+                      "lineHeight": "1.5"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "connectivity-section",
+    "type": "ScrollReveal",
+    "properties": {
+      "padding": "100px 48px",
+      "backgroundColor": "#f5f5f7",
+      "animationType": "slideUp",
+      "duration": 1000,
+      "delay": 50,
+      "threshold": 0.2
+    },
+    "children": [
+      {
+        "id": "connectivity-content",
+        "type": "column",
+        "properties": {
+          "gap": "48px",
+          "maxWidth": "980px",
+          "margin": "0 auto"
+        },
+        "children": [
+          {
+            "id": "connectivity-header",
+            "type": "column",
+            "properties": {
+              "gap": "16px",
+              "textAlign": "center"
+            },
+            "children": [
+              {
+                "id": "connectivity-title",
+                "type": "text",
+                "properties": {
+                  "text": "Connect everything.",
+                  "fontSize": "48px",
+                  "fontWeight": "600",
+                  "color": "#1d1d1f",
+                  "letterSpacing": "-0.5px"
+                }
+              },
+              {
+                "id": "connectivity-subtitle",
+                "type": "text",
+                "properties": {
+                  "text": "MacBook Pro brings versatile connectivity to pro workflows with Thunderbolt 4, HDMI, SDXC, and more.",
+                  "fontSize": "24px",
+                  "fontWeight": "400",
+                  "color": "#6e6e73",
+                  "lineHeight": "1.4"
+                }
+              }
+            ]
+          },
+          {
+            "id": "connectivity-list",
+            "type": "column",
+            "properties": {
+              "gap": "24px",
+              "marginTop": "32px"
+            },
+            "children": [
+              {
+                "id": "port-1",
+                "type": "row",
+                "properties": {
+                  "gap": "16px",
+                  "alignItems": "center",
+                  "padding": "24px",
+                  "backgroundColor": "#ffffff",
+                  "borderRadius": "12px"
+                },
+                "children": [
+                  {
+                    "id": "port-1-icon",
+                    "type": "text",
+                    "properties": {
+                      "text": "⚡",
+                      "fontSize": "32px"
+                    }
+                  },
+                  {
+                    "id": "port-1-info",
+                    "type": "column",
+                    "properties": {
+                      "gap": "4px"
+                    },
+                    "children": [
+                      {
+                        "id": "port-1-title",
+                        "type": "text",
+                        "properties": {
+                          "text": "Thunderbolt 4",
+                          "fontSize": "21px",
+                          "fontWeight": "600",
+                          "color": "#1d1d1f"
+                        }
+                      },
+                      {
+                        "id": "port-1-desc",
+                        "type": "text",
+                        "properties": {
+                          "text": "Up to 40Gb/s data transfer and support for multiple displays",
+                          "fontSize": "17px",
+                          "fontWeight": "400",
+                          "color": "#6e6e73"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "port-2",
+                "type": "row",
+                "properties": {
+                  "gap": "16px",
+                  "alignItems": "center",
+                  "padding": "24px",
+                  "backgroundColor": "#ffffff",
+                  "borderRadius": "12px"
+                },
+                "children": [
+                  {
+                    "id": "port-2-icon",
+                    "type": "text",
+                    "properties": {
+                      "text": "📺",
+                      "fontSize": "32px"
+                    }
+                  },
+                  {
+                    "id": "port-2-info",
+                    "type": "column",
+                    "properties": {
+                      "gap": "4px"
+                    },
+                    "children": [
+                      {
+                        "id": "port-2-title",
+                        "type": "text",
+                        "properties": {
+                          "text": "HDMI",
+                          "fontSize": "21px",
+                          "fontWeight": "600",
+                          "color": "#1d1d1f"
+                        }
+                      },
+                      {
+                        "id": "port-2-desc",
+                        "type": "text",
+                        "properties": {
+                          "text": "Connect to 8K displays and TVs at up to 60Hz",
+                          "fontSize": "17px",
+                          "fontWeight": "400",
+                          "color": "#6e6e73"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "id": "port-3",
+                "type": "row",
+                "properties": {
+                  "gap": "16px",
+                  "alignItems": "center",
+                  "padding": "24px",
+                  "backgroundColor": "#ffffff",
+                  "borderRadius": "12px"
+                },
+                "children": [
+                  {
+                    "id": "port-3-icon",
+                    "type": "text",
+                    "properties": {
+                      "text": "💾",
+                      "fontSize": "32px"
+                    }
+                  },
+                  {
+                    "id": "port-3-info",
+                    "type": "column",
+                    "properties": {
+                      "gap": "4px"
+                    },
+                    "children": [
+                      {
+                        "id": "port-3-title",
+                        "type": "text",
+                        "properties": {
+                          "text": "SDXC card slot",
+                          "fontSize": "21px",
+                          "fontWeight": "600",
+                          "color": "#1d1d1f"
+                        }
+                      },
+                      {
+                        "id": "port-3-desc",
+                        "type": "text",
+                        "properties": {
+                          "text": "Transfer photos and videos directly from your camera",
+                          "fontSize": "17px",
+                          "fontWeight": "400",
+                          "color": "#6e6e73"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "footer-section",
+    "type": "ScrollReveal",
+    "properties": {
+      "padding": "80px 48px",
+      "backgroundColor": "#1d1d1f",
+      "animationType": "fade",
+      "duration": 800,
+      "threshold": 0.1
+    },
+    "children": [
+      {
+        "id": "footer-content",
+        "type": "column",
+        "properties": {
+          "gap": "32px",
+          "maxWidth": "980px",
+          "margin": "0 auto",
+          "textAlign": "center"
+        },
+        "children": [
+          {
+            "id": "footer-title",
+            "type": "text",
+            "properties": {
+              "text": "Experience MacBook Pro",
+              "fontSize": "40px",
+              "fontWeight": "600",
+              "color": "#ffffff"
+            }
+          },
+          {
+            "id": "footer-cta",
+            "type": "row",
+            "properties": {
+              "gap": "24px",
+              "justifyContent": "center"
+            },
+            "children": [
+              {
+                "id": "footer-buy",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Buy now",
+                  "buttonColor": "#0066cc",
+                  "buttonTextColor": "#ffffff",
+                  "padding": "14px 32px",
+                  "borderRadius": "980px",
+                  "fontSize": "17px"
+                }
+              },
+              {
+                "id": "footer-compare",
+                "type": "button",
+                "properties": {
+                  "buttonText": "Compare models",
+                  "buttonColor": "transparent",
+                  "buttonTextColor": "#2997ff",
+                  "padding": "14px 32px",
+                  "borderRadius": "980px",
+                  "border": "1px solid #2997ff",
+                  "fontSize": "17px"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

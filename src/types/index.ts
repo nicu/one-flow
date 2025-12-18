@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 export type ComponentType =
   | "text"
   | "box"
@@ -15,7 +17,8 @@ export type ComponentType =
   | "row"
   | "column"
   | "image-grid"
-  | "lazy-user-list";
+  | "lazy-user-list"
+  | "ScrollReveal";
 
 // Added LT-prefixed component types for the new themed component set
 export type LTComponentType =
@@ -106,6 +109,8 @@ export interface ComponentProperties {
   // Style properties
   borderRadius?: string;
   boxShadow?: string;
+  // Inline style object for custom CSS properties
+  style?: CSSProperties;
 
   // Visibility: when false the component will not be rendered. Can be
   // bound to dynamic expressions later. Defaults to `true` when absent.
@@ -148,6 +153,19 @@ export interface ComponentProperties {
   chipField?: string; // field to build chips from
   // Button variants
   buttonVariant?: "contained" | "outlined";
+
+  // ScrollReveal animation properties
+  animationType?:
+    | "slideUp"
+    | "slideDown"
+    | "slideLeft"
+    | "slideRight"
+    | "fade"
+    | "scale"
+    | "zoom";
+  threshold?: number; // Intersection Observer threshold (0-1)
+  duration?: number; // Animation duration in ms
+  delay?: number; // Animation delay in ms
 }
 
 export interface BuilderComponent {

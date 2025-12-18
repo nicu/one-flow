@@ -24,6 +24,7 @@ import LTImage from "./builder/LTImage";
 import LTDataProvider from "./builder/LTDataProvider";
 import BuilderBox from "./builder/BuilderBox";
 import { componentRegistry } from "../plugins/registry";
+import ScrollReveal from "./ScrollReveal";
 
 interface RenderComponentProps {
   component: BuilderComponent;
@@ -68,6 +69,7 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
     "lt-nav",
     "lt-list",
     "lt-data-provider",
+    "ScrollReveal",
   ].includes(component.type as string);
   const isSelected = component.id === selectedId;
   const isHovered = component.id === hoveredId;
@@ -493,6 +495,34 @@ export const RenderComponent: React.FC<RenderComponentProps> = ({
 
       case "chip":
         return <BuilderChip properties={boundProps} />;
+
+      case "ScrollReveal": {
+        const children = component.children || [];
+        return (
+          <ScrollReveal
+            properties={component.properties}
+            componentId={component.id}
+          >
+            {children.length === 0 ? (
+              <div className="drop-zone-empty">Drop components here</div>
+            ) : (
+              children.map((c) => (
+                <RenderComponent
+                  key={c.id}
+                  component={c}
+                  selectedId={selectedId}
+                  hoveredId={hoveredId}
+                  selectedIds={selectedIds}
+                  onSelect={onSelect}
+                  onHover={onHover}
+                  onAddComponent={onAddComponent}
+                  onMoveComponents={onMoveComponents}
+                />
+              ))
+            )}
+          </ScrollReveal>
+        );
+      }
 
       case "datagrid": {
         // Determine rows from collection binding or explicit data

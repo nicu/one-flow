@@ -1,0 +1,76 @@
+/* Base scroll reveal styles */
+.scroll-reveal {
+  opacity: 0;
+  transition-property: opacity, transform;
+  transition-duration: var(--reveal-duration, 800ms);
+  transition-delay: var(--reveal-delay, 0ms);
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal-visible {
+  opacity: 1;
+}
+
+/* Slide Up Animation (Apple-style) */
+.scroll-reveal-slideUp {
+  transform: translateY(60px);
+}
+
+.scroll-reveal-slideUp.scroll-reveal-visible {
+  transform: translateY(0);
+}
+
+/* Slide Down Animation */
+.scroll-reveal-slideDown {
+  transform: translateY(-60px);
+}
+
+.scroll-reveal-slideDown.scroll-reveal-visible {
+  transform: translateY(0);
+}
+
+/* Slide Left Animation */
+.scroll-reveal-slideLeft {
+  transform: translateX(60px);
+}
+
+.scroll-reveal-slideLeft.scroll-reveal-visible {
+  transform: translateX(0);
+}
+
+/* Slide Right Animation */
+.scroll-reveal-slideRight {
+  transform: translateX(-60px);
+}
+
+.scroll-reveal-slideRight.scroll-reveal-visible {
+  transform: translateX(0);
+}
+
+/* Fade In Animation */
+.scroll-reveal-fade {
+  transform: none;
+}
+
+.scroll-reveal-fade.scroll-reveal-visible {
+  /* opacity already handled by base class */
+}
+
+/* Scale Animation */
+.scroll-reveal-scale {
+  transform: scale(0.9);
+}
+
+.scroll-reveal-scale.scroll-reveal-visible {
+  transform: scale(1);
+}
+
+/* Zoom (Scale + Fade) Animation */
+.scroll-reveal-zoom {
+  transform: scale(0.8);
+}
+
+.scroll-reveal-zoom.scroll-reveal-visible {
+  transform: scale(1);
+}

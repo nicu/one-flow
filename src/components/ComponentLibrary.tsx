@@ -160,6 +160,11 @@ export const ComponentLibrary: React.FC<ComponentLibraryProps> = ({
       label: "Column",
       icon: <ArrowDown size={20} />,
     },
+    {
+      type: "ScrollReveal" as AllComponentType,
+      label: "Scroll Reveal",
+      icon: <ArrowDown size={20} />,
+    },
   ];
 
   return (

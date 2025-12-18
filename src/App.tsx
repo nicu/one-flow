@@ -21,6 +21,7 @@ import airbnbPage from "./examples/airbnbPage.json";
 import dataBindingPage from "./examples/dataBinding.json";
 import datagridHotels from "./examples/datagridHotels.json";
 import userForm from "./examples/userForm.json";
+import appleMac from "./examples/appleMac.json";
 import { initialDataStore, type DataStore } from "./store/dataStore";
 import "./App.css";
 import "./i18n";
@@ -210,6 +211,7 @@ function App() {
     "Data binding": dataBindingPage as unknown as BuilderComponent[],
     "DataGrid (Hotels)": datagridHotels as unknown as BuilderComponent[],
     "User Form": userForm as unknown as BuilderComponent[],
+    "Mac (Scroll Reveal)": appleMac as unknown as BuilderComponent[],
   };
 
   const [selectedExample, setSelectedExample] =
